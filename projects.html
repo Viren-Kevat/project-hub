@@ -27,6 +27,9 @@
 
     <!-- Floating Social Share -->
     <link rel="stylesheet" href="css/social-share.css" />
+
+    <!-- Share Your Idea Modal -->
+    <link rel="stylesheet" href="css/idea-modal.css" />
 </head>
 
 <body data-quantum-loader>
@@ -34,7 +37,7 @@
     <header class="navbar" id="navbar">
         <div class="navbar__inner">
             <a href="index.html" class="navbar__logo">
-                <img src="image/logo.jpeg" alt="ProjectsHub" class="navbar__logo-img" />
+                <img src="image/favicon_io/apple-touch-icon.png" alt="ProjectsHub" class="navbar__logo-img" />
                 <span class="navbar__brand">ProjectsHub</span>
             </a>
             <nav class="navbar__links" aria-label="Primary navigation">
@@ -66,7 +69,7 @@
                 </button>
                 <div class="cta-wrap">
                     <div class="cta-glow" aria-hidden="true"></div>
-                    <a href="#post-project" class="btn-cta">Post a Project</a>
+                    <button class="btn-cta" id="openIdeaModal">Share Your Idea</button>
                 </div>
                 <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
                     <svg class="icon-menu" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +91,7 @@
                 <a href="workshop.html" class="mobile-link">Workshop</a>
                 <a href="#contact" class="mobile-link">Contact</a>
             </nav>
-            <a href="#post-project" class="btn-cta btn-cta--mobile">Post a Project</a>
+            <a href="#post-project" class="btn-cta btn-cta--mobile" id="openIdeaModalMobile">Share Your Idea</a>
         </div>
     </header>
     <!-- ── Aurora bg (same as homepage) ── -->
@@ -268,7 +271,8 @@
                     <!-- Brand column -->
                     <div class="footer-brand">
                         <a href="index.html" class="footer-logo">
-                            <img src="image/logo.jpeg" alt="ProjectsHub" class="footer-logo__img" />
+                            <img src="image/favicon_io/apple-touch-icon.png" alt="ProjectsHub"
+                                class="navbar__logo-img" />
                             <span class="footer-logo__text">ProjectsHub</span>
                         </a>
                         <p class="footer-tagline">From Ideas to AI-Powered Products
@@ -339,6 +343,7 @@
         <script src="js/ai-chatbot.js"></script>
         <script src="js/social-share.js"></script>
         <script src="js/script.js"></script>
+        <script src="js/idea-modal.js"></script>
 </body>
 
 </html>

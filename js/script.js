@@ -486,18 +486,19 @@
     }
 
     // ── Pause aurora when scrolled out of view ──
-    function initAuroraPause() {
-        var auroraBg = document.querySelector('.aurora-bg');
-        var section  = document.querySelector('.aurora-section');
-        if (!auroraBg || !section) return;
+   function initAuroraPause() {
+    var auroraBg = document.querySelector('.aurora-bg');
+    if (!auroraBg) return;
 
-        new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                auroraBg.style.animationPlayState = entry.isIntersecting ? 'running' : 'paused';
-            });
-        }, { threshold: 0 }).observe(section);
-    }
-
+    var scrollTimer;
+    window.addEventListener('scroll', function () {
+        auroraBg.style.animationPlayState = 'paused';
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function () {
+            auroraBg.style.animationPlayState = 'running';
+        }, 150);
+    }, { passive: true });
+}
 
     /* ════════════════════════════════════════
        10. WORKSHOP — Day cards + Feature items (workshop.html)
