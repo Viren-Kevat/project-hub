@@ -11,14 +11,14 @@
        1. NAVBAR — Hamburger, Theme, Scroll, Pill
        ════════════════════════════════════════ */
 
-    var navbar      = document.getElementById('navbar');
-    var hamburger   = document.getElementById('hamburger');
-    var mobileMenu  = document.getElementById('mobileMenu');
+    var navbar = document.getElementById('navbar');
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobileMenu');
     var themeToggle = document.getElementById('themeToggle');
 
     if (hamburger && navbar && mobileMenu) {
 
-        var iconMenu  = hamburger.querySelector('.icon-menu');
+        var iconMenu = hamburger.querySelector('.icon-menu');
         var iconClose = hamburger.querySelector('.icon-close');
 
         // ── Hamburger toggle ──
@@ -46,7 +46,7 @@
 
     // ── Theme Toggle ──
     if (themeToggle) {
-        var iconSun  = themeToggle.querySelector('.icon-sun');
+        var iconSun = themeToggle.querySelector('.icon-sun');
         var iconMoon = themeToggle.querySelector('.icon-moon');
 
         function applyTheme(isLight) {
@@ -77,8 +77,8 @@
 
     // ── Sliding pill for desktop nav ──
     (function initPillSlider() {
-        var nav   = document.querySelector('.navbar__links');
-        var pill  = document.getElementById('pillSlider');
+        var nav = document.querySelector('.navbar__links');
+        var pill = document.getElementById('pillSlider');
         var links = document.querySelectorAll('.nav-link');
         if (!nav || !pill || !links.length) return;
 
@@ -86,9 +86,9 @@
         var isInsideNav = false;
 
         function movePillTo(link) {
-            var rect    = link.getBoundingClientRect();
+            var rect = link.getBoundingClientRect();
             var navRect = nav.getBoundingClientRect();
-            pill.style.left  = (rect.left - navRect.left) + 'px';
+            pill.style.left = (rect.left - navRect.left) + 'px';
             pill.style.width = rect.width + 'px';
         }
 
@@ -169,8 +169,8 @@
 
         card.addEventListener('mousemove', function (e) {
             var rect = card.getBoundingClientRect();
-            var dx   = (e.clientX - (rect.left + rect.width  / 2)) / (rect.width  / 2);
-            var dy   = (e.clientY - (rect.top  + rect.height / 2)) / (rect.height / 2);
+            var dx = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+            var dy = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
             card.style.transform = 'perspective(800px) rotateX(' + (-dy * 4).toFixed(2) + 'deg) rotateY(' + (dx * 4).toFixed(2) + 'deg) translateY(-2px)';
         });
 
@@ -208,7 +208,7 @@
        ════════════════════════════════════════ */
 
     function initProjectFilter() {
-        var tabs  = document.querySelectorAll('.filter-tab');
+        var tabs = document.querySelectorAll('.filter-tab');
         var cards = document.querySelectorAll('#projectsGrid .project-card');
         var empty = document.getElementById('projectsEmpty');
         if (!tabs.length || !cards.length) return;
@@ -218,7 +218,7 @@
                 tabs.forEach(function (t) { t.classList.remove('active'); });
                 tab.classList.add('active');
 
-                var filter  = tab.getAttribute('data-filter');
+                var filter = tab.getAttribute('data-filter');
                 var visible = 0;
 
                 cards.forEach(function (card) {
@@ -242,7 +242,7 @@
        ════════════════════════════════════════ */
 
     function initReadMore() {
-        var descs    = document.querySelectorAll('.project-card__desc');
+        var descs = document.querySelectorAll('.project-card__desc');
         var maxChars = 110;
 
         descs.forEach(function (desc) {
@@ -253,14 +253,14 @@
             if (fullText.length <= maxChars) return;
 
             var truncated = fullText.slice(0, maxChars).trim() + '... ';
-            desc.dataset.fullText      = fullText;
+            desc.dataset.fullText = fullText;
             desc.dataset.truncatedText = truncated;
-            desc.dataset.isExpanded    = 'false';
+            desc.dataset.isExpanded = 'false';
 
             desc.innerHTML = '';
             var textNode = document.createTextNode(truncated);
-            var btn      = document.createElement('span');
-            btn.className   = 'project-card__readmore';
+            var btn = document.createElement('span');
+            btn.className = 'project-card__readmore';
             btn.textContent = 'Read more';
             desc.appendChild(textNode);
             desc.appendChild(btn);
@@ -268,8 +268,8 @@
             btn.addEventListener('click', function () {
                 var expanded = desc.dataset.isExpanded === 'true';
                 desc.childNodes[0].nodeValue = expanded ? desc.dataset.truncatedText : desc.dataset.fullText + ' ';
-                btn.textContent              = expanded ? 'Read more' : 'Show less';
-                desc.dataset.isExpanded      = expanded ? 'false' : 'true';
+                btn.textContent = expanded ? 'Read more' : 'Show less';
+                desc.dataset.isExpanded = expanded ? 'false' : 'true';
             });
         });
     }
@@ -301,8 +301,8 @@
         var btn = document.getElementById('billingToggle');
         if (!btn) return;
 
-        var isYearly    = false;
-        var priceEls    = document.querySelectorAll('.price-main[data-monthly]');
+        var isYearly = false;
+        var priceEls = document.querySelectorAll('.price-main[data-monthly]');
         var originalEls = document.querySelectorAll('.price-original[data-monthly]');
 
         btn.addEventListener('click', function () {
@@ -330,10 +330,10 @@
        ════════════════════════════════════════ */
 
     function initProjectsModal() {
-        var overlay  = document.getElementById('projectsModalOverlay');
-        var openBtn  = document.getElementById('openProjectsModal');
+        var overlay = document.getElementById('projectsModalOverlay');
+        var openBtn = document.getElementById('openProjectsModal');
         var closeBtn = document.getElementById('modalClose');
-        var form     = document.getElementById('projectsGateForm');
+        var form = document.getElementById('projectsGateForm');
         if (!overlay || !openBtn || !form) return;
 
         function openModal() {
@@ -367,14 +367,14 @@
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            var name    = document.getElementById('gateName');
-            var email   = document.getElementById('gateEmail');
+            var name = document.getElementById('gateName');
+            var email = document.getElementById('gateEmail');
             var college = document.getElementById('gateCollege');
-            var valid   = true;
+            var valid = true;
 
             [name, email, college].forEach(function (el) { el.classList.remove('has-error'); });
 
-            if (!name.value.trim())    { name.classList.add('has-error');    valid = false; }
+            if (!name.value.trim()) { name.classList.add('has-error'); valid = false; }
             if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
                 email.classList.add('has-error'); valid = false;
             }
@@ -400,24 +400,24 @@
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            var name    = document.getElementById('contactName');
-            var email   = document.getElementById('contactEmail');
+            var name = document.getElementById('contactName');
+            var email = document.getElementById('contactEmail');
             var message = document.getElementById('contactMessage');
-            var btn     = document.getElementById('contactSubmitBtn');
-            var valid   = true;
+            var btn = document.getElementById('contactSubmitBtn');
+            var valid = true;
 
             [name, email, message].forEach(function (el) { el.classList.remove('has-error'); });
 
-            if (!name.value.trim())    { name.classList.add('has-error');    valid = false; }
+            if (!name.value.trim()) { name.classList.add('has-error'); valid = false; }
             if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
                 email.classList.add('has-error'); valid = false;
             }
             if (!message.value.trim()) { message.classList.add('has-error'); valid = false; }
             if (!valid) return;
 
-            btn.textContent    = '✓ Message Sent!';
+            btn.textContent = '✓ Message Sent!';
             btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-            btn.disabled       = true;
+            btn.disabled = true;
 
             setTimeout(function () {
                 form.reset();
@@ -435,33 +435,14 @@
 
     function initSplineSmart() {
         var wrapper = document.getElementById('spline-wrapper');
-        var iframe  = document.getElementById('spline-frame');
-        var loader  = document.getElementById('spline-loader');
+        var iframe = document.getElementById('spline-frame');
+        var loader = document.getElementById('spline-loader');
         if (!wrapper || !iframe || !loader) return;
 
-        var isMobile = window.matchMedia('(max-width: 575px)').matches;
-
-        if (isMobile) {
-            iframe.style.display = 'none';
-            loader.style.display = 'none';
-            var staticImg = wrapper.querySelector('.spline-static');
-            if (staticImg) staticImg.style.display = 'block';
-            return;
-        }
-
-        // Defer Spline load until browser is idle
-        var loadSpline = function () {
-            if (iframe.dataset.src) iframe.src = iframe.dataset.src;
-        };
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(loadSpline, { timeout: 3000 });
-        } else {
-            setTimeout(loadSpline, 2000);
-        }
-
-        var isLoaded       = false;
+        var isLoaded = false;
         var minDisplayTime = 1500;
-        var loadStartTime  = Date.now();
+        var loadStartTime = Date.now();
+        var auroraBg = document.querySelector('.aurora-bg');
 
         function hideLoader() {
             if (isLoaded) return;
@@ -469,36 +450,69 @@
             var remaining = Math.max(0, minDisplayTime - (Date.now() - loadStartTime));
             setTimeout(function () {
                 loader.classList.add('is-hidden');
+                // Resume aurora after Spline has settled
                 setTimeout(function () {
                     if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+                    if (auroraBg) auroraBg.style.animationPlayState = 'running';
                 }, 700);
             }, remaining);
         }
 
-        iframe.addEventListener('load', hideLoader);
-        setTimeout(function () { if (!isLoaded) hideLoader(); }, 10000);
+        function loadSpline() {
+            if (iframe.src || iframe.dataset.loaded) return;
+            iframe.dataset.loaded = 'true';
 
-        // Watermark cover
-        var splineCover = document.createElement('div');
-        splineCover.id = 'spline-cover';
-        splineCover.style.cssText = 'position:absolute;bottom:0;right:0;width:100%;height:57px;background:rgba(227,227,227,1);z-index:5;pointer-events:none;';
-        wrapper.appendChild(splineCover);
+            // Pause aurora while Spline WebGL initialises
+            if (auroraBg) auroraBg.style.animationPlayState = 'paused';
+
+            iframe.src = iframe.dataset.src;
+            iframe.addEventListener('load', hideLoader);
+            setTimeout(function () { if (!isLoaded) hideLoader(); }, 10000);
+
+            // Watermark cover
+            var splineCover = document.createElement('div');
+            splineCover.id = 'spline-cover';
+            splineCover.style.cssText = 'position:absolute;bottom:0;right:0;width:100%;height:57px;background:rgba(226.74188410194176,226.74188410194176,226.74188410194176, 1);z-index:5;pointer-events:none;';
+            wrapper.appendChild(splineCover);
+        }
+
+        // Load only after user scrolls or clicks — not on idle
+        // This gives the page time to paint and feel fast first
+        var triggered = false;
+        function triggerLoad() {
+            if (triggered) return;
+            triggered = true;
+            // Small delay so the triggering interaction doesn't itself stutter
+            setTimeout(loadSpline, 300);
+            window.removeEventListener('scroll', triggerLoad);
+            window.removeEventListener('click', triggerLoad);
+            window.removeEventListener('touchstart', triggerLoad);
+        }
+
+        // Fallback: load after 4s even if user doesn't interact
+        var fallbackTimer = setTimeout(function () {
+            triggerLoad();
+        }, 4000);
+
+        window.addEventListener('scroll', triggerLoad, { passive: true });
+        window.addEventListener('click', triggerLoad);
+        window.addEventListener('touchstart', triggerLoad, { passive: true });
     }
 
     // ── Pause aurora when scrolled out of view ──
-   function initAuroraPause() {
-    var auroraBg = document.querySelector('.aurora-bg');
-    if (!auroraBg) return;
+    function initAuroraPause() {
+        var auroraBg = document.querySelector('.aurora-bg');
+        if (!auroraBg) return;
 
-    var scrollTimer;
-    window.addEventListener('scroll', function () {
-        auroraBg.style.animationPlayState = 'paused';
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(function () {
-            auroraBg.style.animationPlayState = 'running';
-        }, 150);
-    }, { passive: true });
-}
+        var scrollTimer;
+        window.addEventListener('scroll', function () {
+            auroraBg.style.animationPlayState = 'paused';
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(function () {
+                auroraBg.style.animationPlayState = 'running';
+            }, 150);
+        }, { passive: true });
+    }
 
     /* ════════════════════════════════════════
        10. WORKSHOP — Day cards + Feature items (workshop.html)
@@ -529,15 +543,15 @@
         var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (!entry.isIntersecting) return;
-                entry.target.style.opacity   = '1';
+                entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
                 observer.unobserve(entry.target);
             });
         }, { threshold: 0.1 });
 
         items.forEach(function (item) {
-            item.style.opacity    = '0';
-            item.style.transform  = 'translateY(20px)';
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
             item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             observer.observe(item);
         });
@@ -549,15 +563,15 @@
        ════════════════════════════════════════ */
 
     function initShareCard() {
-        var overlay  = document.getElementById('shareOverlay');
+        var overlay = document.getElementById('shareOverlay');
         var closeBtn = document.getElementById('shareClose');
         if (!overlay) return;
 
         function openShare(dayCard) {
-            document.getElementById('shareDay').textContent         = 'Day ' + dayCard.dataset.day;
-            document.getElementById('shareTitle').textContent       = dayCard.dataset.title;
-            document.getElementById('shareDate').textContent        = dayCard.dataset.date;
-            document.getElementById('shareDesc').textContent        = dayCard.dataset.desc;
+            document.getElementById('shareDay').textContent = 'Day ' + dayCard.dataset.day;
+            document.getElementById('shareTitle').textContent = dayCard.dataset.title;
+            document.getElementById('shareDate').textContent = dayCard.dataset.date;
+            document.getElementById('shareDesc').textContent = dayCard.dataset.desc;
             document.getElementById('shareOutcomeText').textContent = 'Outcome: ' + dayCard.dataset.outcome;
             overlay.classList.add('is-active');
             document.body.style.overflow = 'hidden';
@@ -601,8 +615,8 @@
         if (waBtn) {
             waBtn.addEventListener('click', function () {
                 var title = document.getElementById('shareTitle').textContent;
-                var day   = document.getElementById('shareDay').textContent;
-                var url   = window.location.origin + '/workshop-day.html?day=' + day.replace('Day ', '');
+                var day = document.getElementById('shareDay').textContent;
+                var url = window.location.origin + '/workshop-day.html?day=' + day.replace('Day ', '');
                 window.open('https://wa.me/?text=' + encodeURIComponent('🚀 Check out *' + day + ': ' + title + '* from the ProjectsHub AI Workshop!\n' + url), '_blank');
             });
         }
@@ -612,8 +626,8 @@
         if (twBtn) {
             twBtn.addEventListener('click', function () {
                 var title = document.getElementById('shareTitle').textContent;
-                var day   = document.getElementById('shareDay').textContent;
-                var url   = window.location.origin + '/workshop-day.html?day=' + day.replace('Day ', '');
+                var day = document.getElementById('shareDay').textContent;
+                var url = window.location.origin + '/workshop-day.html?day=' + day.replace('Day ', '');
                 window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent('🚀 ' + day + ': ' + title + ' — ProjectsHub AI Workshop') + '&url=' + encodeURIComponent(url), '_blank');
             });
         }
@@ -636,12 +650,12 @@
                 outcome: 'Complete EDA on a real dataset — cleaned, analyzed, and visualized.',
                 outcomeDetail: 'You\'ll have a fully functional Jupyter notebook with a comprehensive analysis of a real-world dataset, including statistical summaries, correlation matrices, distribution plots, and actionable insights.',
                 topics: [
-                    { name: 'Python Crash Course for ML',    sub: 'Lists, dicts, comprehensions, lambda functions, OOP basics' },
-                    { name: 'NumPy & Pandas Deep Dive',      sub: 'Array operations, DataFrames, groupby, merge, pivot tables' },
+                    { name: 'Python Crash Course for ML', sub: 'Lists, dicts, comprehensions, lambda functions, OOP basics' },
+                    { name: 'NumPy & Pandas Deep Dive', sub: 'Array operations, DataFrames, groupby, merge, pivot tables' },
                     { name: 'Data Cleaning & Preprocessing', sub: 'Missing values, outliers, encoding, normalization' },
-                    { name: 'Exploratory Data Analysis',     sub: 'Statistical analysis, correlation, distribution analysis' },
-                    { name: 'Matplotlib & Seaborn',          sub: 'Line, bar, scatter, heatmaps, pair plots, styling' },
-                    { name: 'ML Environment Setup',          sub: 'Jupyter, Conda, Git, VS Code, project structure' }
+                    { name: 'Exploratory Data Analysis', sub: 'Statistical analysis, correlation, distribution analysis' },
+                    { name: 'Matplotlib & Seaborn', sub: 'Line, bar, scatter, heatmaps, pair plots, styling' },
+                    { name: 'ML Environment Setup', sub: 'Jupyter, Conda, Git, VS Code, project structure' }
                 ]
             },
             '2': {
@@ -651,12 +665,12 @@
                 outcome: 'Build a price prediction model with optimized hyperparameters.',
                 outcomeDetail: 'A production-ready regression model trained on real estate data, complete with feature engineering pipeline, cross-validated metrics, and hyperparameter optimization — all in a reproducible notebook.',
                 topics: [
-                    { name: 'Linear & Logistic Regression',   sub: 'Theory, implementation, regularization (L1/L2)' },
+                    { name: 'Linear & Logistic Regression', sub: 'Theory, implementation, regularization (L1/L2)' },
                     { name: 'Decision Trees & Random Forests', sub: 'Splitting criteria, pruning, ensemble methods' },
-                    { name: 'Model Evaluation & Metrics',      sub: 'Accuracy, precision, recall, F1, confusion matrix, ROC' },
-                    { name: 'Hyperparameter Tuning',           sub: 'GridSearchCV, RandomizedSearch, Optuna' },
-                    { name: 'Cross-Validation Strategies',     sub: 'K-Fold, Stratified, Leave-One-Out, time-series splits' },
-                    { name: 'Feature Engineering',             sub: 'Polynomial features, binning, target encoding, selection' }
+                    { name: 'Model Evaluation & Metrics', sub: 'Accuracy, precision, recall, F1, confusion matrix, ROC' },
+                    { name: 'Hyperparameter Tuning', sub: 'GridSearchCV, RandomizedSearch, Optuna' },
+                    { name: 'Cross-Validation Strategies', sub: 'K-Fold, Stratified, Leave-One-Out, time-series splits' },
+                    { name: 'Feature Engineering', sub: 'Polynomial features, binning, target encoding, selection' }
                 ]
             },
             '3': {
@@ -667,9 +681,9 @@
                 outcomeDetail: 'A trained CNN model using transfer learning, with data augmentation, learning rate scheduling, and model checkpointing — exported and ready for inference.',
                 topics: [
                     { name: 'Neural Network Architecture', sub: 'Perceptrons, layers, activation functions, backprop' },
-                    { name: 'TensorFlow / Keras Basics',   sub: 'Sequential API, functional API, callbacks, training loops' },
+                    { name: 'TensorFlow / Keras Basics', sub: 'Sequential API, functional API, callbacks, training loops' },
                     { name: 'Convolutional Neural Networks', sub: 'Conv layers, pooling, architecture patterns' },
-                    { name: 'Transfer Learning',           sub: 'ResNet, MobileNet, fine-tuning, feature extraction' },
+                    { name: 'Transfer Learning', sub: 'ResNet, MobileNet, fine-tuning, feature extraction' },
                     { name: 'Image Classification Project', sub: 'Data augmentation, training, evaluation, visualization' },
                     { name: 'Model Saving & Optimization', sub: 'SavedModel, ONNX, quantization, TFLite' }
                 ]
@@ -681,11 +695,11 @@
                 outcome: 'Live deployed ML API accessible from anywhere.',
                 outcomeDetail: 'A Dockerized FastAPI application serving your trained model, deployed on AWS/GCP with health checks, structured logging, and a CI/CD pipeline for automated deployments.',
                 topics: [
-                    { name: 'FastAPI for ML Serving',    sub: 'Endpoints, Pydantic schemas, async handlers, file uploads' },
-                    { name: 'Docker Containerization',   sub: 'Dockerfile, multi-stage builds, docker-compose' },
-                    { name: 'Cloud Deployment',          sub: 'AWS EC2/Lambda, GCP Cloud Run, environment variables' },
-                    { name: 'CI/CD for ML Pipelines',    sub: 'GitHub Actions, automated testing, model versioning' },
-                    { name: 'Monitoring & Logging',      sub: 'Structured logs, health checks, alerting, metrics' },
+                    { name: 'FastAPI for ML Serving', sub: 'Endpoints, Pydantic schemas, async handlers, file uploads' },
+                    { name: 'Docker Containerization', sub: 'Dockerfile, multi-stage builds, docker-compose' },
+                    { name: 'Cloud Deployment', sub: 'AWS EC2/Lambda, GCP Cloud Run, environment variables' },
+                    { name: 'CI/CD for ML Pipelines', sub: 'GitHub Actions, automated testing, model versioning' },
+                    { name: 'Monitoring & Logging', sub: 'Structured logs, health checks, alerting, metrics' },
                     { name: 'Capstone: End-to-End ML App', sub: 'Full pipeline from data ingestion to live API' }
                 ]
             }
@@ -693,24 +707,24 @@
 
         var params = new URLSearchParams(window.location.search);
         var dayNum = params.get('day') || '1';
-        var data   = DAYS[dayNum] || DAYS['1'];
-        var prev   = parseInt(dayNum) > 1 ? parseInt(dayNum) - 1 : null;
-        var next   = parseInt(dayNum) < 4 ? parseInt(dayNum) + 1 : null;
+        var data = DAYS[dayNum] || DAYS['1'];
+        var prev = parseInt(dayNum) > 1 ? parseInt(dayNum) - 1 : null;
+        var next = parseInt(dayNum) < 4 ? parseInt(dayNum) + 1 : null;
 
         document.title = data.day + ': ' + data.title + ' — ProjectsHub Workshop';
 
         var topicsHTML = data.topics.map(function (t, i) {
             return '<div class="topic-item"><div class="topic-item__icon">' + (i + 1) + '</div>' +
-                   '<div class="topic-item__text"><p class="topic-item__name">' + t.name + '</p>' +
-                   '<p class="topic-item__sub">' + t.sub + '</p></div></div>';
+                '<div class="topic-item__text"><p class="topic-item__name">' + t.name + '</p>' +
+                '<p class="topic-item__sub">' + t.sub + '</p></div></div>';
         }).join('');
 
         var navHTML = '<div class="day-detail__nav">';
         if (prev) navHTML += '<a href="workshop-day.html?day=' + prev + '" class="day-nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg> Day ' + prev + '</a>';
-        else       navHTML += '<span></span>';
+        else navHTML += '<span></span>';
         navHTML += '<a href="workshop.html" class="day-nav-btn day-nav-btn--primary">Back to Workshop</a>';
         if (next) navHTML += '<a href="workshop-day.html?day=' + next + '" class="day-nav-btn">Day ' + next + ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>';
-        else      navHTML += '<span></span>';
+        else navHTML += '<span></span>';
         navHTML += '</div>';
 
         container.innerHTML =
