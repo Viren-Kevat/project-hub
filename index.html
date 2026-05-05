@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="ProjectsHub — AI-powered solutions for modern businesses. Machine Learning, APIs, and Data Science." />
+    <title>ProjectsHub — AI Solutions</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Lexend+Deca:wght@100..900&display=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <!-- Quantum Pulse Loader -->
+    <link rel="stylesheet" href="/css/loader.css" />
+
+    <!-- AI Chatbot -->
+    <link rel="stylesheet" href="/css/ai-chatbot.css" />
+
+    <!-- Floating Social Share -->
+    <link rel="stylesheet" href="/css/social-share.css" />
+</head>
+
+<body data-quantum-loader>
+
+    <!-- ── Navbar ── -->
+    <header class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="index.html" class="navbar__logo">
+                <img src="image/logo.jpeg" alt="ProjectsHub" class="navbar__logo-img" />
+                <span class="navbar__brand">ProjectsHub</span>
+            </a>
+            <nav class="navbar__links" aria-label="Primary navigation">
+                <div class="pill-slider" id="pillSlider"></div>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="workshop.html" class="nav-link">Workshop</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+            <div class="navbar__actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg class="icon-moon hidden" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+                <div class="cta-wrap">
+                    <div class="cta-glow" aria-hidden="true"></div>
+                    <a href="#post-project" class="btn-cta">Post a Project</a>
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <svg class="icon-menu" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="icon-close hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
+            <nav class="mobile-links">
+                <a href="#projects" class="mobile-link">Projects</a>
+                <a href="#pricing" class="mobile-link">Pricing</a>
+                <a href="#about" class="mobile-link">About</a>
+                <a href="workshop.html" class="mobile-link">Workshop</a>
+                <a href="#contact" class="mobile-link">Contact</a>
+            </nav>
+            <a href="#post-project" class="btn-cta btn-cta--mobile">Post a Project</a>
+        </div>
+    </header>
+
+    <!-- ── Hero Section ── -->
+    <section class="aurora-section">
+        <div class="aurora-bg aurora-radial-mask"></div>
+        <div class="main-body">
+            <section class="hero-section">
+                <div class="container">
+                    <div class="row d-flex align-items-center justify-content-between">
+                        <div class="col-lg-7">
+                            <div class="hero-text">
+                                <p class="hero-tag">
+                                    <span class="hero-tag__dot"></span>
+                                    AI-Powered Platform
+                                </p>
+                                <h1 class="hero-title">
+                                    Build Smarter with
+                                    <span class="hero-title__gradient">AI Solutions</span>
+                                </h1>
+                                <p class="hero-desc">
+                                    Expert in Machine Learning, Django APIs, and Data Science.
+                                    I build scalable, intelligent systems that transform your business.
+                                </p>
+                                <div class="hero-actions">
+                                    <a href="#services" class="btn-hero-primary">
+                                        Explore Services
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M5 12h14" />
+                                            <path d="m12 5 7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                    <a href="#projects" class="btn-hero-ghost">View Projects</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 text-center">
+                            <div id="spline-wrapper" class="spline-container">
+                                <div id="spline-loader" class="spline-loader">
+                                    <div class="loader-wrapper">
+                                        <div class="loader-letters">
+                                            <span class="loader-letter">G</span><span
+                                                class="loader-letter">e</span><span class="loader-letter">n</span><span
+                                                class="loader-letter">e</span><span class="loader-letter">r</span><span
+                                                class="loader-letter">a</span><span class="loader-letter">t</span><span
+                                                class="loader-letter">i</span><span class="loader-letter">n</span><span
+                                                class="loader-letter">g</span>
+                                        </div>
+                                        <div class="loader-cube"></div>
+                                    </div>
+                                </div>
+                                <!-- data-src used by script.js for lazy loading -->
+                                <iframe id="spline-frame"
+                                    data-src="https://my.spline.design/nexbotrobotcharacterconcept-8ZQLeb6vV2g0TQt5jHHsLI3O/"
+                                    title="3D AI Robot Character" frameborder="0" width="100%" height="100%"
+                                    style="border: none;"></iframe>
+                                <video class="spline-static" autoplay muted playsinline src="/video/hero-clip.mp4"
+                                    aria-label="AI Robot 3D Model"></video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About -->
+            <section id="about">
+                <div class="about-header">
+                    <h2 class="about-title">About <span class="gradient-word">Me</span></h2>
+                    <p class="about-desc">I'm a full-stack ML engineer with 8+ years of experience building intelligent
+                        systems that solve real-world problems. My passion lies in bridging the gap between data science
+                        research and production-grade implementations.</p>
+                </div>
+                <div class="image-grid">
+                    <img class="img-main"
+                        src="https://images.unsplash.com/photo-1607705703571-c5a8695f18f6?w=900&auto=format&fit=crop"
+                        alt="Developer working" />
+                    <div class="image-grid-right">
+                        <div class="breakout-card">
+                            <div class="breakout-logo">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                </svg>
+                            </div>
+                            <div class="breakout-text">
+                                <p class="breakout-title">Fortune 500 to Startups</p>
+                                <p class="breakout-body">Providing businesses with effective ML tools to improve
+                                    workflows, boost efficiency, and drive measurable growth.</p>
+                            </div>
+                            <a href="#contact" class="breakout-btn">Work with me →</a>
+                        </div>
+                        <img class="img-secondary"
+                            src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&auto=format&fit=crop"
+                            alt="Code on screen" />
+                    </div>
+                </div>
+                <div class="companies-block">
+                    <p class="companies-title">Technologies I work with</p>
+                    <div class="companies-row">
+                        <div class="tech-pill">TensorFlow</div>
+                        <div class="tech-pill">PyTorch</div>
+                        <div class="tech-pill">Django</div>
+                        <div class="tech-pill">FastAPI</div>
+                        <div class="tech-pill">AWS</div>
+                        <div class="tech-pill">Docker</div>
+                        <div class="tech-pill">Kubernetes</div>
+                        <div class="tech-pill">PostgreSQL</div>
+                    </div>
+                </div>
+                <div class="achievements-block">
+                    <div class="achievements-grid-texture"></div>
+                    <div class="achievements-header">
+                        <h2 class="achievements-title">Career in Numbers</h2>
+                        <p class="achievements-desc">I've worked with Fortune 500 companies, startups, and everything in
+                            between — delivering clean, scalable, production-ready solutions.</p>
+                    </div>
+                    <div class="achievements-stats">
+                        <div class="stat-item">
+                            <p class="stat-label">Projects Completed</p><span class="stat-value">150+</span>
+                        </div>
+                        <div class="stat-item">
+                            <p class="stat-label">Client Satisfaction</p><span class="stat-value">95%</span>
+                        </div>
+                        <div class="stat-item">
+                            <p class="stat-label">Years Experience</p><span class="stat-value">8+</span>
+                        </div>
+                        <div class="stat-item">
+                            <p class="stat-label">Available Support</p><span class="stat-value">24/7</span>
+                        </div>
+                    </div>
+                    <div class="experience-row">
+                        <div class="exp-item">
+                            <p class="exp-role">Senior ML Engineer</p>
+                            <p class="exp-company">TechCorp AI · 2021 – Present</p>
+                        </div>
+                        <div class="exp-item">
+                            <p class="exp-role">Full-Stack Developer</p>
+                            <p class="exp-company">DataStart · 2019 – 2021</p>
+                        </div>
+                        <div class="exp-item">
+                            <p class="exp-role">Junior Data Scientist</p>
+                            <p class="exp-company">Analytics Inc · 2016 – 2019</p>
+                        </div>
+                    </div>
+                    <div class="certs-row">
+                        <span class="cert-badge">✓ AWS Solutions Architect</span>
+                        <span class="cert-badge">✓ Google Cloud ML Engineer</span>
+                        <span class="cert-badge">✓ Deep Learning Specialist</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects -->
+            <section id="projects">
+                <div class="projects-header">
+                    <div class="projects-badge"><span class="projects-badge__dot"></span> Selected Work</div>
+                    <h2 class="projects-title">Removing the roadblocks<br>to <span class="projects-title__gradient">your
+                            success</span></h2>
+                    <p class="projects-desc">It's easy to get lost in a sea of tools, conflicting opinions, and endless
+                        "must-dos." Here's a curated look at systems and products I've built that give clarity and real
+                        results.</p>
+                </div>
+                <div class="marquee-wrap">
+                    <div class="marquee-fade marquee-fade--left"></div>
+                    <div class="marquee-fade marquee-fade--right"></div>
+                    <div class="marquee-row">
+                        <div class="marquee-track"><span class="marquee-tag">Machine Learning</span><span
+                                class="marquee-tag">FastAPI</span><span class="marquee-tag">Data Pipelines</span><span
+                                class="marquee-tag">Docker</span><span class="marquee-tag">Kubernetes</span><span
+                                class="marquee-tag">AWS Lambda</span><span class="marquee-tag"
+                                aria-hidden="true">Machine Learning</span><span class="marquee-tag"
+                                aria-hidden="true">FastAPI</span><span class="marquee-tag" aria-hidden="true">Data
+                                Pipelines</span><span class="marquee-tag" aria-hidden="true">Docker</span><span
+                                class="marquee-tag" aria-hidden="true">Kubernetes</span><span class="marquee-tag"
+                                aria-hidden="true">AWS Lambda</span></div>
+                    </div>
+                    <div class="marquee-row">
+                        <div class="marquee-track marquee-track--reverse"><span class="marquee-tag">PyTorch</span><span
+                                class="marquee-tag">PostgreSQL</span><span class="marquee-tag">Real-time
+                                APIs</span><span class="marquee-tag">TensorFlow</span><span
+                                class="marquee-tag">Scikit-learn</span><span class="marquee-tag">Model
+                                Deployment</span><span class="marquee-tag" aria-hidden="true">PyTorch</span><span
+                                class="marquee-tag" aria-hidden="true">PostgreSQL</span><span class="marquee-tag"
+                                aria-hidden="true">Real-time APIs</span><span class="marquee-tag"
+                                aria-hidden="true">TensorFlow</span><span class="marquee-tag"
+                                aria-hidden="true">Scikit-learn</span><span class="marquee-tag" aria-hidden="true">Model
+                                Deployment</span></div>
+                    </div>
+                    <div class="marquee-row">
+                        <div class="marquee-track" style="--marquee-duration: 42s;"><span
+                                class="marquee-tag">Django</span><span class="marquee-tag">CI/CD Pipelines</span><span
+                                class="marquee-tag">NLP</span><span class="marquee-tag">Cloud Architecture</span><span
+                                class="marquee-tag">REST APIs</span><span class="marquee-tag">Data
+                                Visualization</span><span class="marquee-tag" aria-hidden="true">Django</span><span
+                                class="marquee-tag" aria-hidden="true">CI/CD Pipelines</span><span class="marquee-tag"
+                                aria-hidden="true">NLP</span><span class="marquee-tag" aria-hidden="true">Cloud
+                                Architecture</span><span class="marquee-tag" aria-hidden="true">REST APIs</span><span
+                                class="marquee-tag" aria-hidden="true">Data Visualization</span></div>
+                    </div>
+                </div>
+                <div class="projects-grid">
+                    <article class="project-card">
+                        <div class="project-card__img-wrap"><img
+                                src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&auto=format&fit=crop"
+                                alt="ML Inference Engine" class="project-card__img" loading="lazy" />
+                            <div class="project-card__overlay"></div>
+                        </div>
+                        <div class="project-card__body">
+                            <div class="project-card__tags"><span class="project-tag">PyTorch</span><span
+                                    class="project-tag">FastAPI</span><span class="project-tag">AWS</span></div>
+                            <h3 class="project-card__title">ML Inference Engine</h3>
+                            <p class="project-card__desc">A high-throughput model serving platform handling 50K+
+                                requests/day with sub-100ms latency using async FastAPI and GPU batching.</p>
+                            <div class="project-card__actions"><a href="#"
+                                    class="project-card__link project-gate-trigger">View project <span
+                                        class="project-card__arrow">→</span></a><a href="https://youtube.com"
+                                    target="_blank" rel="noopener" class="project-card__yt"
+                                    aria-label="Watch demo on YouTube"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.546 12 3.546 12 3.546s-7.505 0-9.377.504A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.504 9.376.504 9.376.504s7.505 0 9.377-.504a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                    </svg></a></div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-card__img-wrap"><img
+                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop"
+                                alt="Real-time Analytics Dashboard" class="project-card__img" loading="lazy" />
+                            <div class="project-card__overlay"></div>
+                        </div>
+                        <div class="project-card__body">
+                            <div class="project-card__tags"><span class="project-tag">Django</span><span
+                                    class="project-tag">PostgreSQL</span><span class="project-tag">Plotly</span></div>
+                            <h3 class="project-card__title">Real-time Analytics Dashboard</h3>
+                            <p class="project-card__desc">End-to-end analytics platform for a Fortune 500 client —
+                                ingesting live event streams and rendering interactive charts at scale.</p>
+                            <div class="project-card__actions"><a href="#"
+                                    class="project-card__link project-gate-trigger">View project <span
+                                        class="project-card__arrow">→</span></a><a href="https://youtube.com"
+                                    target="_blank" rel="noopener" class="project-card__yt"
+                                    aria-label="Watch demo on YouTube"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.546 12 3.546 12 3.546s-7.505 0-9.377.504A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.504 9.376.504 9.376.504s7.505 0 9.377-.504a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                    </svg></a></div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-card__img-wrap"><img
+                                src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=format&fit=crop"
+                                alt="NLP Document Classifier" class="project-card__img" loading="lazy" />
+                            <div class="project-card__overlay"></div>
+                        </div>
+                        <div class="project-card__body">
+                            <div class="project-card__tags"><span class="project-tag">NLP</span><span
+                                    class="project-tag">TensorFlow</span><span class="project-tag">Docker</span></div>
+                            <h3 class="project-card__title">NLP Document Classifier</h3>
+                            <p class="project-card__desc">Fine-tuned transformer model that classifies legal documents
+                                into 50+ categories with 94% accuracy, deployed on Kubernetes.</p>
+                            <div class="project-card__actions"><a href="#"
+                                    class="project-card__link project-gate-trigger">View project <span
+                                        class="project-card__arrow">→</span></a><a href="https://youtube.com"
+                                    target="_blank" rel="noopener" class="project-card__yt"
+                                    aria-label="Watch demo on YouTube"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.546 12 3.546 12 3.546s-7.505 0-9.377.504A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.504 9.376.504 9.376.504s7.505 0 9.377-.504a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                    </svg></a></div>
+                        </div>
+                    </article>
+                    <article class="project-card">
+                        <div class="project-card__img-wrap"><img
+                                src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop"
+                                alt="Cloud Cost Optimizer" class="project-card__img" loading="lazy" />
+                            <div class="project-card__overlay"></div>
+                        </div>
+                        <div class="project-card__body">
+                            <div class="project-card__tags"><span class="project-tag">AWS</span><span
+                                    class="project-tag">Python</span><span class="project-tag">CI/CD</span></div>
+                            <h3 class="project-card__title">Cloud Cost Optimizer</h3>
+                            <p class="project-card__desc">Automated cost analysis tool that identifies idle AWS
+                                resources and cut infrastructure spend by 37% for a SaaS startup.</p>
+                            <div class="project-card__actions"><a href="#"
+                                    class="project-card__link project-gate-trigger">View project <span
+                                        class="project-card__arrow">→</span></a><a href="https://youtube.com"
+                                    target="_blank" rel="noopener" class="project-card__yt"
+                                    aria-label="Watch demo on YouTube"><svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path
+                                            d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.546 12 3.546 12 3.546s-7.505 0-9.377.504A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.504 9.376.504 9.376.504s7.505 0 9.377-.504a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                    </svg></a></div>
+                        </div>
+                    </article>
+                </div>
+                <div class="projects-cta">
+                    <button type="button" class="btn-view-all" id="openProjectsModal">
+                        View all projects
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Pricing -->
+            <section id="pricing">
+                <div class="pricing-dot-grid" aria-hidden="true"></div>
+                <div class="pricing-spotlight" aria-hidden="true"></div>
+                <div class="pricing-header">
+                    <div class="pricing-badge"><span class="pricing-badge__dot"></span> Simple Pricing</div>
+                    <h2 class="pricing-title">Choose the plan that<br><span class="pricing-title__gradient">fits your
+                            needs</span></h2>
+                    <p class="pricing-desc">No hidden fees, no long-term lock-ins. Start free and scale as your project
+                        grows.</p>
+                    <div class="billing-toggle">
+                        <span class="billing-label" id="labelMonthly">Monthly</span>
+                        <button class="toggle-switch" id="billingToggle" aria-label="Toggle billing period"
+                            aria-pressed="false"><span class="toggle-thumb"></span></button>
+                        <span class="billing-label" id="labelYearly">Yearly <span class="billing-save">Save
+                                20%</span></span>
+                    </div>
+                </div>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-card__header">
+                            <div class="pricing-card__glass" aria-hidden="true"></div>
+                            <div class="pricing-card__plan">
+                                <div class="pricing-card__name"><svg class="plan-icon" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                        <circle cx="9" cy="7" r="4" />
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                    </svg>Basic</div>
+                            </div>
+                            <div class="pricing-card__price"><span class="price-main">Free</span></div><button
+                                class="btn-plan btn-plan--outline" onclick="handlePlan('Basic')">Get Started</button>
+                        </div>
+                        <div class="pricing-card__body">
+                            <p class="pricing-card__desc">Perfect for individuals</p>
+                            <ul class="pricing-card__list">
+                                <li><span class="check-icon">✓</span> Automated Meeting Scheduling</li>
+                                <li><span class="check-icon">✓</span> Basic Calendar Sync</li>
+                                <li><span class="check-icon">✓</span> Daily Schedule Overview</li>
+                                <li><span class="check-icon">✓</span> Email Reminders</li>
+                                <li><span class="check-icon">✓</span> Task Management</li>
+                                <li><span class="check-icon">✓</span> 24/7 Customer Support</li>
+                                <li><span class="check-icon">✓</span> Single User Access</li>
+                                <li><span class="check-icon">✓</span> Basic Reporting</li>
+                                <li><span class="check-icon">✓</span> Mobile App Access</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pricing-card pricing-card--featured">
+                        <div class="pricing-card__header pricing-card__header--featured">
+                            <div class="pricing-card__glass" aria-hidden="true"></div>
+                            <div class="pricing-card__plan">
+                                <div class="pricing-card__name"><svg class="plan-icon" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                                    </svg>Pro</div><span class="pricing-badge-pill">Popular</span>
+                            </div>
+                            <div class="pricing-card__price"><span class="price-main" data-monthly="$29"
+                                    data-yearly="$23">$29</span><span class="price-period">/month</span><span
+                                    class="price-original" data-monthly="$39" data-yearly="$31">$39</span></div><button
+                                class="btn-plan btn-plan--primary" onclick="handlePlan('Pro')">Get Started</button>
+                        </div>
+                        <div class="pricing-card__body">
+                            <p class="pricing-card__desc">Ideal for small teams</p>
+                            <ul class="pricing-card__list">
+                                <li><span class="check-icon check-icon--featured">✓</span> All Basic Plan Features</li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Advanced Calendar
+                                    Integrations</li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Customizable Notifications
+                                </li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Priority Support</li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Analytics and Insights</li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Group Scheduling</li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Multiple User Roles</li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Advanced Reporting</li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Custom Branding Options</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pricing-card">
+                        <div class="pricing-card__header">
+                            <div class="pricing-card__glass" aria-hidden="true"></div>
+                            <div class="pricing-card__plan">
+                                <div class="pricing-card__name"><svg class="plan-icon" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                        <polyline points="9 22 9 12 15 12 15 22" />
+                                    </svg>Enterprise</div>
+                            </div>
+                            <div class="pricing-card__price"><span class="price-main" data-monthly="$99"
+                                    data-yearly="$79">$99</span><span class="price-period">/month</span><span
+                                    class="price-original" data-monthly="$129" data-yearly="$103">$129</span></div>
+                            <button class="btn-plan btn-plan--outline" onclick="handlePlan('Enterprise')">Get
+                                Started</button>
+                        </div>
+                        <div class="pricing-card__body">
+                            <p class="pricing-card__desc">Perfect for large scale companies</p>
+                            <ul class="pricing-card__list">
+                                <li><span class="check-icon">✓</span> All Pro Plan Features</li>
+                                <li><span class="check-icon">✓</span> Dedicated Account Manager</li>
+                                <li><span class="check-icon">✓</span> Custom Integrations</li>
+                                <li><span class="check-icon">✓</span> Advanced Security Features</li>
+                                <li><span class="check-icon">✓</span> Team Collaboration Tools</li>
+                                <li><span class="check-icon">✓</span> Onboarding and Training</li>
+                                <li><span class="check-icon">✓</span> Unlimited Users</li>
+                                <li><span class="check-icon">✓</span> API Access with Higher Limits</li>
+                                <li><span class="check-icon">✓</span> Advanced Audit Logs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact-section">
+        <div class="contact-dot-grid" aria-hidden="true"></div>
+        <div class="contact-inner">
+            <div class="contact-info">
+                <div class="contact-badge"><span class="contact-badge__dot"></span> Get In Touch</div>
+                <h2 class="contact-heading">Let's Build Something<br><span class="contact-heading__gradient">Amazing
+                        Together</span></h2>
+                <p class="contact-desc">Have a project idea, question, or just want to say hello? Fill out the form and
+                    we'll get back to you within 24 hours.</p>
+                <div class="contact-details">
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg></div>
+                        <div>
+                            <p class="contact-detail-label">Email</p><a href="mailto:hello@projectshub.dev"
+                                class="contact-detail-value">hello@projectshub.dev</a>
+                        </div>
+                    </div>
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg></div>
+                        <div>
+                            <p class="contact-detail-label">Location</p>
+                            <p class="contact-detail-value">India (Remote-Friendly)</p>
+                        </div>
+                    </div>
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg></div>
+                        <div>
+                            <p class="contact-detail-label">Response Time</p>
+                            <p class="contact-detail-value">Within 24 hours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form-wrap">
+                <form id="contactForm" class="contact-form" novalidate>
+                    <div class="contact-form__row">
+                        <div class="contact-form__field"><label for="contactName" class="contact-form__label">Full
+                                Name</label><input type="text" id="contactName" class="contact-form__input"
+                                placeholder="John Doe" required /></div>
+                        <div class="contact-form__field"><label for="contactEmail"
+                                class="contact-form__label">Email</label><input type="email" id="contactEmail"
+                                class="contact-form__input" placeholder="you@example.com" required /></div>
+                    </div>
+                    <div class="contact-form__field"><label for="contactSubject"
+                            class="contact-form__label">Subject</label><input type="text" id="contactSubject"
+                            class="contact-form__input" placeholder="Project Inquiry" /></div>
+                    <div class="contact-form__field"><label for="contactMessage"
+                            class="contact-form__label">Message</label><textarea id="contactMessage"
+                            class="contact-form__input contact-form__textarea" rows="5"
+                            placeholder="Tell us about your project..." required></textarea></div>
+                    <button type="submit" class="contact-form__submit" id="contactSubmitBtn">Send Message <svg
+                            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="index.html" class="footer-logo"><img src="image/logo.jpeg" alt="ProjectsHub"
+                        class="footer-logo__img" /><span class="footer-logo__text">ProjectsHub</span></a>
+                <p class="footer-tagline">From Ideas to AI-Powered Products</p>
+                <div class="footer-socials">
+                    <a href="#" class="footer-social" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg></a>
+                    <a href="#" class="footer-social" aria-label="LinkedIn"><svg viewBox="0 0 24 24"
+                            fill="currentColor">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg></a>
+                    <a href="#" class="footer-social" aria-label="Twitter"><svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg></a>
+                    <a href="#" class="footer-social" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg></a>
+                </div>
+            </div>
+            <div class="footer-links-col">
+                <h4 class="footer-links__title">Quick Links</h4><a href="#services" class="footer-link">Services</a><a
+                    href="#projects" class="footer-link">Projects</a><a href="#pricing"
+                    class="footer-link">Pricing</a><a href="#about" class="footer-link">About</a><a href="#contact"
+                    class="footer-link">Contact</a>
+            </div>
+            <div class="footer-links-col">
+                <h4 class="footer-links__title">Resources</h4><a href="workshop.html" class="footer-link">AI
+                    Workshop</a><a href="#" class="footer-link">Blog</a><a href="#"
+                    class="footer-link">Documentation</a><a href="#" class="footer-link">FAQs</a>
+            </div>
+            <div class="footer-links-col">
+                <h4 class="footer-links__title">Legal</h4><a href="#" class="footer-link">Privacy Policy</a><a href="#"
+                    class="footer-link">Terms of Service</a><a href="#" class="footer-link">Cookie Policy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copy">© 2026 ProjectsHub. All rights reserved.</p>
+            <p class="footer-credit">Designed & built with ❤ in India</p>
+        </div>
+    </footer>
+
+    <!-- Projects Gate Modal -->
+    <div class="modal-overlay" id="projectsModalOverlay">
+        <div class="modal-card">
+            <div class="modal-card__glass" aria-hidden="true"></div>
+            <div class="modal-card__grid-texture" aria-hidden="true"></div>
+            <button class="modal-close" id="modalClose" aria-label="Close"><svg width="18" height="18"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg></button>
+            <div class="modal-header">
+                <div class="modal-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="8.5" cy="7" r="4" />
+                        <line x1="20" y1="8" x2="20" y2="14" />
+                        <line x1="23" y1="11" x2="17" y2="11" />
+                    </svg></div>
+                <h3 class="modal-title">Before you explore</h3>
+                <p class="modal-desc">Enter your details to unlock the full project gallery.</p>
+            </div>
+            <form id="projectsGateForm" class="modal-form" novalidate>
+                <div class="modal-field"><label for="gateName" class="modal-label">Full Name</label><input type="text"
+                        id="gateName" class="modal-input" placeholder="John Doe" required /><span class="modal-error"
+                        id="gateNameError">Please enter your name</span></div>
+                <div class="modal-field"><label for="gateEmail" class="modal-label">Email Address</label><input
+                        type="email" id="gateEmail" class="modal-input" placeholder="you@example.com" required /><span
+                        class="modal-error" id="gateEmailError">Please enter a valid email</span></div>
+                <div class="modal-field"><label for="gateCollege" class="modal-label">College /
+                        Organization</label><input type="text" id="gateCollege" class="modal-input"
+                        placeholder="MIT, Stanford, etc." required /><span class="modal-error"
+                        id="gateCollegeError">Please enter your college</span></div>
+                <button type="submit" class="modal-submit">Continue to Projects <svg width="16" height="16"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                    </svg></button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+    <script src="/js/quantum-pulse-loader.js"></script>
+    <script src="/js/ai-chatbot.js"></script>
+    <script src="/js/social-share.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

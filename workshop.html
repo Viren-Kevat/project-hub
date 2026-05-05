@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="ProjectsHub — 4-Day Intensive AI & Machine Learning Workshop. Build real-world AI systems from scratch." />
+    <title>AI Workshop — ProjectsHub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Lexend+Deca:wght@100..900&display=swap"
+        rel="stylesheet" />
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/workshop.css" />
+
+    <!-- Quantum Pulse Loader -->
+    <link rel="stylesheet" href="/css/loader.css" />
+
+    <!-- AI Chatbot -->
+    <link rel="stylesheet" href="/css/ai-chatbot.css" />
+
+    <!-- Floating Social Share -->
+    <link rel="stylesheet" href="/css/social-share.css" />
+</head>
+
+<body data-quantum-loader>
+
+    <!-- ── Navbar ── -->
+    <header class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="index.html" class="navbar__logo">
+                <img src="image/logo.jpeg" alt="ProjectsHub" class="navbar__logo-img" />
+                <span class="navbar__brand">ProjectsHub</span>
+            </a>
+            <nav class="navbar__links" aria-label="Primary navigation">
+                <div class="pill-slider" id="pillSlider"></div>
+                <a href="/index.html#projects" class="nav-link">Projects</a>
+                <a href="/index.html#pricing" class="nav-link">Pricing</a>
+                <a href="/index.html#about" class="nav-link">About</a>
+                <a href="workshop.html" class="nav-link">Workshop</a>
+                <a href="/index.html#contact" class="nav-link">Contact</a>
+            </nav>
+            <div class="navbar__actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg class="icon-moon hidden" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+                <div class="cta-wrap">
+                    <div class="cta-glow" aria-hidden="true"></div>
+                    <a href="#post-project" class="btn-cta">Post a Project</a>
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <svg class="icon-menu" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="icon-close hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
+            <nav class="mobile-links">
+                <a href="/index.html#projects" class="mobile-link">Projects</a>
+                <a href="/index.html#pricing" class="mobile-link">Pricing</a>
+                <a href="/index.html#about" class="mobile-link">About</a>
+                <a href="workshop.html" class="mobile-link">Workshop</a>
+                <a href="/index.html#contact" class="mobile-link">Contact</a>
+            </nav>
+            <a href="#post-project" class="btn-cta btn-cta--mobile">Post a Project</a>
+        </div>
+    </header>
+
+    <!-- ── Aurora Background ── -->
+    <section class="aurora-section" style="min-height:auto;">
+        <div class="aurora-bg aurora-radial-mask"></div>
+
+        <div class="main-body" style="min-height:auto;">
+
+            <!-- ── Workshop Hero ── -->
+            <section class="workshop-hero">
+                <div class="workshop-hero__grid" aria-hidden="true"></div>
+                <div class="workshop-hero__glow" aria-hidden="true"></div>
+
+                <div class="workshop-hero__badge">
+                    <span class="workshop-hero__badge-dot"></span>
+                    Limited Seats Available
+                </div>
+
+                <h1 class="workshop-hero__title">
+                    4-Day Intensive<br>
+                    <span>AI & ML Workshop</span>
+                </h1>
+
+                <p class="workshop-hero__desc">
+                    Go from zero to deploying production-ready AI models. Hands-on projects,
+                    real datasets, and mentorship from industry engineers — all in 4 action-packed days.
+                </p>
+
+                <div class="workshop-hero__meta">
+                    <div class="workshop-meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        May 10 – 13, 2026
+                    </div>
+                    <div class="workshop-meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        10 AM – 5 PM IST
+                    </div>
+                    <div class="workshop-meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        30 Seats Only
+                    </div>
+                    <div class="workshop-meta-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        Online (Live)
+                    </div>
+                </div>
+
+                <a href="#enroll" class="workshop-hero__cta">
+                    Reserve Your Spot
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                    </svg>
+                </a>
+            </section>
+
+            <!-- ── Day-by-Day Breakdown ── -->
+            <section class="workshop-days">
+
+                <div class="workshop-days__header">
+                    <h2 class="workshop-days__title">
+                        What You'll Learn <span
+                            style="background:linear-gradient(135deg,var(--blue-400),var(--purple-light),var(--indigo-300));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Each
+                            Day</span>
+                    </h2>
+                    <p class="workshop-days__subtitle">
+                        A structured, hands-on curriculum designed to take you from fundamentals to deployment.
+                    </p>
+                </div>
+
+                <div class="workshop-grid">
+
+                    <!-- Day 1 -->
+                    <div class="day-card" data-day="1" data-title="Foundations of AI & Python for ML"
+                        data-date="Sunday, May 10"
+                        data-desc="Build a rock-solid foundation in Python, data manipulation, and core ML concepts."
+                        data-outcome="Complete EDA on a real dataset">
+                        <div class="day-card__header">
+                            <div class="day-card__glass" aria-hidden="true"></div>
+                            <div class="day-card__label">
+                                <div class="day-card__number">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                                    </svg>
+                                    Day 1
+                                </div>
+                            </div>
+                            <h3 class="day-card__title">Foundations of AI & Python for ML</h3>
+                            <p class="day-card__date">Sunday, May 10</p>
+                        </div>
+                        <div class="day-card__body">
+                            <p class="day-card__desc">Build a rock-solid foundation in Python, data manipulation, and
+                                core ML concepts.</p>
+                            <ul class="day-card__topics">
+                                <li><span class="check-icon">✓</span> Python Crash Course for ML</li>
+                                <li><span class="check-icon">✓</span> NumPy & Pandas Deep Dive</li>
+                                <li><span class="check-icon">✓</span> Data Cleaning & Preprocessing</li>
+                                <li><span class="check-icon">✓</span> Exploratory Data Analysis (EDA)</li>
+                                <li><span class="check-icon">✓</span> Matplotlib & Seaborn Visualization</li>
+                                <li><span class="check-icon">✓</span> Setting Up Your ML Environment</li>
+                            </ul>
+                            <div class="day-card__outcome">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                                Outcome: Complete EDA on a real dataset
+                            </div>
+                            <div class="day-card__actions">
+                                <a href="workshop-day.html?day=1" class="day-card__details-btn">View Details →</a>
+                                <button type="button" class="day-card__share-btn" aria-label="Share Day 1">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="18" cy="5" r="3" />
+                                        <circle cx="6" cy="12" r="3" />
+                                        <circle cx="18" cy="19" r="3" />
+                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                                    </svg>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 2 (Featured) -->
+                    <div class="day-card day-card--featured" data-day="2"
+                        data-title="Machine Learning Models & Training" data-date="Monday, May 11"
+                        data-desc="Dive into supervised & unsupervised learning. Train, evaluate, and optimize real models."
+                        data-outcome="Build a price prediction model">
+                        <div class="day-card__header">
+                            <div class="day-card__glass" aria-hidden="true"></div>
+                            <div class="day-card__label">
+                                <div class="day-card__number">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                                    </svg>
+                                    Day 2
+                                </div>
+                                <span class="day-card__pill">Most Intensive</span>
+                            </div>
+                            <h3 class="day-card__title">Machine Learning Models & Training</h3>
+                            <p class="day-card__date">Monday, May 11</p>
+                        </div>
+                        <div class="day-card__body">
+                            <p class="day-card__desc">Dive into supervised & unsupervised learning. Train, evaluate, and
+                                optimize real models.</p>
+                            <ul class="day-card__topics">
+                                <li><span class="check-icon check-icon--featured">✓</span> Linear & Logistic Regression
+                                </li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Decision Trees & Random
+                                    Forests</li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Model Evaluation & Metrics
+                                </li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Hyperparameter Tuning</li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Cross-Validation Strategies
+                                </li>
+                                <li><span class="check-icon check-icon--featured">✓</span> Feature Engineering
+                                    Techniques</li>
+                            </ul>
+                            <div class="day-card__outcome">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                                Outcome: Build a price prediction model
+                            </div>
+                            <div class="day-card__actions">
+                                <a href="workshop-day.html?day=2" class="day-card__details-btn">View Details →</a>
+                                <button type="button" class="day-card__share-btn" aria-label="Share Day 2">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="18" cy="5" r="3" />
+                                        <circle cx="6" cy="12" r="3" />
+                                        <circle cx="18" cy="19" r="3" />
+                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                                    </svg>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 3 -->
+                    <div class="day-card" data-day="3" data-title="Deep Learning & Neural Networks"
+                        data-date="Tuesday, May 12"
+                        data-desc="Unlock the power of neural networks — from perceptrons to CNNs using TensorFlow & PyTorch."
+                        data-outcome="Image classifier with 95%+ accuracy">
+                        <div class="day-card__header">
+                            <div class="day-card__glass" aria-hidden="true"></div>
+                            <div class="day-card__label">
+                                <div class="day-card__number">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                                        <rect x="9" y="9" width="6" height="6" />
+                                        <line x1="9" y1="1" x2="9" y2="4" />
+                                        <line x1="15" y1="1" x2="15" y2="4" />
+                                        <line x1="9" y1="20" x2="9" y2="23" />
+                                        <line x1="15" y1="20" x2="15" y2="23" />
+                                        <line x1="20" y1="9" x2="23" y2="9" />
+                                        <line x1="20" y1="14" x2="23" y2="14" />
+                                        <line x1="1" y1="9" x2="4" y2="9" />
+                                        <line x1="1" y1="14" x2="4" y2="14" />
+                                    </svg>
+                                    Day 3
+                                </div>
+                            </div>
+                            <h3 class="day-card__title">Deep Learning & Neural Networks</h3>
+                            <p class="day-card__date">Tuesday, May 12</p>
+                        </div>
+                        <div class="day-card__body">
+                            <p class="day-card__desc">Unlock the power of neural networks — from perceptrons to CNNs
+                                using TensorFlow & PyTorch.</p>
+                            <ul class="day-card__topics">
+                                <li><span class="check-icon">✓</span> Neural Network Architecture</li>
+                                <li><span class="check-icon">✓</span> TensorFlow / Keras Basics</li>
+                                <li><span class="check-icon">✓</span> Convolutional Neural Networks</li>
+                                <li><span class="check-icon">✓</span> Transfer Learning Techniques</li>
+                                <li><span class="check-icon">✓</span> Image Classification Project</li>
+                                <li><span class="check-icon">✓</span> Model Saving & Optimization</li>
+                            </ul>
+                            <div class="day-card__outcome">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                                Outcome: Image classifier with 95%+ accuracy
+                            </div>
+                            <div class="day-card__actions">
+                                <a href="workshop-day.html?day=3" class="day-card__details-btn">View Details →</a>
+                                <button type="button" class="day-card__share-btn" aria-label="Share Day 3">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="18" cy="5" r="3" />
+                                        <circle cx="6" cy="12" r="3" />
+                                        <circle cx="18" cy="19" r="3" />
+                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                                    </svg>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 4 -->
+                    <div class="day-card" data-day="4" data-title="Deployment & Real-World APIs"
+                        data-date="Wednesday, May 13"
+                        data-desc="Ship your models to production — build APIs, containerize, and deploy to the cloud."
+                        data-outcome="Live deployed ML API">
+                        <div class="day-card__header">
+                            <div class="day-card__glass" aria-hidden="true"></div>
+                            <div class="day-card__label">
+                                <div class="day-card__number">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                                        <line x1="4" y1="22" x2="4" y2="15" />
+                                    </svg>
+                                    Day 4
+                                </div>
+                                <span class="day-card__pill">Final Day</span>
+                            </div>
+                            <h3 class="day-card__title">Deployment & Real-World APIs</h3>
+                            <p class="day-card__date">Wednesday, May 13</p>
+                        </div>
+                        <div class="day-card__body">
+                            <p class="day-card__desc">Ship your models to production — build APIs, containerize, and
+                                deploy to the cloud.</p>
+                            <ul class="day-card__topics">
+                                <li><span class="check-icon">✓</span> FastAPI for ML Model Serving</li>
+                                <li><span class="check-icon">✓</span> Docker Containerization</li>
+                                <li><span class="check-icon">✓</span> Cloud Deployment (AWS / GCP)</li>
+                                <li><span class="check-icon">✓</span> CI/CD for ML Pipelines</li>
+                                <li><span class="check-icon">✓</span> Monitoring & Logging</li>
+                                <li><span class="check-icon">✓</span> Capstone: End-to-End ML App</li>
+                            </ul>
+                            <div class="day-card__outcome">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                                Outcome: Live deployed ML API
+                            </div>
+                            <div class="day-card__actions">
+                                <a href="workshop-day.html?day=4" class="day-card__details-btn">View Details →</a>
+                                <button type="button" class="day-card__share-btn" aria-label="Share Day 4">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="18" cy="5" r="3" />
+                                        <circle cx="6" cy="12" r="3" />
+                                        <circle cx="18" cy="19" r="3" />
+                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                                    </svg>
+                                    Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.workshop-grid -->
+            </section>
+
+            <!-- ── What You Get ── -->
+            <section class="workshop-features">
+                <h2 class="workshop-features__title">
+                    Everything Included
+                </h2>
+                <div class="workshop-features__grid">
+                    <div class="feature-item">
+                        <div class="feature-item__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-item__title">Course Materials</h3>
+                        <p class="feature-item__desc">Comprehensive notebooks, slides, and code repos — yours to keep
+                            forever.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-item__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="2" y1="12" x2="22" y2="12" />
+                                <path
+                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-item__title">Live Sessions</h3>
+                        <p class="feature-item__desc">28+ hours of live, interactive instruction with Q&A and pair
+                            coding.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-item__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-item__title">Certificate</h3>
+                        <p class="feature-item__desc">Verified completion certificate to showcase on LinkedIn and your
+                            portfolio.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-item__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-item__title">Community Access</h3>
+                        <p class="feature-item__desc">Lifetime access to the private alumni Discord for networking &
+                            help.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Enroll CTA ── -->
+            <section class="workshop-cta" id="enroll">
+                <div class="workshop-cta__box">
+                    <h2 class="workshop-cta__title">Ready to Level Up?</h2>
+                    <p class="workshop-cta__desc">
+                        Join 30 motivated learners for 4 days of hands-on AI mastery.<br>
+                        Early bird pricing ends soon.
+                    </p>
+                    <div class="workshop-cta__price">
+                        <span class="workshop-cta__price-main">₹2,999</span>
+                        <span class="workshop-cta__price-period"> / all 4 days</span>
+                        <span class="workshop-cta__price-original">₹4,999</span>
+                    </div>
+                    <a href="#" class="workshop-cta__btn" onclick="alert('Registration coming soon!')">
+                        Enroll Now
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </section>
+
+        </div><!-- /.main-body -->
+    </section><!-- /.aurora-section -->
+
+    <!-- ═══════════════════════════════════════════
+         FOOTER
+         ═══════════════════════════════════════════ -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <!-- Brand column -->
+            <div class="footer-brand">
+                <a href="index.html" class="footer-logo">
+                    <img src="image/logo.jpeg" alt="ProjectsHub" class="footer-logo__img" />
+                    <span class="footer-logo__text">ProjectsHub</span>
+                </a>
+                <p class="footer-tagline">From Ideas to AI-Powered Products</p>
+                <div class="footer-socials">
+                    <a href="#" class="footer-social" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Links columns -->
+            <div class="footer-links-col">
+                <h4 class="footer-links__title">Quick Links</h4>
+                <a href="index.html#services" class="footer-link">Services</a>
+                <a href="index.html#projects" class="footer-link">Projects</a>
+                <a href="index.html#pricing" class="footer-link">Pricing</a>
+                <a href="index.html#about" class="footer-link">About</a>
+                <a href="index.html#contact" class="footer-link">Contact</a>
+            </div>
+            <div class="footer-links-col">
+                <h4 class="footer-links__title">Resources</h4>
+                <a href="workshop.html" class="footer-link">AI Workshop</a>
+                <a href="#" class="footer-link">Blog</a>
+                <a href="#" class="footer-link">Documentation</a>
+                <a href="#" class="footer-link">FAQs</a>
+            </div>
+            <div class="footer-links-col">
+                <h4 class="footer-links__title">Legal</h4>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Cookie Policy</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-copy">© 2026 ProjectsHub. All rights reserved.</p>
+            <p class="footer-credit">Designed & built with ❤ in India</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Reuse shared scripts -->
+    <script src="/js/script.js"></script>
+
+
+
+
+    <!-- ── Share Card Overlay ── -->
+    <div class="share-overlay" id="shareOverlay">
+        <div class="share-card" id="shareCard">
+            <button class="share-card__close" id="shareClose" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+            <div class="share-card__preview">
+                <div class="share-card__badge">ProjectsHub Workshop</div>
+                <h3 class="share-card__day" id="shareDay">Day 1</h3>
+                <h2 class="share-card__title" id="shareTitle">Title</h2>
+                <p class="share-card__date" id="shareDate">Date</p>
+                <p class="share-card__desc" id="shareDesc">Desc</p>
+                <div class="share-card__outcome" id="shareOutcome">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                    <span id="shareOutcomeText">Outcome</span>
+                </div>
+            </div>
+            <div class="share-card__actions">
+                <button class="share-action-btn share-action-btn--copy" id="shareCopyLink">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                    </svg>
+                    Copy Link
+                </button>
+                <button class="share-action-btn share-action-btn--whatsapp" id="shareWhatsApp">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    WhatsApp
+                </button>
+                <button class="share-action-btn share-action-btn--twitter" id="shareTwitter">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    Twitter
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/js/quantum-pulse-loader.js"></script>
+    <script src="/js/ai-chatbot.js"></script>
+    <script src="/js/social-share.js"></script>
+    <script src="/js/spotlight.js"></script>
+</body>
+
+</html>
