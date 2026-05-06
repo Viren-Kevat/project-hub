@@ -20,10 +20,10 @@
         // Expanded state — social icons
         '    <div class="social-share__actions">',
 
-        //   Twitter / X
-        '      <button class="social-share__btn social-share__btn--twitter" type="button" data-action="twitter">',
-        '        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
-        '        <span class="social-share__tooltip">Twitter / X</span>',
+        //   WhatsApp
+        '      <button class="social-share__btn social-share__btn--whatsapp" type="button" data-action="whatsapp">',
+        '        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.5 0 .15 5.35.15 11.92c0 2.1.55 4.15 1.6 5.97L0 24l6.29-1.65a11.9 11.9 0 0 0 5.78 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.48-8.42zM12.08 21.8a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98 1-3.63-.24-.37a9.88 9.88 0 0 1-1.52-5.28c0-5.46 4.44-9.9 9.9-9.9a9.83 9.83 0 0 1 7.01 2.9 9.83 9.83 0 0 1 2.89 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.43c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.08-.8.37-.27.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.13 3.26 5.17 4.57.72.31 1.28.5 1.72.64.72.23 1.37.2 1.88.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>',
+        '        <span class="social-share__tooltip">WhatsApp</span>',
         '      </button>',
 
         //   Instagram
@@ -142,6 +142,22 @@
         var newLeft = elStartX + dx;
         var newTop = elStartY + dy;
 
+        var rect = shareRoot.getBoundingClientRect();
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var margin = 8;
+
+        // HARD CLAMP DURING DRAG
+        newLeft = Math.max(
+            margin,
+            Math.min(newLeft, vw - rect.width - margin)
+        );
+
+        newTop = Math.max(
+            margin,
+            Math.min(newTop, vh - rect.height - margin)
+        );
+
         // Clear CSS right/bottom so left/top work
         shareRoot.style.right = 'auto';
         shareRoot.style.bottom = 'auto';
@@ -199,25 +215,87 @@
         }
     });
 
+    /* ════════════════════════════════════════
+       SMOOTH EXPAND — never goes off-screen
+       ════════════════════════════════════════ */
+    
+    // Expanded width from CSS (keep in sync!)
+    var EXPANDED_WIDTH = window.innerWidth <= 575 ? 224 : 190;
+    var COLLAPSED_WIDTH = window.innerWidth <= 575 ? 44 : 50;
+
+    function getExpandedPosition() {
+        var rect = shareRoot.getBoundingClientRect();
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var margin = 25;
+        
+        var left = rect.left;
+        var top = rect.top;
+        var expandedWidth = window.innerWidth <= 575 ? 224 : 190;
+        
+        // If expanding rightward would overflow, shift left
+        if (left + expandedWidth > vw - margin) {
+            left = vw - expandedWidth - margin;
+        }
+        if (left < margin) left = margin;
+        
+        // Vertical safety
+        if (top + rect.height > vh - margin) {
+            top = vh - rect.height - margin;
+        }
+        if (top < margin) top = margin;
+        
+        return { left: left, top: top };
+    }
 
     /* ════════════════════════════════════════
        EXPAND / COLLAPSE
        ════════════════════════════════════════ */
 
-    // Expand on click (only when collapsed AND not dragged)
     pill.addEventListener('click', function (e) {
-        if (wasDragged) return;  // ignore click at end of drag
-        if (isExpanded) return;
-        isExpanded = true;
-        pill.classList.add('is-expanded');
-    });
+        if (wasDragged) return;
 
+        // EXPAND
+        if (!isExpanded) {
+            var screenCenter = window.innerWidth / 2;
+            var rect = shareRoot.getBoundingClientRect();
+            var targetPos = getExpandedPosition();
+            
+            // Set direction class FIRST (affects layout direction)
+            if (rect.left > screenCenter) {
+                shareRoot.classList.add('open-left');
+            } else {
+                shareRoot.classList.remove('open-left');
+            }
+            
+            // ✅ SMOOTH: animate position AND width together
+            shareRoot.style.transition = 'left 300ms cubic-bezier(0.23, 1, 0.32, 1), top 300ms cubic-bezier(0.23, 1, 0.32, 1)';
+            shareRoot.style.left = targetPos.left + 'px';
+            shareRoot.style.top = targetPos.top + 'px';
+            shareRoot.style.right = 'auto';
+            shareRoot.style.bottom = 'auto';
+            
+            // Then trigger the pill expansion (width animation)
+            requestAnimationFrame(function() {
+                isExpanded = true;
+                pill.classList.add('is-expanded');
+            });
+            
+            // Restore drag transition after animation completes
+            setTimeout(function() {
+                shareRoot.style.transition = ''; // let CSS handle it again
+            }, 300);
+
+            return;
+        }
+    });
     // Click outside to collapse
     document.addEventListener('mousedown', function (e) {
         if (!isExpanded) return;
         if (shareRoot.contains(e.target)) return;
         isExpanded = false;
         pill.classList.remove('is-expanded');
+        shareRoot.classList.remove('open-left');
     });
 
 
@@ -237,11 +315,10 @@
 
         switch (action) {
 
-            case 'twitter':
+            case 'whatsapp':
                 window.open(
-                    'https://twitter.com/intent/tweet?url=' + pageUrl + '&text=' + pageTitle,
-                    '_blank',
-                    'width=550,height=420'
+                    'https://wa.me/919824181178?text=' + pageTitle + '%20' + pageUrl,
+                    '_blank'
                 );
                 break;
 

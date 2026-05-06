@@ -32,7 +32,27 @@
   transition: background 0.25s, color 0.25s, border-color 0.25s;
   margin-bottom: 2rem;
 }
+.pd-hero__video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: inherit;
+}
 
+.pd-hero__video-wrapper iframe {
+    position: absolute;
+    inset: 0; /* shorthand for top/right/bottom/left = 0 */
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* If your original image had specific styling, mirror it here */
+.pd-hero__img {
+    /* Your existing image styles - remove or keep as fallback */
+}
 .pd-back:hover {
   background: rgba(255, 255, 255, 0.1);
   color: var(--text-bright);
@@ -107,6 +127,19 @@ body.light .pd-back:hover {
 
 body.light .pd-hero__subtitle {
   color: #4b5563;
+}
+
+/* Add inside your existing .pd-lightbox block */
+.pd-lightbox__img {
+  transform: scale(0.92);
+  /* already set — just confirm this exists */
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* SVG wrap mirrors lbImg animation */
+#lbSvgWrap {
+  transform: scale(0.92);
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 @media (max-width: 575px) {

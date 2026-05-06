@@ -1,7 +1,6 @@
-
 /*  
    SCROLL REVEAL
-  */
+*/
 const revealEls = document.querySelectorAll('.pd-reveal');
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -13,41 +12,44 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.08 });
 revealEls.forEach(el => revealObserver.observe(el));
 
-//    SCROLL PROGRESS BAR
+// SCROLL PROGRESS BAR — null-safe
 const progressBar = document.getElementById('progressBar');
-window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const total = document.documentElement.scrollHeight - window.innerHeight;
-    progressBar.style.width = (scrolled / total * 100) + '%';
-}, { passive: true });
+if (progressBar) {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        progressBar.style.width = (scrolled / total * 100) + '%';
+    }, { passive: true });
+}
 
 /*  
-   THEME TOGGLE
-  */
+   THEME TOGGLE — your HTML uses .icon-moon / .icon-sun classes, NOT ids
+*/
 const themeBtn = document.getElementById('themeToggle');
-const iconMoon = document.getElementById('iconMoon');
-const iconSun = document.getElementById('iconSun');
+const iconMoon = document.querySelector('.icon-moon');
+const iconSun = document.querySelector('.icon-sun');
 let isLight = false;
 
-// Persist theme
 if (localStorage.getItem('theme') === 'light') {
     document.body.classList.add('light');
     isLight = true;
-    iconMoon.style.display = 'none';
-    iconSun.style.display = 'block';
+    if (iconMoon) iconMoon.classList.add('hidden');
+    if (iconSun) iconSun.classList.remove('hidden');
 }
 
-themeBtn.addEventListener('click', () => {
-    isLight = !isLight;
-    document.body.classList.toggle('light', isLight);
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    iconMoon.style.display = isLight ? 'none' : 'block';
-    iconSun.style.display = isLight ? 'block' : 'none';
-});
+if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+        isLight = !isLight;
+        document.body.classList.toggle('light', isLight);
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        if (iconMoon) iconMoon.classList.toggle('hidden', isLight);
+        if (iconSun) iconSun.classList.toggle('hidden', !isLight);
+    });
+}
 
 /*  
    LIGHTBOX
-  */
+*/
 const lightbox = document.getElementById('lightbox');
 const lbImg = document.getElementById('lbImg');
 const lbCaption = document.getElementById('lbCaption');
@@ -56,14 +58,18 @@ const lbClose = document.getElementById('lbClose');
 const lbPrev = document.getElementById('lbPrev');
 const lbNext = document.getElementById('lbNext');
 
-// Collect all lightbox-able items (screenshots + diagrams)
 let allItems = [];
 let currentIdx = 0;
 
 function buildItemList() {
     allItems = [];
     document.querySelectorAll('[data-src]').forEach(el => {
-        allItems.push({ src: el.dataset.src, caption: el.dataset.caption || '' });
+        // Use the actual <img> src inside the card, not data-src (which has old placeholder URLs)
+        const imgEl = el.querySelector('img');
+        allItems.push({
+            src: imgEl ? imgEl.src : el.dataset.src,
+            caption: el.dataset.caption || '',
+        });
     });
 }
 
@@ -88,14 +94,11 @@ function showSlide(idx) {
     lbCounter.textContent = `${idx + 1} / ${allItems.length}`;
 }
 
-// Attach click to gallery items
 document.querySelectorAll('#screenshotGrid .pd-gallery-item').forEach((el, i) => {
     el.addEventListener('click', () => openLightbox(i));
 });
 
-// Attach click to diagram cards
 document.querySelectorAll('#diagramList .pd-diagram-card').forEach((el, i) => {
-    // diagrams start after screenshots
     el.addEventListener('click', () => {
         buildItemList();
         const screenshotCount = document.querySelectorAll('#screenshotGrid .pd-gallery-item').length;
@@ -115,7 +118,6 @@ lbNext.addEventListener('click', () => {
     showSlide(currentIdx);
 });
 
-// Keyboard navigation
 document.addEventListener('keydown', e => {
     if (!lightbox.classList.contains('is-active')) return;
     if (e.key === 'Escape') closeLightbox();
