@@ -43,9 +43,7 @@
                     <div class="ai-chatbot-window">
                         <div class="ai-chatbot-header">
                             <div class="ai-chatbot-header-title">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                                    <polygon points="12 2 15.09 10.26 24 10.35 17.18 16.54 19.34 24.81 12 19.77 4.66 24.81 6.82 16.54 0 10.35 8.91 10.26 12 2"/>
-                                </svg>
+                               <img src="image/favicon_io/apple-touch-icon.png" alt="ProjectsHub" class="navbar__logo-img" />
                                 <h3>AI Assistant</h3>
                             </div>
                             <button class="ai-chatbot-close" aria-label="Close chat">

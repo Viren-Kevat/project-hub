@@ -739,7 +739,22 @@
             navHTML;
     }
 
+// ADD this function (paste it just above the INIT comment block):
+function initMarquee() {
+    document.querySelectorAll('.marquee-track').forEach(function(track) {
+        var original = Array.from(track.children);
+        original.forEach(function(item) {
+            var clone = item.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            track.appendChild(clone);
+        });
 
+        requestAnimationFrame(function() {
+            var oneSetWidth = track.scrollWidth / 2;
+            track.style.setProperty('--one-set-width', oneSetWidth + 'px');
+        });
+    });
+}
     /* ════════════════════════════════════════
        INIT — Run everything on DOMContentLoaded
        ════════════════════════════════════════ */
@@ -747,7 +762,7 @@
     function init() {
         // Shared across all pages
         initAuroraPause();
-
+    initMarquee();  
         // index.html
         initPills();
         initStats();

@@ -31,7 +31,7 @@
 
 </head>
 
-<body data-quantum-loader class="overflow-x-hidden">
+<body data-quantum-loader class="overflow-x-hidden bg-purple-left">
 
     <!-- ── Navbar ── -->
     <header class="navbar" id="navbar">
@@ -101,7 +101,7 @@
             <div class="aurora-bg"></div>
         </div> -->
 
-        <div class="main-body">
+        <div class="main-body  ">
             <section class="hero-section">
                 <div class="container">
                     <div class="row d-flex align-items-center justify-content-between">
@@ -252,43 +252,57 @@
                         "must-dos." Here's a curated look at systems and products I've built that give clarity and real
                         results.</p>
                 </div>
+                <!-- The key: data-marquee-content lets JS clone exactly once -->
                 <div class="marquee-wrap">
                     <div class="marquee-fade marquee-fade--left"></div>
                     <div class="marquee-fade marquee-fade--right"></div>
+
                     <div class="marquee-row">
-                        <div class="marquee-track"><span class="marquee-tag">Machine Learning</span><span
-                                class="marquee-tag">FastAPI</span><span class="marquee-tag">Data Pipelines</span><span
-                                class="marquee-tag">Docker</span><span class="marquee-tag">Kubernetes</span><span
-                                class="marquee-tag">AWS Lambda</span><span class="marquee-tag"
-                                aria-hidden="true">Machine
-                                Learning</span><span class="marquee-tag" aria-hidden="true">FastAPI</span><span
-                                class="marquee-tag" aria-hidden="true">Data
-                                Pipelines</span><span class="marquee-tag" aria-hidden="true">Docker</span><span
-                                class="marquee-tag" aria-hidden="true">Kubernetes</span><span class="marquee-tag"
-                                aria-hidden="true">AWS Lambda</span></div>
+                        <div class="marquee-track" id="track-1">
+                            <span class="marquee-tag">Machine Learning</span>
+                            <span class="marquee-tag">FastAPI</span>
+                            <span class="marquee-tag">Data Pipelines</span>
+                            <span class="marquee-tag">Docker</span>
+                            <span class="marquee-tag">Kubernetes</span>
+                            <span class="marquee-tag">AWS Lambda</span>
+                            <!-- double because infinity loop  -->
+                            <span class="marquee-tag">Machine Learning</span>
+
+
+                        </div>
                     </div>
+
                     <div class="marquee-row">
-                        <div class="marquee-track marquee-track--reverse"><span class="marquee-tag">PyTorch</span><span
-                                class="marquee-tag">PostgreSQL</span><span class="marquee-tag">Real-time
-                                APIs</span><span class="marquee-tag">TensorFlow</span><span
-                                class="marquee-tag">Scikit-learn</span><span class="marquee-tag">Model
-                                Deployment</span><span class="marquee-tag" aria-hidden="true">PyTorch</span><span
-                                class="marquee-tag" aria-hidden="true">PostgreSQL</span><span class="marquee-tag"
-                                aria-hidden="true">Real-time APIs</span><span class="marquee-tag"
-                                aria-hidden="true">TensorFlow</span><span class="marquee-tag"
-                                aria-hidden="true">Scikit-learn</span><span class="marquee-tag" aria-hidden="true">Model
-                                Deployment</span></div>
+                        <div class="marquee-track marquee-track--reverse" id="track-2">
+                            <span class="marquee-tag">PyTorch</span>
+                            <span class="marquee-tag">PostgreSQL</span>
+                            <span class="marquee-tag">Real-time APIs</span>
+                            <span class="marquee-tag">TensorFlow</span>
+                            <span class="marquee-tag">Scikit-learn</span>
+                            <span class="marquee-tag">Model Deployment</span>
+                            <!-- double because infinity loop  -->
+                            <span class="marquee-tag">PyTorch</span>
+                            <span class="marquee-tag">PostgreSQL</span>
+                            <span class="marquee-tag">Real-time APIs</span>
+                            <span class="marquee-tag">TensorFlow</span>
+                            <span class="marquee-tag">Scikit-learn</span>
+                            <span class="marquee-tag">Model Deployment</span>
+
+                        </div>
                     </div>
+
                     <div class="marquee-row">
-                        <div class="marquee-track" style="--marquee-duration: 42s;"><span
-                                class="marquee-tag">Django</span><span class="marquee-tag">CI/CD Pipelines</span><span
-                                class="marquee-tag">NLP</span><span class="marquee-tag">Cloud Architecture</span><span
-                                class="marquee-tag">REST APIs</span><span class="marquee-tag">Data
-                                Visualization</span><span class="marquee-tag" aria-hidden="true">Django</span><span
-                                class="marquee-tag" aria-hidden="true">CI/CD Pipelines</span><span class="marquee-tag"
-                                aria-hidden="true">NLP</span><span class="marquee-tag" aria-hidden="true">Cloud
-                                Architecture</span><span class="marquee-tag" aria-hidden="true">REST APIs</span><span
-                                class="marquee-tag" aria-hidden="true">Data Visualization</span></div>
+                        <div class="marquee-track" id="track-3">
+                            <span class="marquee-tag">Django</span>
+                            <span class="marquee-tag">CI/CD Pipelines</span>
+                            <span class="marquee-tag">NLP</span>
+                            <span class="marquee-tag">Cloud Architecture</span>
+                            <span class="marquee-tag">REST APIs</span>
+                            <span class="marquee-tag">Data Visualization</span>
+                            <!-- double because infinity loop  -->
+                            <span class="marquee-tag">Django</span>
+
+                        </div>
                     </div>
                 </div>
                 <div class="projects-grid">
