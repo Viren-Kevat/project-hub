@@ -145,7 +145,7 @@
                                     data-src="https://my.spline.design/nexbotrobotcharacterconcept-8ZQLeb6vV2g0TQt5jHHsLI3O/"
                                     title="3D AI Robot Character" frameborder="0" width="100%" height="100%"
                                     style="border: none;"></iframe>
-                                <video class="spline-static" autoplay muted playsinline src="video/hero-clip.mp4"
+                                <video class="spline-static" autoplay muted playsinline src="video/hero-final.mp4"
                                     aria-label="AI Robot 3D Model"></video>
                             </div>
                         </div>
@@ -749,7 +749,6 @@
             </form>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
     <script src="js/quantum-pulse-loader.js"></script>
@@ -757,6 +756,25 @@
     <script src="js/social-share.js"></script>
     <script src="js/script.js"></script>
     <script src="js/idea-modal.js"></script>
+    <script>
+        var v = document.querySelector('.spline-static');
+        v.pause();
+
+        var checkLoader = setInterval(function () {
+            var loader = document.getElementById('quantum-pulse-loader');
+            if (!loader) {
+                clearInterval(checkLoader);
+                v.currentTime = 0;
+                v.play().catch(function () { });
+
+                setInterval(function () {
+                    if (v.duration && v.currentTime >= v.duration - 0.1) {
+                        v.currentTime = 2;
+                    }
+                }, 50);
+            }
+        }, 100);
+    </script>
 </body>
 
 </html>

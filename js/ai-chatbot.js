@@ -37,13 +37,13 @@
                 <div class="ai-chatbot-widget">
                     <button class="ai-chatbot-toggle" aria-label="Open AI Chat">
                         <span class="ai-chatbot-badge" style="display: none;">0</span>
-                    <img src="image/favicon_io/apple-touch-icon.png" alt="ProjectsHub" class="navbar__logo-img" />
+                    <img src="https://projectshub.co.in/static/image/favicon_io/logo.png" alt="ProjectsHub" class="navbar__logo-img" height=155px width=155px />
                     </button>
 
                     <div class="ai-chatbot-window">
                         <div class="ai-chatbot-header">
                             <div class="ai-chatbot-header-title">
-                               <img src="image/favicon_io/apple-touch-icon.png" alt="ProjectsHub" class="navbar__logo-img" />
+                               <img src="https://projectshub.co.in/static/image/favicon_io/logo.png" alt="ProjectsHub" class="navbar__logo-img" height=55px width=55px />
                                 <h3>AI Assistant</h3>
                             </div>
                             <button class="ai-chatbot-close" aria-label="Close chat">

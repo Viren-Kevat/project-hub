@@ -317,7 +317,7 @@
 
             case 'whatsapp':
                 window.open(
-                    'https://wa.me/919824181178?text=' + pageTitle + '%20' + pageUrl,
+                    'https://wa.me/919033893037?text=' + pageTitle + '%20' + pageUrl,
                     '_blank'
                 );
                 break;

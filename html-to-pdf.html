@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block title %}Html To Pdf - PDF Hub{% endblock %}
+{% block content %}
+<style>
+    .tool-page {
+        padding: 4rem 0;
+        max-width: 800px;
+        margin: 0 auto
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-align: center
+    }
+
+    .page-desc {
+        text-align: center;
+        color: var(--text-secondary);
+        margin-bottom: 3rem
+    }
+
+    input[type="file"] {
+        display: none
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-secondary)
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: #ffffff;
+        color: #0f172a;
+        font-family: inherit;
+        font-size: 0.95rem;
+        transition: border-color 200ms, box-shadow 200ms;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    }
+
+    textarea.form-control {
+        min-height: 220px;
+        resize: vertical;
+        font-family: 'Courier New', monospace;
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+</style>
+<div class="container tool-page">
+    <h1 class="page-title">Html To Pdf</h1>
+    <p class="page-desc">Professional Html To Pdf tool</p>
+    <div class="glass-card">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+                <i data-lucide="upload-cloud" width="48" height="48" style="color:#667eea;margin-bottom:1rem"></i>
+                <h4>Click to upload file</h4>
+                <input type="file" id="fileInput" name="pdf_file" accept=".pdf,image/*,.docx" required>
+            </div>
+            <div id="options" style="margin-top:2rem"></div>
+            <button type="submit" class="btn-gradient w-100 mt-4">Process</button>
+        </form>
+        <div class="loading" id="loading" style="display:none;text-align:center;padding:2rem">
+            <div
+                style="width:50px;height:50px;border:4px solid rgba(102,126,234,0.2);border-top-color:#667eea;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1rem">
+            </div>
+            <p>Processing...</p>
+        </div>
+        <div id="result"></div>
+    </div>
+</div>
+<script>
+    lucide.createIcons();
+    const toolName = 'html_to_pdf';
+    const options = document.getElementById('options');
+
+    if (toolName === 'rotate_pdf') {
+        options.innerHTML = '<label>Rotation:</label><select name="rotation" class="form-select"><option value="90">90째 Clockwise</option><option value="180">180째</option><option value="270">270째 Clockwise</option></select>';
+    } else if (toolName === 'delete_pages') {
+        options.innerHTML = '<label>Pages to delete (e.g., 1,3,5-7):</label><input type="text" name="pages" class="form-control" placeholder="1,3,5-7" required>';
+    } else if (toolName === 'rearrange_pages') {
+        options.innerHTML = '<label>New page order (e.g., 2,1,3,4):</label><input type="text" name="order" class="form-control" placeholder="2,1,3,4" required>';
+    } else if (toolName === 'add_watermark') {
+        options.innerHTML = '<label>Watermark Text:</label><input type="text" name="watermark_text" class="form-control" placeholder="CONFIDENTIAL" required>';
+    } else if (toolName === 'add_page_numbers') {
+        options.innerHTML = '<label>Position:</label><select name="position" class="form-select"><option value="bottom-right">Bottom Right</option><option value="bottom-center">Bottom Center</option><option value="bottom-left">Bottom Left</option></select>';
+    } else if (toolName === 'protect_pdf') {
+        options.innerHTML = '<label>Password:</label><input type="password" name="password" class="form-control" placeholder="Enter password" required>';
+    } else if (toolName === 'unlock_pdf') {
+        options.innerHTML = '<label>Password:</label><input type="password" name="password" class="form-control" placeholder="Enter password" required>';
+    } else if (toolName === 'html_to_pdf') {
+        document.getElementById('fileInput').remove();
+        options.innerHTML = '<label>HTML Content:</label><textarea name="html_content" class="form-control" rows="10" placeholder="Enter HTML content" required></textarea>';
+    } else if (toolName === 'qr_to_pdf') {
+        document.getElementById('fileInput').remove();
+        options.innerHTML = '<label>QR Code Data:</label><input type="text" name="qr_data" class="form-control" placeholder="Enter text or URL" required>';
+    } else if (toolName === 'sign_pdf') {
+        document.getElementById('fileInput').setAttribute('name', 'pdf_file');
+        options.innerHTML = '<label>Signature Image:</label><input type="file" name="signature_file" accept="image/*" class="form-control" required><label style="margin-top:1rem">Position:</label><select name="position" class="form-select"><option value="bottom-right">Bottom Right</option><option value="bottom-left">Bottom Left</option></select>';
+    }
+
+    document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('result').innerHTML = '';
+        try {
+            const response = await fetch('{% url "html_to_pdf" %}', { method: 'POST', body: formData });
+            document.getElementById('loading').style.display = 'none';
+            if (response.ok) {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    document.getElementById('result').innerHTML = '<div class="alert-custom alert-success">' + data.message + '</div>';
+                } else {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    const disposition = response.headers.get('content-disposition');
+                    a.download = disposition ? disposition.split('filename=')[1].replace(/"/g, '') : 'output.pdf';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.getElementById('result').innerHTML = '<div class="alert-custom alert-success">Success! File downloaded.</div>';
+                }
+            } else {
+                const error = await response.json();
+                document.getElementById('result').innerHTML = '<div class="alert-custom alert-error">' + (error.error || 'An error occurred') + '</div>';
+            }
+        } catch (error) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('result').innerHTML = '<div class="alert-custom alert-error">An error occurred</div>';
+        }
+    });
+</script>
+{% endblock %}

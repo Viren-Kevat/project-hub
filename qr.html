@@ -1,0 +1,4257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="QRForge by ProjectsHub — Generate beautiful QR codes for URLs, contacts, apps and more. Free &amp; instant." />
+    <title>QRForge — Free QR Code Generator</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='38' height='38' x='4' y='4' rx='6' fill='%2360a5fa'/><rect width='38' height='38' x='58' y='4' rx='6' fill='%23c084fc'/><rect width='38' height='38' x='4' y='58' rx='6' fill='%23a5b4fc'/><rect width='16' height='16' x='58' y='58' rx='3' fill='%2360a5fa'/><rect width='16' height='16' x='80' y='58' rx='3' fill='%23c084fc' opacity='.7'/><rect width='16' height='16' x='58' y='80' rx='3' fill='%23a5b4fc' opacity='.7'/></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Lexend+Deca:wght@100..900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <style>
+        /* ══════════════════════════════════════════════════════════════
+   QRForge — ProjectsHub Theme  (single-file edition)
+══════════════════════════════════════════════════════════════ */
+        :root {
+            --white: #fff;
+            --black: #000;
+            --bg-dark: #0a0a0a;
+            --bg-light: #fafafa;
+            --blue-500: #3b82f6;
+            --indigo-300: #a5b4fc;
+            --blue-300: #93c5fd;
+            --violet-200: #ddd6fe;
+            --blue-400: #60a5fa;
+            --purple: #a855f7;
+            --purple-light: #c084fc;
+            --bg-glass: rgba(18, 18, 24, .62);
+            --border-glass: rgba(255, 255, 255, .1);
+            --text-bright: #fff;
+            --text-muted: #9ca3af;
+            --text-body: #d1d5db;
+            --radius-pill: 9999px;
+            --radius-card: 16px;
+            --radius-sm: 8px;
+            --nav-transition: 300ms ease;
+            --ease-out-expo: cubic-bezier(.23, 1, .32, 1);
+            --grad-primary: linear-gradient(135deg, #60a5fa, #c084fc);
+            --grad-btn: linear-gradient(135deg, #60a5fa 0%, #c084fc 50%, #a5b4fc 100%);
+            --grad-text: linear-gradient(135deg, #60a5fa, #c084fc, #a5b4fc);
+            --error: #f87171;
+            --success: #34d399
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Lexend Deca', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-bright);
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative
+        }
+
+        /* ═══════════════════ BG-PURPLE-LEFT (matches text.html) ═══════════════════ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 90% 10%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 100% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 10% 90%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 0% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+        }
+
+        body.light::before {
+            background:
+                radial-gradient(ellipse 80% 60% at 90% 10%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 100% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 10% 90%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 0% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(96, 165, 250, .3);
+            border-radius: 3px
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(96, 165, 250, .5)
+        }
+
+        /* ── Light mode ── */
+        body.light {
+            background: var(--bg-light);
+            color: #0f172a
+        }
+
+        body.light .navbar {
+            background: rgba(250, 250, 250, .82);
+            border-color: rgba(0, 0, 0, .08)
+        }
+
+        body.light .navbar__brand {
+            color: #0f172a
+        }
+
+        body.light .nav-link {
+            color: #64748b
+        }
+
+        body.light .nav-link:hover {
+            color: #0f172a
+        }
+
+        body.light .theme-toggle {
+            color: #64748b;
+            border-color: rgba(0, 0, 0, .12)
+        }
+
+        body.light .theme-toggle:hover {
+            background: rgba(0, 0, 0, .05);
+            color: #0f172a
+        }
+
+        body.light .hamburger {
+            background: rgba(0, 0, 0, .05);
+            color: #64748b
+        }
+
+        body.light .aurora-section {
+            background-color: var(--bg-light)
+        }
+
+        body.light .aurora-bg {
+            opacity: .12;
+            background-image: repeating-linear-gradient(100deg, var(--white) 0%, var(--white) 7%, transparent 10%, transparent 12%, var(--white) 16%), repeating-linear-gradient(100deg, #3b82f6 10%, #6366f1 15%, #8b5cf6 20%, #a855f7 25%, #60a5fa 30%)
+        }
+
+        body.light .type-nav {
+            background: rgba(250, 250, 250, .9);
+            border-color: rgba(0, 0, 0, .08)
+        }
+
+        body.light .type-tab {
+            color: #64748b
+        }
+
+        body.light .type-tab:hover {
+            color: #0f172a;
+            background: rgba(0, 0, 0, .04)
+        }
+
+        body.light .type-tab.active {
+            color: #3b82f6;
+            background: transparent;
+            border-bottom-color: #3b82f6
+        }
+
+        body.light .form-title {
+            background: linear-gradient(135deg, #1e293b, #475569);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        body.light .form-subtitle {
+            color: #64748b
+        }
+
+        body.light .glass-card {
+            background: rgba(255, 255, 255, .8);
+            border-color: rgba(0, 0, 0, .08)
+        }
+
+        body.light .form-label {
+            color: #475569
+        }
+
+        body.light input[type=text],
+        body.light input[type=url],
+        body.light input[type=email],
+        body.light input[type=tel],
+        body.light textarea,
+        body.light select {
+            background: rgba(255, 255, 255, .9);
+            border-color: rgba(0, 0, 0, .12);
+            color: #0f172a
+        }
+
+        body.light input::placeholder,
+        body.light textarea::placeholder {
+            color: #94a3b8
+        }
+
+        body.light .preview-panel-inner {
+            background: rgba(255, 255, 255, .7);
+            border-color: rgba(0, 0, 0, .08)
+        }
+
+        body.light .empty-title {
+            color: #475569
+        }
+
+        body.light .empty-icon {
+            background: rgba(59, 130, 246, .08);
+            border-color: rgba(59, 130, 246, .15);
+            color: #3b82f6
+        }
+
+        body.light .qr-tabs {
+            background: rgba(0, 0, 0, .04);
+            border-color: rgba(0, 0, 0, .08)
+        }
+
+        body.light .qr-tab {
+            color: #64748b
+        }
+
+        body.light .btn-copy {
+            background: rgba(0, 0, 0, .04);
+            border-color: rgba(0, 0, 0, .1);
+            color: #475569
+        }
+
+        body.light .btn-copy:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: rgba(59, 130, 246, .06)
+        }
+
+        body.light .section-title {
+            background: linear-gradient(135deg, #1e293b, #475569);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        body.light .section-subtitle {
+            color: #64748b
+        }
+
+        body.light .why-text h4 {
+            color: #0f172a
+        }
+
+        body.light .why-text p {
+            color: #64748b
+        }
+
+        body.light .suggest-card {
+            background: rgba(255, 255, 255, .8);
+            border-color: rgba(0, 0, 0, .08)
+        }
+
+        body.light .btn-suggest-again {
+            color: #475569;
+            border-color: rgba(0, 0, 0, .12)
+        }
+
+        body.light .btn-suggest-again:hover {
+            border-color: #3b82f6;
+            color: #3b82f6
+        }
+
+        body.light .mobile-link {
+            color: #64748b
+        }
+
+        body.light .mobile-link:hover {
+            color: #0f172a
+        }
+
+        body.light .navbar__mobile {
+            background: rgba(250, 250, 250, .97)
+        }
+
+        body.light .site-footer {
+            border-top-color: rgba(0, 0, 0, .08)
+        }
+
+        body.light .footer-logo__text,
+        .light .footer-copy,
+        .light .footer-credit {
+            color: #0f172a
+        }
+
+        body.light .footer-tagline {
+            color: #64748b
+        }
+
+        body.light .footer-links__title {
+            color: #0f172a
+        }
+
+        body.light .footer-link {
+            color: #64748b
+        }
+
+        body.light .footer-link:hover {
+            color: #0f172a
+        }
+
+        body.light .footer-social {
+            color: #64748b;
+            border-color: rgba(0, 0, 0, .1)
+        }
+
+        body.light .footer-social:hover {
+            background: rgba(0, 0, 0, .05);
+            color: #0f172a
+        }
+
+        body.light .footer-bottom {
+            border-top-color: rgba(0, 0, 0, .06)
+        }
+
+        body.light .char-counter {
+            color: #94a3b8
+        }
+
+        body.light .logo-upload-area {
+            border-color: rgba(59, 130, 246, .3);
+            background: rgba(255, 255, 255, .6)
+        }
+
+        body.light .logo-upload-label p {
+            color: #475569
+        }
+
+        body.light .logo-upload-label span {
+            color: #94a3b8
+        }
+
+        body.light .about-card-title {
+            color: #111827
+        }
+
+        body.light .about-hero-title {
+            color: #111827
+        }
+
+        body.light .label-opt {
+            color: #94a3b8
+        }
+
+        body.light .back-link {
+            color: #3b82f6
+        }
+
+        /* light mode for mobile select */
+        body.light #mobile-type-select {
+            background: rgba(255, 255, 255, .9);
+            border-color: rgba(0, 0, 0, .12);
+            color: #0f172a
+        }
+
+        body.light .mobile-type-nav {
+            background: rgba(250, 250, 250, .9);
+            border-color: rgba(0, 0, 0, .08)
+        }
+
+        body.light .mobile-type-select-wrap::after {
+            border-top-color: #475569
+        }
+
+        /* ── Aurora ── */
+        .aurora-bg {
+            position: fixed;
+            top: -10px;
+            left: -10px;
+            width: 400%;
+            height: calc(100vh + 20px);
+            pointer-events: none;
+            opacity: .32;
+            will-change: transform;
+            filter: blur(10px);
+            z-index: 0;
+            background-image: repeating-linear-gradient(100deg, var(--black) 0%, var(--black) 7%, transparent 10%, transparent 12%, var(--black) 16%), repeating-linear-gradient(100deg, var(--blue-500) 10%, var(--indigo-300) 15%, var(--blue-300) 20%, var(--violet-200) 25%, var(--blue-400) 30%);
+            background-size: 25% 100%, 12.5% 100%;
+            animation: auroraAnim 60s linear infinite
+        }
+
+        @keyframes auroraAnim {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-75%)
+            }
+        }
+
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: calc(100% - 2rem);
+            max-width: 1100px;
+            padding: 10px 20px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-glass);
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: border-radius var(--nav-transition)
+        }
+
+        .navbar.is-open {
+            border-radius: var(--radius-card)
+        }
+
+        .navbar__inner {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px
+        }
+
+        .navbar__logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0
+        }
+
+        .navbar__logo-icon {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            background: var(--grad-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 300ms, filter 300ms
+        }
+
+        .navbar__logo:hover .navbar__logo-icon {
+            transform: scale(1.08);
+            filter: brightness(1.1)
+        }
+
+        .navbar__brand {
+            font-family: 'Figtree', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            letter-spacing: -.01em
+        }
+
+        .navbar__links {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            position: relative
+        }
+
+        @media(min-width:768px) {
+            .navbar__links {
+                display: flex
+            }
+        }
+
+        .pill-slider {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 36px;
+            border-radius: var(--radius-pill);
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .12);
+            pointer-events: none;
+            opacity: 0;
+            transition: left 350ms var(--ease-out-expo), width 350ms var(--ease-out-expo), opacity 200ms ease;
+            z-index: 0
+        }
+
+        .navbar__links:hover .pill-slider {
+            opacity: 1
+        }
+
+        .nav-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            font-size: .875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: transparent;
+            transition: color 250ms ease;
+            z-index: 1;
+            white-space: nowrap;
+            cursor: pointer;
+            border: none;
+            font-family: 'Lexend Deca', sans-serif
+        }
+
+        @media(max-width:998px) {
+            .nav-link {
+                padding: 8px 12px
+            }
+        }
+
+        .nav-link:hover {
+            color: var(--text-bright)
+        }
+
+        .navbar__actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 200ms, color 200ms, border-color 200ms
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, .08);
+            color: var(--text-bright);
+            border-color: rgba(255, 255, 255, .2)
+        }
+
+        .cta-wrap {
+            position: relative;
+            display: none
+        }
+
+        @media(min-width:768px) {
+            .cta-wrap {
+                display: block
+            }
+        }
+
+        .cta-glow {
+            position: absolute;
+            inset: -8px;
+            border-radius: var(--radius-pill);
+            background: #e5e7eb;
+            opacity: .25;
+            filter: blur(14px);
+            pointer-events: none;
+            transition: opacity 300ms, filter 300ms
+        }
+
+        .cta-wrap:hover .cta-glow {
+            opacity: .5;
+            filter: blur(22px)
+        }
+
+        .btn-cta {
+            border: 0;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: var(--radius-pill);
+            font-size: .8rem;
+            font-weight: 600;
+            color: #000;
+            background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+            text-decoration: none;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 200ms, transform 200ms;
+            font-family: 'Lexend Deca', sans-serif
+        }
+
+        .btn-cta:hover {
+            background: linear-gradient(135deg, #e5e7eb, #b0b8c1);
+            transform: translateY(-1px)
+        }
+
+        .btn-cta--mobile {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            margin-top: 12px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+            color: #000;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: .875rem;
+            text-decoration: none
+        }
+
+        .hamburger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, .06);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 200ms, color 200ms
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, .12);
+            color: var(--text-bright)
+        }
+
+        @media(min-width:768px) {
+            .hamburger {
+                display: none
+            }
+        }
+
+        .navbar__mobile {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: max-height var(--nav-transition), opacity var(--nav-transition), padding var(--nav-transition)
+        }
+
+        .navbar__mobile.is-open {
+            max-height: 600px;
+            opacity: 1;
+            pointer-events: auto;
+            padding-top: 16px
+        }
+
+        .mobile-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px
+        }
+
+        .mobile-link {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 200ms;
+            width: 100%;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Lexend Deca', sans-serif
+        }
+
+        .mobile-link:hover {
+            color: var(--text-bright)
+        }
+
+
+        /* <style> */
+        /* ═══════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --bg: #0c0c0f;
+            --bg-panel: #111115;
+            --bg-card: #16161b;
+            --bg-hover: #1c1c22;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-active: rgba(99, 102, 241, 0.5);
+            --accent: #6366f1;
+            --accent-2: #8b5cf6;
+            --accent-3: #06b6d4;
+            --green: #10b981;
+            --red: #f43f5e;
+            --text-1: #f1f0ff;
+            --text-2: #9b9bb0;
+            --text-3: #5c5c72;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --sidebar-w: 380px;
+            --nav-h: 64px;
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text-1);
+            min-height: 100vh;
+            font-size: 14px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Light mode */
+        body.light {
+            --bg: #f6f6f9;
+            --bg-panel: #ffffff;
+            --bg-card: #ffffff;
+            --bg-hover: #f0f0f6;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-active: rgba(99, 102, 241, 0.4);
+            --text-1: #0f0f1a;
+            --text-2: #5c5c72;
+            --text-3: #9b9bb0;
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        /* ═══════════════════════════════════════════
+   TOPBAR
+═══════════════════════════════════════════ */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-h);
+            z-index: 200;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 0;
+        }
+
+        .topbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+            margin-right: 32px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .logo-name {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-1);
+            letter-spacing: -0.02em;
+        }
+
+        .topbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .t-nav-btn {
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-2);
+            background: none;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: color 0.15s, background 0.15s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .t-nav-btn:hover {
+            color: var(--text-1);
+            background: var(--bg-hover);
+        }
+
+        .t-nav-btn.active {
+            color: var(--text-1);
+            background: var(--bg-hover);
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .icon-btn {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.15s, border-color 0.15s, background 0.15s;
+        }
+
+        .icon-btn:hover {
+            color: var(--text-1);
+            border-color: var(--border-active);
+            background: var(--bg-hover);
+        }
+
+        .visit-btn {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 7px 16px;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            transition: opacity 0.15s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .visit-btn:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+        }
+
+        /* ═══════════════════ NAVBAR ═══════════════════ */
+        .navbar {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: calc(100% - 2rem);
+            max-width: 1100px;
+            padding: 10px 20px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-glass);
+            background: var(--bg-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: border-radius var(--nav-transition);
+        }
+
+        .navbar.is-open {
+            border-radius: var(--radius-card);
+        }
+
+        .navbar__inner {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .navbar__logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .navbar__logo-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: transform 300ms;
+        }
+
+        .navbar__logo:hover .navbar__logo-img {
+            transform: scale(1.08);
+        }
+
+        .navbar__brand {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            letter-spacing: -0.01em;
+        }
+
+        .navbar__links {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .navbar__links {
+                display: flex;
+            }
+        }
+
+        .pill-slider {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 36px;
+            border-radius: var(--radius-pill);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            pointer-events: none;
+            opacity: 0;
+            transition: left 350ms var(--ease-out-expo), width 350ms var(--ease-out-expo), opacity 200ms ease;
+            z-index: 0;
+        }
+
+        .navbar__links:hover .pill-slider {
+            opacity: 1;
+        }
+
+        .nav-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 18px;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            background: transparent;
+            transition: color 250ms ease;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text-bright);
+        }
+
+        .navbar__actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 200ms, color 200ms;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-bright);
+        }
+
+        .cta-wrap {
+            position: relative;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .cta-wrap {
+                display: block;
+            }
+        }
+
+        .cta-glow {
+            position: absolute;
+            inset: -8px;
+            border-radius: var(--radius-pill);
+            background: #e5e7eb;
+            opacity: 0.3;
+            filter: blur(14px);
+            pointer-events: none;
+            transition: opacity 300ms, filter 300ms;
+        }
+
+        .cta-wrap:hover .cta-glow {
+            opacity: 0.55;
+            filter: blur(22px);
+        }
+
+        .btn-cta {
+            border: 0;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: var(--radius-pill);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #000;
+            background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 200ms, transform 200ms;
+        }
+
+        .btn-cta:hover {
+            background: linear-gradient(135deg, #e5e7eb, #b0b8c1);
+            transform: translateY(-1px);
+        }
+
+        .hamburger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 200ms, color 200ms;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-bright);
+        }
+
+        @media (min-width: 768px) {
+            .hamburger {
+                display: none;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .navbar__mobile {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: max-height var(--nav-transition), opacity var(--nav-transition), padding var(--nav-transition);
+        }
+
+        .navbar__mobile.is-open {
+            max-height: 400px;
+            opacity: 1;
+            pointer-events: auto;
+            padding-top: 16px;
+        }
+
+        .mobile-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mobile-link {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 200ms;
+            width: 100%;
+            text-align: center;
+        }
+
+        .mobile-link:hover {
+            color: var(--text-bright);
+        }
+
+        .btn-cta--mobile {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            margin-top: 12px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+            color: #000;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+
+
+        /* ═══════════════════════════════════════════
+   APP SHELL  (left sidebar + right preview)
+═══════════════════════════════════════════ */
+        #view-main {
+            padding-top: 100px;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ─── Left: type sidebar ─── */
+        .type-sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            position: sticky;
+            top: var(--nav-h);
+            height: 100%;
+            overflow-y: auto;
+            padding: 24px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--bg-panel);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            scrollbar-width: none;
+        }
+
+        .type-sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar-label {
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            padding: 0 8px;
+            margin-bottom: 8px;
+        }
+
+        .type-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-2);
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-body);
+            transition: color 0.15s, background 0.15s;
+            position: relative;
+        }
+
+        .type-item:hover {
+            color: var(--text-1);
+            background: var(--bg-hover);
+        }
+
+        .type-item.active {
+            color: var(--text-1);
+            background: rgba(99, 102, 241, 0.12);
+        }
+
+        .type-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 3px;
+            border-radius: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+        }
+
+        .type-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: var(--bg-hover);
+            color: var(--text-2);
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .type-item.active .type-icon,
+        .type-item:hover .type-icon {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent);
+        }
+
+        /* ─── Center: form area ─── */
+        .form-area {
+            flex: 1;
+            min-width: 0;
+            padding: 32px 36px;
+            overflow-y: auto;
+            max-height: calc(100vh - var(--nav-h));
+            scrollbar-width: none;
+        }
+
+        .form-area::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ─── Right: preview panel ─── */
+        .preview-sidebar {
+            width: var(--sidebar-w);
+            flex-shrink: 0;
+            position: sticky;
+            top: var(--nav-h);
+            height: 100%;
+            overflow-y: auto;
+            padding: 28px 24px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--bg-panel);
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            scrollbar-width: none;
+        }
+
+        .preview-sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ═══════════════════════════════════════════
+   FORM AREA CONTENTS
+═══════════════════════════════════════════ */
+        .form-header {
+            margin-bottom: 28px;
+        }
+
+        .form-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--accent);
+        }
+
+        .form-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 2.5vw, 2rem);
+            font-weight: 800;
+            color: var(--text-1);
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-2);
+            line-height: 1.6;
+            max-width: 480px;
+        }
+
+        /* ─── Card ─── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-card);
+            transition: border-color 0.2s;
+        }
+
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 20px;
+        }
+
+        /* ─── Form elements ─── */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 18px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-2);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .req {
+            color: var(--accent);
+        }
+
+        .opt {
+            color: var(--text-3);
+            font-weight: 400;
+            font-size: 0.72rem;
+        }
+
+        input[type=text],
+        input[type=url],
+        input[type=email],
+        input[type=tel],
+        textarea,
+        select {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-1);
+            padding: 11px 14px;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-family: var(--font-body);
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--border-active);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--text-3);
+        }
+
+        .form-help {
+            font-size: 0.75rem;
+            color: var(--text-3);
+            line-height: 1.4;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        /* ─── Error ─── */
+        .alert-error {
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            color: #f87171;
+            padding: 11px 14px;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ─── Logo upload ─── */
+        .logo-drop {
+            border: 1.5px dashed rgba(99, 102, 241, 0.3);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            transition: border-color 0.2s, background 0.2s;
+            cursor: pointer;
+        }
+
+        .logo-drop:hover {
+            border-color: var(--border-active);
+            background: rgba(99, 102, 241, 0.04);
+        }
+
+        .logo-drop label {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-drop-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(99, 102, 241, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .logo-drop p {
+            font-size: 0.85rem;
+            color: var(--text-2);
+        }
+
+        .logo-drop span {
+            font-size: 0.72rem;
+            color: var(--text-3);
+        }
+
+        .logo-preview-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-preview-row img {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .logo-preview-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .logo-preview-info span {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logo-remove {
+            background: none;
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            color: #f87171;
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-body);
+            margin-top: 5px;
+            display: inline-block;
+            transition: background 0.15s;
+        }
+
+        .logo-remove:hover {
+            background: rgba(244, 63, 94, 0.08);
+        }
+
+        /* ─── Generate button ─── */
+        .btn-generate {
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #fff;
+            border: none;
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            margin-top: 4px;
+        }
+
+        .btn-generate:hover {
+            opacity: 0.92;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 28px rgba(99, 102, 241, 0.45);
+        }
+
+        .btn-generate:active {
+            transform: scale(0.98);
+        }
+
+        .btn-generate:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ═══════════════════════════════════════════
+   PREVIEW SIDEBAR
+═══════════════════════════════════════════ */
+        .preview-top {
+            margin-bottom: 20px;
+        }
+
+        .preview-heading {
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 4px;
+        }
+
+        .preview-subhead {
+            font-size: 0.8rem;
+            color: var(--text-2);
+        }
+
+        /* Empty state */
+        .preview-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .empty-qr {
+            width: 240px;
+            height: 240px;
+            border-radius: 16px;
+            background: var(--bg-hover);
+            border: 1.5px dashed rgba(99, 102, 241, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .empty-qr-inner {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(7, 1fr);
+            gap: 3px;
+            padding: 16px;
+            opacity: 0.25;
+        }
+
+        .qr-dot {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 2px;
+            background: var(--text-2);
+        }
+
+        .empty-label {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-2);
+        }
+
+        .empty-sub {
+            font-size: 0.78rem;
+            color: var(--text-3);
+            line-height: 1.5;
+        }
+
+        /* QR Result */
+        .qr-result-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        /* Variant tabs */
+        .variant-tabs {
+            display: flex;
+            gap: 3px;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 3px;
+            width: 100%;
+        }
+
+        .vtab {
+            flex: 1;
+            padding: 7px 10px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: var(--text-2);
+            font-size: 0.78rem;
+            font-weight: 600;
+            font-family: var(--font-display);
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .vtab.active {
+            background: var(--bg-card);
+            color: var(--text-1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .vtab:not(.active):hover {
+            color: var(--text-1);
+        }
+
+        /* QR display */
+        .qr-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .qr-frame {
+            background: #fff;
+            padding: 14px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-glow), var(--shadow-card);
+            display: inline-block;
+            position: relative;
+        }
+
+        .qr-frame-border {
+            position: absolute;
+            inset: -2px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(6px);
+        }
+
+        .qr-img {
+            display: block;
+            width: 200px;
+            height: 200px;
+            image-rendering: pixelated;
+            border-radius: 4px;
+        }
+
+        .qr-img.smooth {
+            image-rendering: auto;
+        }
+
+        .qr-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .qr-badge {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            color: var(--accent);
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .qr-time {
+            font-size: 0.72rem;
+            color: var(--text-3);
+        }
+
+        .scan-tip {
+            font-size: 0.72rem;
+            color: var(--text-3);
+            text-align: center;
+        }
+
+        /* Action buttons */
+        .qr-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .btn-dl {
+            width: 100%;
+            padding: 11px 20px;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #fff;
+            border: none;
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: opacity 0.15s, transform 0.1s, box-shadow 0.2s;
+            box-shadow: 0 3px 14px rgba(99, 102, 241, 0.3);
+            text-decoration: none;
+        }
+
+        .btn-dl:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            color: #fff;
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-copy-data {
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-2);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: all 0.15s;
+        }
+
+        .btn-copy-data:hover {
+            border-color: var(--border-active);
+            color: var(--text-1);
+            background: var(--bg-hover);
+        }
+
+        /* Stats strip */
+        .stats-strip {
+            display: flex;
+            gap: 1px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .stat-cell {
+            flex: 1;
+            padding: 12px 10px;
+            text-align: center;
+            background: var(--bg-card);
+        }
+
+        .stat-cell+.stat-cell {
+            border-left: 1px solid var(--border);
+        }
+
+        .stat-val {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--text-1);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-lbl {
+            font-size: 0.65rem;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 3px;
+            display: block;
+        }
+
+        /* ═══════════════════════════════════════════
+   SUGGESTIONS SECTION  (below main grid)
+═══════════════════════════════════════════ */
+        .suggestions-outer {
+            margin-left: 220px;
+            border-top: 1px solid var(--border);
+            padding: 60px 36px 80px;
+        }
+
+        .suggest-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-eyebrow {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-eyebrow::before {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 2px;
+            border-radius: 2px;
+            background: var(--accent);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+            font-weight: 800;
+            color: var(--text-1);
+            letter-spacing: -0.03em;
+            margin-bottom: 6px;
+        }
+
+        .section-sub {
+            font-size: 0.875rem;
+            color: var(--text-2);
+            margin-bottom: 40px;
+        }
+
+        .suggest-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        @media (max-width: 700px) {
+            .suggest-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 16px;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: border-color 0.2s;
+        }
+
+        .feature-item:hover {
+            border-color: rgba(99, 102, 241, 0.25);
+        }
+
+        .fi-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+
+        .fi-icon.blue {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .fi-icon.purple {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .fi-icon.cyan {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .fi-text h4 {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-1);
+            margin-bottom: 4px;
+        }
+
+        .fi-text p {
+            font-size: 0.8rem;
+            color: var(--text-2);
+            line-height: 1.5;
+        }
+
+        .suggest-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .suggest-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        }
+
+        .char-counter {
+            font-size: 0.7rem;
+            color: var(--text-3);
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .char-counter.warn {
+            color: #f97316;
+        }
+
+        .char-counter.over {
+            color: var(--red);
+        }
+
+        .btn-suggest {
+            width: 100%;
+            padding: 13px;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #fff;
+            border: none;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-suggest:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-suggest:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .suggest-success {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
+            padding: 16px 0;
+        }
+
+        .success-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--green);
+        }
+
+        .suggest-success h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-1);
+        }
+
+        .suggest-success p {
+            font-size: 0.85rem;
+            color: var(--text-2);
+        }
+
+        .btn-suggest-again {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-2);
+            padding: 8px 20px;
+            border-radius: var(--radius);
+            font-size: 0.82rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            transition: all 0.15s;
+        }
+
+        .btn-suggest-again:hover {
+            border-color: var(--border-active);
+            color: var(--text-1);
+        }
+
+        /* ── Suggestions ── */
+        .suggestions-section {
+            margin-top: 64px;
+            padding-block: 64px;
+            border-top: 1px solid var(--border-glass)
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 44px
+        }
+
+        .section-eyebrow {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--blue-400);
+            margin-bottom: 12px;
+            display: block
+        }
+
+        .section-title {
+            font-family: 'Figtree', sans-serif;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 800;
+            letter-spacing: -.03em;
+            background: var(--grad-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 14px
+        }
+
+        .section-subtitle {
+            font-size: .95rem;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.65
+        }
+
+        .suggest-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            max-width: 880px;
+            margin: 0 auto
+        }
+
+        @media(max-width:700px) {
+            .suggest-layout {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .suggest-why {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center
+        }
+
+        .why-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start
+        }
+
+        .why-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0
+        }
+
+        .why-icon.violet {
+            background: rgba(96, 165, 250, .12);
+            border: 1px solid rgba(96, 165, 250, .2)
+        }
+
+        .why-icon.cyan {
+            background: rgba(192, 132, 252, .12);
+            border: 1px solid rgba(192, 132, 252, .2)
+        }
+
+        .why-icon.pink {
+            background: rgba(165, 180, 252, .12);
+            border: 1px solid rgba(165, 180, 252, .2)
+        }
+
+        .why-text h4 {
+            font-family: 'Figtree', sans-serif;
+            font-size: .9rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 4px
+        }
+
+        .why-text p {
+            font-size: .82rem;
+            color: var(--text-muted);
+            line-height: 1.5
+        }
+
+        .suggest-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-card);
+            padding: 28px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden
+        }
+
+        .suggest-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--grad-primary);
+            border-radius: var(--radius-card) var(--radius-card) 0 0
+        }
+
+        .suggest-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        .suggest-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        @media(max-width:480px) {
+            .suggest-row {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .char-counter {
+            font-size: .7rem;
+            color: rgba(156, 163, 175, .6);
+            text-align: right;
+            margin-top: 4px
+        }
+
+        .char-counter.warn {
+            color: #fb923c
+        }
+
+        .char-counter.over {
+            color: var(--error)
+        }
+
+        .btn-suggest {
+            background: var(--grad-btn);
+            color: #fff;
+            border: none;
+            padding: 13px 24px;
+            border-radius: var(--radius-sm);
+            font-size: .9rem;
+            font-weight: 700;
+            font-family: 'Figtree', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity .2s, transform .15s, box-shadow .2s;
+            box-shadow: 0 4px 16px rgba(96, 165, 250, .25);
+            width: 100%
+        }
+
+        .btn-suggest:hover {
+            opacity: .9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 22px rgba(96, 165, 250, .4)
+        }
+
+        .btn-suggest:active {
+            transform: scale(.98)
+        }
+
+        .btn-suggest:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none
+        }
+
+        .suggest-success {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            text-align: center;
+            padding: 16px 0
+        }
+
+        .success-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(52, 211, 153, .12);
+            border: 2px solid rgba(52, 211, 153, .35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--success)
+        }
+
+        .suggest-success h4 {
+            font-family: 'Figtree', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-bright)
+        }
+
+        .suggest-success p {
+            font-size: .85rem;
+            color: var(--text-muted)
+        }
+
+        .btn-suggest-again {
+            background: none;
+            border: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            padding: 9px 20px;
+            border-radius: var(--radius-sm);
+            font-size: .82rem;
+            cursor: pointer;
+            transition: border-color .15s, color .15s;
+            font-family: 'Lexend Deca', sans-serif
+        }
+
+        .btn-suggest-again:hover {
+            border-color: rgba(96, 165, 250, .5);
+            color: var(--blue-400)
+        }
+
+        /* ── Copy toast ── */
+        .copy-toast {
+            position: fixed;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(52, 211, 153, .12);
+            border: 1px solid rgba(52, 211, 153, .3);
+            color: var(--success);
+            padding: 11px 24px;
+            border-radius: var(--radius-pill);
+            font-size: .82rem;
+            font-weight: 600;
+            z-index: 9999;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .4);
+            opacity: 0;
+            transition: opacity .25s, transform .25s;
+            pointer-events: none
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0)
+        }
+
+        /* ── Footer ── */
+        .site-footer {
+            position: relative;
+            z-index: 3;
+            border-top: 1px solid var(--border-glass);
+            padding: 60px 0 0;
+            background: transparent
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px
+        }
+
+        @media(max-width:768px) {
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+                gap: 32px
+            }
+        }
+
+        @media(max-width:480px) {
+            .footer-inner {
+                grid-template-columns: 1fr;
+                gap: 24px
+            }
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            margin-bottom: 12px
+        }
+
+        .footer-logo__icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            background: var(--grad-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .footer-logo__text {
+            font-family: 'Figtree', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            letter-spacing: -.01em
+        }
+
+        .footer-tagline {
+            font-size: .82rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.55
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 10px
+        }
+
+        .footer-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: background 200ms, color 200ms, border-color 200ms
+        }
+
+        .footer-social:hover {
+            background: rgba(255, 255, 255, .08);
+            color: var(--text-bright);
+            border-color: rgba(255, 255, 255, .2)
+        }
+
+        .footer-links__title {
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: var(--text-bright);
+            margin-bottom: 16px
+        }
+
+        .footer-link {
+            display: block;
+            font-size: .875rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: color 200ms;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Lexend Deca', sans-serif;
+            text-align: left
+        }
+
+        .footer-link:hover {
+            color: var(--text-bright)
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 48px auto 0;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-glass);
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .footer-copy,
+        .footer-credit {
+            font-size: .78rem;
+            color: var(--text-muted)
+        }
+
+        /* ── About page ── */
+        .about-page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px 80px
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--blue-400);
+            text-decoration: none;
+            font-size: .875rem;
+            font-weight: 500;
+            margin-bottom: 32px;
+            transition: color .2s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Lexend Deca', sans-serif;
+            padding: 0
+        }
+
+        .back-link:hover {
+            color: var(--purple-light)
+        }
+
+        .about-hero {
+            text-align: center;
+            padding: 48px 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px
+        }
+
+        .about-logo-wrap {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 0 40px rgba(96, 165, 250, .15);
+            background: var(--grad-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .about-hero-title {
+            font-family: 'Figtree', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -.02em;
+            color: var(--text-bright)
+        }
+
+        .grad-text {
+            background: var(--grad-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .about-hero-sub {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 480px
+        }
+
+        .about-link {
+            color: var(--blue-400);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            transition: color .2s
+        }
+
+        .about-link:hover {
+            color: var(--purple-light)
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 20px;
+            margin-bottom: 48px
+        }
+
+        .about-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 24px
+        }
+
+        .about-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .about-card-title {
+            font-family: 'Figtree', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-bright)
+        }
+
+        .about-card-body {
+            font-size: .875rem;
+            color: var(--text-muted);
+            line-height: 1.65
+        }
+
+        .about-cta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap
+        }
+
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            padding: 10px 22px;
+            border-radius: var(--radius-pill);
+            font-size: .875rem;
+            font-weight: 600;
+            font-family: 'Figtree', sans-serif;
+            text-decoration: none;
+            transition: border-color .2s, color .2s, background .2s;
+            cursor: pointer
+        }
+
+        .btn-outline:hover {
+            border-color: rgba(96, 165, 250, .5);
+            color: var(--blue-400);
+            background: rgba(96, 165, 250, .05)
+        }
+
+        @media(max-width:640px) {
+            .about-hero {
+                padding: 32px 0 28px
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr
+            }
+
+            .about-cta {
+                flex-direction: column
+            }
+
+            .glass-card {
+                padding: 20px
+            }
+
+            .preview-panel-inner {
+                padding: 20px 16px;
+                min-height: 380px
+            }
+
+            .qr-image {
+                width: 180px;
+                height: 180px
+            }
+
+            .suggest-card {
+                padding: 20px
+            }
+
+            .type-nav {
+                top: 82px
+            }
+
+            .page-content {
+                padding-top: 144px
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+   ABOUT PAGE
+═══════════════════════════════════════════ */
+        #view-about {
+            padding-top: var(--nav-h);
+            min-height: 100vh;
+        }
+
+        .about-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 52px 36px 80px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--accent);
+            font-size: 0.875rem;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            margin-bottom: 36px;
+            padding: 0;
+            transition: color 0.15s;
+        }
+
+        .back-btn:hover {
+            color: var(--accent-2);
+        }
+
+        .about-hero {
+            text-align: center;
+            padding: 48px 0 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .about-logo {
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .about-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: var(--text-1);
+            letter-spacing: -0.03em;
+        }
+
+        .about-title span {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .about-sub {
+            font-size: 1rem;
+            color: var(--text-2);
+            max-width: 440px;
+        }
+
+        .about-link {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 44px;
+        }
+
+        .about-card {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .acard-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .acard-title {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-1);
+        }
+
+        .acard-body {
+            font-size: 0.85rem;
+            color: var(--text-2);
+            line-height: 1.65;
+        }
+
+        .about-cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            padding: 10px 22px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            color: var(--text-2);
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            background: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--border-active);
+            color: var(--accent);
+        }
+
+        /* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--green);
+            padding: 10px 22px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            z-index: 9999;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.25s, transform 0.25s;
+            pointer-events: none;
+            font-family: var(--font-display);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ═══════════════════════════════════════════
+   MOBILE TYPE NAV — CHANGE 1: dropdown instead of horizontal scroll pills
+═══════════════════════════════════════════ */
+        .mobile-type-nav {
+            display: none;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-panel);
+        }
+
+        .mobile-type-select-wrap {
+            position: relative;
+        }
+
+        .mobile-type-select-wrap::after {
+            content: '';
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--text-2);
+            pointer-events: none;
+        }
+
+        #mobile-type-select {
+            width: 100%;
+            padding: 10px 40px 10px 14px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-1);
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: var(--font-body);
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        #mobile-type-select:focus {
+            border-color: var(--border-active);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Mobile hamburger */
+        .hamburger {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-2);
+            cursor: pointer;
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 1100px) {
+            .preview-sidebar {
+                width: 320px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .type-sidebar {
+                display: none;
+            }
+
+            .mobile-type-nav {
+                display: block;
+            }
+
+            .suggestions-outer,
+            .site-footer {
+                margin-left: 0;
+            }
+
+            #view-main {
+                flex-direction: column;
+            }
+
+            .preview-sidebar {
+                width: 100%;
+                position: relative;
+                top: auto;
+                height: auto;
+                border-left: none;
+                border-top: 1px solid var(--border);
+                padding: 24px 20px;
+            }
+
+            .form-area {
+                max-height: none;
+                padding: 24px 20px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══════════════════ NAVBAR ══════════════════ -->
+    <header class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <button class="navbar__logo" onclick="showMain()"
+                style="background:none;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:10px;">
+                <div class="navbar__logo-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" />
+                        <rect x="14" y="3" width="7" height="7" />
+                        <rect x="3" y="14" width="7" height="7" />
+                        <path d="M14 17h3m4 0h-3m0 0v-3m0 3v3" />
+                    </svg>
+                </div>
+                <span class="navbar__brand">QRForge</span>
+            </button>
+
+            <nav class="navbar__links" aria-label="Primary navigation">
+                <div class="pill-slider" id="pillSlider"></div>
+                <button class="nav-link" onclick="showMain()">Generator</button>
+                <button class="nav-link" onclick="showAbout()">About</button>
+                <a href="https://projectshub.co.in/#contact" class="nav-link" target="_blank"
+                    rel="noopener noreferrer">Contact</a>
+            </nav>
+
+            <div class="navbar__actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg class="icon-moon hidden" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+                <div class="cta-wrap">
+                    <div class="cta-glow" aria-hidden="true"></div>
+                    <a href="https://projectshub.co.in" class="btn-cta" target="_blank"
+                        rel="noopener noreferrer">ProjectsHub ↗</a>
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <svg class="icon-menu" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="icon-close hidden" width="20" height="20" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
+            <nav class="mobile-links">
+                <button class="mobile-link" onclick="showMain();mobileClose()">Generator</button>
+                <button class="mobile-link" onclick="showAbout();mobileClose()">About</button>
+                <a href="https://projectshub.co.in/#contact" class="mobile-link" target="_blank"
+                    rel="noopener noreferrer">Contact</a>
+            </nav>
+            <a href="https://projectshub.co.in" class="btn-cta btn-cta--mobile" target="_blank"
+                rel="noopener noreferrer">Visit ProjectsHub ↗</a>
+        </div>
+    </header>
+
+    <div id="view-main" class="container mx-auto" style="max-width: 1440px;">
+
+        <!-- CHANGE 2: Mobile type nav replaced with a styled dropdown select -->
+        <div class="mobile-type-nav" id="mobile-type-nav">
+            <div class="mobile-type-select-wrap">
+                <select id="mobile-type-select" onchange="switchType(this.value)">
+                    <option value="url">🔗 URL</option>
+                    <option value="pdf">📄 PDF</option>
+                    <option value="multiurl">🔀 Multi-URL</option>
+                    <option value="contact">👤 Contact</option>
+                    <option value="text">📝 Text</option>
+                    <option value="app">📱 App</option>
+                    <option value="sms">💬 SMS</option>
+                    <option value="email">✉️ Email</option>
+                    <option value="phone">📞 Phone</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Left: type sidebar -->
+        <aside class="type-sidebar">
+            <p class="sidebar-label">QR Types</p>
+
+            <button class="type-item active" data-type="url" onclick="switchType('url')">
+                <div class="type-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                    </svg>
+                </div>
+                URL
+            </button>
+            <button class="type-item" data-type="pdf" onclick="switchType('pdf')">
+                <div class="type-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                </div>
+                PDF
+            </button>
+            <button class="type-item" data-type="multiurl" onclick="switchType('multiurl')">
+                <div class="type-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 3 21 3 21 8" />
+                        <line x1="4" y1="20" x2="21" y2="3" />
+                        <polyline points="21 16 21 21 16 21" />
+                        <line x1="15" y1="15" x2="21" y2="21" />
+                    </svg>
+                </div>
+                Multi-URL
+            </button>
+            <button class="type-item" data-type="contact" onclick="switchType('contact')">
+                <div class="type-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                Contact
+            </button>
+            <button class="type-item" data-type="text" onclick="switchType('text')">
+                <div class="type-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="17" y1="10" x2="3" y2="10" />
+                        <line x1="21" y1="6" x2="3" y2="6" />
+                        <line x1="21" y1="14" x2="3" y2="14" />
+                        <line x1="17" y1="18" x2="3" y2="18" />
+                    </svg>
+                </div>
+                Text
+            </button>
+            <button class="type-item" data-type="app" onclick="switchType('app')">
+                <div class="type-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                        <line x1="12" y1="18" x2="12.01" y2="18" />
+                    </svg>
+                </div>
+                App
+            </button>
+            <button class="type-item" data-type="sms" onclick="switchType('sms')">
+                <div class="type-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                </div>
+                SMS
+            </button>
+            <button class="type-item" data-type="email" onclick="switchType('email')">
+                <div class="type-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                </div>
+                Email
+            </button>
+            <button class="type-item" data-type="phone" onclick="switchType('phone')">
+                <div class="type-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                </div>
+                Phone
+            </button>
+        </aside>
+
+        <!-- Center: form -->
+        <main class="form-area">
+            <div class="form-header">
+                <div class="form-eyebrow" id="form-eyebrow">QR Generator</div>
+                <h1 class="form-title" id="form-title">URL QR Code</h1>
+                <p class="form-subtitle" id="form-subtitle">Generate a QR code for any website URL — just paste and go.
+                </p>
+            </div>
+
+            <div id="form-error" class="alert-error hidden"></div>
+
+            <div class="card">
+                <p class="card-title" id="card-section-title">Enter URL</p>
+                <div id="qr-form">
+
+                    <!-- URL -->
+                    <div class="qr-form-section" data-type="url">
+                        <div class="form-group">
+                            <label class="form-label" for="url-input">Website URL <span class="req">*</span></label>
+                            <input type="url" id="url-input" placeholder="https://example.com" />
+                            <p class="form-help">Include https:// for best compatibility</p>
+                        </div>
+                    </div>
+
+                    <!-- PDF -->
+                    <div class="qr-form-section hidden" data-type="pdf">
+                        <div class="form-group">
+                            <label class="form-label" for="pdf-url-input">PDF URL <span class="req">*</span></label>
+                            <input type="url" id="pdf-url-input" placeholder="https://example.com/document.pdf" />
+                            <p class="form-help">Paste a direct link to your PDF. Make sure the link is publicly
+                                accessible.</p>
+                        </div>
+                    </div>
+
+                    <!-- Multi-URL -->
+                    <div class="qr-form-section hidden" data-type="multiurl">
+                        <div class="form-group">
+                            <label class="form-label" for="multiurl-input">URLs <span class="req">*</span></label>
+                            <textarea id="multiurl-input" rows="5"
+                                placeholder="https://example.com&#10;https://another-site.com&#10;https://third-site.com"></textarea>
+                            <p class="form-help">Enter one URL per line.</p>
+                        </div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="qr-form-section hidden" data-type="contact">
+                        <div class="form-group">
+                            <label class="form-label" for="contact-name">Full Name <span class="req">*</span></label>
+                            <input type="text" id="contact-name" placeholder="Jane Doe" />
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="contact-phone">Phone</label>
+                                <input type="tel" id="contact-phone" placeholder="+1 234 567 8900" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contact-email">Email</label>
+                                <input type="email" id="contact-email" placeholder="jane@example.com" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="contact-company">Company</label>
+                                <input type="text" id="contact-company" placeholder="Acme Corp" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="contact-website">Website</label>
+                                <input type="url" id="contact-website" placeholder="https://jane.com" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contact-address">Address</label>
+                            <input type="text" id="contact-address" placeholder="123 Main St, City, Country" />
+                        </div>
+                    </div>
+
+                    <!-- Text -->
+                    <div class="qr-form-section hidden" data-type="text">
+                        <div class="form-group">
+                            <label class="form-label" for="text-input">Text <span class="req">*</span></label>
+                            <textarea id="text-input" rows="6" placeholder="Enter your text message here…"></textarea>
+                            <p class="form-help">Keep under 900 characters for best scan reliability</p>
+                        </div>
+                    </div>
+
+                    <!-- App -->
+                    <div class="qr-form-section hidden" data-type="app">
+                        <div class="form-group">
+                            <label class="form-label" for="app-name-input">App Name <span
+                                    class="opt">(optional)</span></label>
+                            <input type="text" id="app-name-input" placeholder="My Awesome App" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="app-url-input">App Store URL <span
+                                    class="req">*</span></label>
+                            <input type="url" id="app-url-input"
+                                placeholder="https://play.google.com/store/apps/details?id=..." />
+                            <p class="form-help">Google Play, App Store, or any direct download link</p>
+                        </div>
+                    </div>
+
+                    <!-- SMS -->
+                    <div class="qr-form-section hidden" data-type="sms">
+                        <div class="form-group">
+                            <label class="form-label" for="sms-phone">Phone Number <span class="req">*</span></label>
+                            <input type="tel" id="sms-phone" placeholder="+1 234 567 8900" />
+                            <p class="form-help">Include country code for best compatibility</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="sms-message">Message <span
+                                    class="opt">(optional)</span></label>
+                            <textarea id="sms-message" rows="4" placeholder="Hello! Check this out…"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="qr-form-section hidden" data-type="email">
+                        <div class="form-group">
+                            <label class="form-label" for="email-to">To Email <span class="req">*</span></label>
+                            <input type="email" id="email-to" placeholder="recipient@example.com" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email-subject">Subject <span
+                                    class="opt">(optional)</span></label>
+                            <input type="text" id="email-subject" placeholder="Hello from QRForge!" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email-body">Body <span class="opt">(optional)</span></label>
+                            <textarea id="email-body" rows="4"
+                                placeholder="Hi there,&#10;&#10;I wanted to reach out…"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="qr-form-section hidden" data-type="phone">
+                        <div class="form-group">
+                            <label class="form-label" for="phone-input">Phone Number <span class="req">*</span></label>
+                            <input type="tel" id="phone-input" placeholder="+1 234 567 8900" />
+                            <p class="form-help">Scanning will prompt the user to dial this number</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Logo upload card -->
+            <div class="card">
+                <p class="card-title">Center Logo <span class="opt">(optional)</span></p>
+                <div class="logo-drop" id="logo-drop">
+                    <div id="logo-upload-content">
+                        <label class="logo-upload-label" for="logo-file-input">
+                            <div class="logo-drop-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
+                                </svg>
+                            </div>
+                            <p>Click to upload your logo or icon</p>
+                            <span>PNG, JPG, SVG — up to 5 MB</span>
+                        </label>
+                        <input type="file" id="logo-file-input" accept="image/*" style="display:none" />
+                    </div>
+                    <div class="logo-preview-row hidden" id="logo-preview">
+                        <img id="logo-preview-img" alt="Logo preview" />
+                        <div class="logo-preview-info">
+                            <span id="logo-preview-name">logo.png</span>
+                            <button class="logo-remove" id="logo-remove-btn" type="button">✕ Remove</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="form-help" style="margin-top:10px">If no logo is uploaded, a type-specific icon is placed in
+                    the centre automatically.</p>
+            </div>
+
+            <!-- Generate -->
+            <button type="button" class="btn-generate" id="btn-generate" onclick="handleGenerate()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                    <path d="M14 17h3m4 0h-3m0 0v-3m0 3v3" />
+                </svg>
+                <span id="btn-generate-text">Generate QR Code</span>
+            </button>
+
+        </main>
+
+        <!-- Right: preview -->
+        <aside class="preview-sidebar">
+            <div class="preview-top">
+                <p class="preview-heading">Preview</p>
+                <p class="preview-subhead" id="preview-subhead">Your QR code will appear here</p>
+            </div>
+
+            <!-- Empty -->
+            <div class="preview-empty" id="preview-empty">
+                <div class="empty-qr" id="empty-qr-art">
+                    <div class="empty-qr-inner" id="empty-qr-dots"></div>
+                </div>
+                <p class="empty-label">Ready to generate</p>
+                <p class="empty-sub">Fill in the form on the left<br>and click Generate</p>
+            </div>
+
+            <!-- Result -->
+            <div class="qr-result-wrap hidden" id="qr-result">
+
+                <div class="variant-tabs">
+                    <button class="vtab active" data-tab="plain" onclick="switchQRTab('plain')">Plain QR</button>
+                    <button class="vtab" data-tab="logo" onclick="switchQRTab('logo')">With Icon</button>
+                </div>
+
+                <!-- Plain -->
+                <div id="tab-plain" class="qr-display">
+                    <div class="qr-frame">
+                        <div class="qr-frame-border"></div>
+                        <img id="qr-plain-img" class="qr-img" alt="QR Code" />
+                    </div>
+                    <div class="qr-meta-row">
+                        <span class="qr-badge" id="qr-type-badge">URL</span>
+                        <span class="qr-time" id="qr-timestamp">Generated just now</span>
+                    </div>
+                    <p class="scan-tip">📱 Scan with phone camera to test</p>
+                    <div class="qr-actions">
+                        <button id="btn-download-plain" class="btn-dl">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Download PNG
+                        </button>
+                        <button onclick="copyQRData()" class="btn-copy-data">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                            Copy Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- With Icon -->
+                <div id="tab-logo" class="qr-display hidden">
+                    <div class="qr-frame">
+                        <div class="qr-frame-border"></div>
+                        <img id="qr-logo-img" class="qr-img smooth" alt="QR Code with Icon" />
+                    </div>
+                    <div class="qr-meta-row">
+                        <span class="qr-badge">WITH ICON</span>
+                        <span class="qr-time" id="qr-timestamp-logo">Generated just now</span>
+                    </div>
+                    <p class="scan-tip">📱 Scan with phone camera to test</p>
+                    <div class="qr-actions">
+                        <button id="btn-download-logo" class="btn-dl">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            Download with Icon
+                        </button>
+                        <button onclick="copyQRData()" class="btn-copy-data">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                            </svg>
+                            Copy Data
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Stats strip always visible at bottom -->
+            <div class="stats-strip"
+                style=" padding-top: 20px; border: none; background: transparent; flex-direction: column; gap: 0;">
+                <div
+                    style="display: flex; gap: 1px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;">
+                    <div class="stat-cell">
+                        <span class="stat-val">9</span>
+                        <span class="stat-lbl">QR Types</span>
+                    </div>
+                    <div class="stat-cell">
+                        <span class="stat-val">Free</span>
+                        <span class="stat-lbl">Forever</span>
+                    </div>
+                    <div class="stat-cell">
+                        <span class="stat-val">0KB</span>
+                        <span class="stat-lbl">Uploaded</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </div><!-- #view-main -->
+
+    <!-- Suggestions Section -->
+    <section class="suggestions-section" id="suggest">
+        <div class="section-header">
+            <span class="section-eyebrow">Feedback</span>
+            <h2 class="section-title">Got a suggestion?</h2>
+            <p class="section-subtitle">Help us build QRForge better. Request a new QR type, report a bug, or
+                share any idea.</p>
+        </div>
+
+        <div class="suggest-layout">
+            <div class="suggest-why">
+                <div class="why-item">
+                    <div class="why-icon violet">💡</div>
+                    <div class="why-text">
+                        <h4>Feature requests</h4>
+                        <p>Want a WiFi QR, location pin, or calendar event? Let us know what you need.</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon cyan">🐛</div>
+                    <div class="why-text">
+                        <h4>Bug reports</h4>
+                        <p>Something not scanning correctly? Tell us and we'll fix it fast.</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <div class="why-icon pink">✨</div>
+                    <div class="why-text">
+                        <h4>UI improvements</h4>
+                        <p>Spotted a clunky flow or have a design idea? We're all ears.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="suggest-card">
+                <form class="suggest-form" id="suggest-form">
+                    <div class="suggest-row">
+                        <div class="form-group">
+                            <label class="form-label" for="s-name">Your name</label>
+                            <input type="text" id="s-name" placeholder="Jane Doe" maxlength="100" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="s-email">Email <span
+                                    class="label-opt">(optional)</span></label>
+                            <input type="email" id="s-email" placeholder="jane@example.com" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="s-message">Your message <span class="required">*</span></label>
+                        <textarea id="s-message" rows="5" placeholder="I'd love to see a WiFi QR generator…"
+                            maxlength="2000"></textarea>
+                        <span class="char-counter" id="char-counter">0 / 2000</span>
+                    </div>
+                    <div id="suggest-error" class="alert alert-error hidden"></div>
+                    <button type="submit" class="btn-suggest" id="btn-suggest">
+                        <span>✦</span> Send Suggestion
+                    </button>
+                </form>
+                <div class="suggest-success" id="suggest-success">
+                    <div class="success-icon">✓</div>
+                    <h4>Thanks for your feedback!</h4>
+                    <p>Your suggestion has been saved. We'll review it soon.</p>
+                    <button class="btn-suggest-again" id="btn-suggest-again">Send another</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="https://projectshub.co.in" class="footer-logo" target="_blank" rel="noopener noreferrer">
+                    <div class="footer-logo__icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                            <path d="M14 17h3m4 0h-3m0 0v-3m0 3v3" />
+                        </svg>
+                    </div>
+                    <span class="footer-logo__text">QRForge</span>
+                </a>
+                <p class="footer-tagline">Beautiful QR codes, instantly. Free, forever.<br>A <a
+                        href="https://projectshub.co.in" target="_blank" rel="noopener noreferrer"
+                        style="color:inherit;text-decoration:underline;text-underline-offset:3px;">ProjectsHub</a>
+                    product.</p>
+                <div class="footer-socials">
+                    <a href="https://github.com/ProjectsHub" target="_blank" rel="noopener noreferrer"
+                        class="footer-social" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                    </a>
+                    <a href="https://linkedin.com/company/projectshub" target="_blank" rel="noopener noreferrer"
+                        class="footer-social" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                    </a>
+                    <a href="https://instagram.com/projectshub.ai" target="_blank" rel="noopener noreferrer"
+                        class="footer-social" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="footer-links__title">QR Types</h4>
+                <button class="footer-link" onclick="switchType('url');showMain()">URL</button>
+                <button class="footer-link" onclick="switchType('contact');showMain()">Contact</button>
+                <button class="footer-link" onclick="switchType('email');showMain()">Email</button>
+                <button class="footer-link" onclick="switchType('app');showMain()">App Store</button>
+                <button class="footer-link" onclick="switchType('pdf');showMain()">PDF</button>
+            </div>
+            <div>
+                <h4 class="footer-links__title">More Types</h4>
+                <button class="footer-link" onclick="switchType('multiurl');showMain()">Multi-URL</button>
+                <button class="footer-link" onclick="switchType('text');showMain()">Plain Text</button>
+                <button class="footer-link" onclick="switchType('sms');showMain()">SMS</button>
+                <button class="footer-link" onclick="switchType('phone');showMain()">Phone</button>
+            </div>
+            <div>
+                <h4 class="footer-links__title">Company</h4>
+                <a href="https://projectshub.co.in" class="footer-link" target="_blank"
+                    rel="noopener noreferrer">ProjectsHub</a>
+                <button class="footer-link" onclick="showAbout()">About</button>
+                <a href="https://projectshub.co.in/#contact" class="footer-link" target="_blank"
+                    rel="noopener noreferrer">Contact</a>
+                <button class="footer-link"
+                    onclick="document.getElementById('suggest').scrollIntoView({behavior:'smooth'})">Feedback</button>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copy">© 2026 QRForge by ProjectsHub. All rights reserved.</p>
+            <p class="footer-credit">Designed &amp; built with ❤ in India</p>
+        </div>
+    </footer>
+    <!-- ══════════════════ ABOUT VIEW ══════════════════ -->
+    <div class="aurora-section hidden" id="view-about">
+        <main class="page-content about-page-content">
+            <div class="about-page">
+                <button class="back-link" onclick="showMain()">← Back to Generator</button>
+                <div class="about-hero">
+                    <div class="about-logo-wrap">
+                        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                            <path d="M14 17h3m4 0h-3m0 0v-3m0 3v3" />
+                        </svg>
+                    </div>
+                    <h1 class="about-hero-title">About <span class="grad-text">QRForge</span></h1>
+                    <p class="about-hero-sub">A free, beautiful QR code generator by <a href="https://projectshub.co.in"
+                            class="about-link" target="_blank" rel="noopener noreferrer">ProjectsHub</a></p>
+                </div>
+
+                <div class="about-grid">
+                    <div class="glass-card about-card">
+                        <div class="about-card-icon"
+                            style="background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.2)">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 8v4l3 3" />
+                            </svg>
+                        </div>
+                        <h3 class="about-card-title">What is QRForge?</h3>
+                        <p class="about-card-body">QRForge is a free, instant QR code generator that runs entirely in
+                            your browser — no sign-up, no tracking, no backend. Generate QR codes for URLs, contacts,
+                            emails, and more in seconds.</p>
+                    </div>
+                    <div class="glass-card about-card">
+                        <div class="about-card-icon"
+                            style="background:rgba(192,132,252,.12);border:1px solid rgba(192,132,252,.2)">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c084fc"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+                                <line x1="6" y1="1" x2="6" y2="4" />
+                                <line x1="10" y1="1" x2="10" y2="4" />
+                                <line x1="14" y1="1" x2="14" y2="4" />
+                            </svg>
+                        </div>
+                        <h3 class="about-card-title">Why we built it</h3>
+                        <p class="about-card-body">Most QR generators are slow, ad-heavy, or require an account. We
+                            built QRForge to be fast, beautiful, and free — forever. No paywalls, no limits.</p>
+                    </div>
+                    <div class="glass-card about-card">
+                        <div class="about-card-icon"
+                            style="background:rgba(165,180,252,.12);border:1px solid rgba(165,180,252,.2)">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a5b4fc"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 11 12 14 22 4" />
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                            </svg>
+                        </div>
+                        <h3 class="about-card-title">9 QR types</h3>
+                        <p class="about-card-body">URL, PDF, Multi-URL, Contact (vCard), Plain Text, App Download, SMS,
+                            Email, and Phone. Each type is thoughtfully designed with relevant defaults and smart icons
+                            in the QR center.</p>
+                    </div>
+                    <div class="glass-card about-card">
+                        <div class="about-card-icon"
+                            style="background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2)">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                        </div>
+                        <h3 class="about-card-title">Privacy first</h3>
+                        <p class="about-card-body">All QR codes are generated locally in your browser. Your data never
+                            leaves your device — no servers involved in QR creation.</p>
+                    </div>
+                    <div class="glass-card about-card">
+                        <div class="about-card-icon"
+                            style="background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.2)">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                            </svg>
+                        </div>
+                        <h3 class="about-card-title">Built by ProjectsHub</h3>
+                        <p class="about-card-body">QRForge is a product of <a href="https://projectshub.co.in"
+                                class="about-link" target="_blank" rel="noopener noreferrer">ProjectsHub</a> — a team
+                            building practical, beautiful tools for developers and creators.</p>
+                    </div>
+                    <div class="glass-card about-card">
+                        <div class="about-card-icon"
+                            style="background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.2)">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fb923c"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="about-card-title">Got feedback?</h3>
+                        <p class="about-card-body">We read every suggestion. Use the feedback form on the generator
+                            page, or reach us at <a href="https://projectshub.co.in/#contact" class="about-link"
+                                target="_blank" rel="noopener noreferrer">projectshub.co.in</a>.</p>
+                    </div>
+                </div>
+
+                <div class="about-cta">
+                    <button class="btn-generate" onclick="showMain()" style="width:auto;margin-top:0">
+                        <span class="btn-icon">✦</span> Start Generating
+                    </button>
+                    <a href="https://projectshub.co.in" class="btn-outline" target="_blank"
+                        rel="noopener noreferrer">Visit ProjectsHub ↗</a>
+                </div>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-bottom"
+                style="max-width:1200px;margin:24px auto 0;padding:24px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-glass);flex-wrap:wrap;gap:8px">
+                <p class="footer-copy">© 2026 QRForge by ProjectsHub. All rights reserved.</p>
+                <p class="footer-credit">Designed &amp; built with ❤ in India</p>
+            </div>
+        </footer>
+    </div>
+    <!-- Copy Toast -->
+    <div id="copy-toast" class="copy-toast">✓ Copied!</div>
+
+    <!-- QRious — reliable QR generation library from cdnjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script>
+        /* ══ STATE ══ */
+        var currentType = 'url';
+        var lastQRData = null;
+        var userLogoDataUrl = null;
+
+        /* ══ TYPE METADATA ══ */
+        var TYPE_META = {
+            url: { title: 'URL QR Code', subtitle: 'Generate a QR code for any website URL — just paste and go.', section: 'Enter URL' },
+            pdf: { title: 'PDF QR Code', subtitle: 'Paste a link to your hosted PDF and get an instant scannable QR.', section: 'Enter PDF URL' },
+            multiurl: { title: 'Multi-URL QR', subtitle: 'Encode multiple URLs into one smart QR code.', section: 'Enter URLs' },
+            contact: { title: 'Contact QR Code', subtitle: 'Share your contact info as a scannable vCard — no typing needed.', section: 'Contact Details' },
+            text: { title: 'Text QR Code', subtitle: 'Encode any plain text message into a QR code.', section: 'Enter Text' },
+            app: { title: 'App QR Code', subtitle: 'Link directly to your app on any store with one scan.', section: 'App Details' },
+            sms: { title: 'SMS QR Code', subtitle: 'Open the SMS app with a pre-filled number and message.', section: 'SMS Details' },
+            email: { title: 'Email QR Code', subtitle: 'Open an email compose window with pre-filled fields.', section: 'Email Details' },
+            phone: { title: 'Phone QR Code', subtitle: 'Dial a phone number directly when scanned.', section: 'Enter Phone' }
+        };
+
+        var TYPE_LABELS = {
+            url: 'URL', pdf: 'PDF', multiurl: 'Multi-URL', contact: 'Contact vCard',
+            text: 'Plain Text', app: 'App Download', sms: 'SMS', email: 'Email', phone: 'Phone'
+        };
+
+        var TYPE_ICON_PATHS = {
+            url: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+            pdf: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+            multiurl: '<polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>',
+            contact: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+            text: '<line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/>',
+            app: '<rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>',
+            sms: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+            email: '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
+            phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>'
+        };
+
+        function getIconDataUrl(type) {
+            var paths = TYPE_ICON_PATHS[type] || TYPE_ICON_PATHS.url;
+            var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + paths + '</svg>';
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        /* ══ EMPTY QR ART ══ */
+        (function () {
+            var container = document.getElementById('empty-qr-dots');
+            if (!container) return;
+            var pattern = [
+                1, 1, 1, 0, 1, 0, 1,
+                1, 0, 1, 0, 1, 0, 1,
+                1, 1, 1, 0, 0, 1, 0,
+                0, 0, 0, 0, 1, 1, 1,
+                1, 1, 0, 0, 1, 1, 1,
+                1, 0, 1, 0, 0, 0, 1,
+                1, 1, 1, 0, 1, 0, 1
+            ];
+            pattern.forEach(function (v) {
+                var d = document.createElement('div');
+                d.className = 'qr-dot';
+                d.style.opacity = v ? '1' : '0.08';
+                container.appendChild(d);
+            });
+        })();
+
+        /* ══ HELPERS ══ */
+        function getVal(id) { var el = document.getElementById(id); return el ? el.value : ''; }
+
+        function loadImage(src) {
+            return new Promise(function (resolve, reject) {
+                var img = new Image();
+                img.onload = function () { resolve(img); };
+                img.onerror = function () { reject(new Error('Image load failed')); };
+                img.src = src;
+            });
+        }
+
+        function roundRectPath(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.arcTo(x + w, y, x + w, y + r, r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+            ctx.lineTo(x + r, y + h);
+            ctx.arcTo(x, y + h, x, y + h - r, r);
+            ctx.lineTo(x, y + r);
+            ctx.arcTo(x, y, x + r, y, r);
+            ctx.closePath();
+        }
+
+        function downloadDataUrl(dataUrl, filename) {
+            var a = document.createElement('a');
+            a.download = filename;
+            a.href = dataUrl;
+            a.click();
+        }
+
+        /* ══ QR DATA GENERATORS ══ */
+        function generateQRData(type) {
+            switch (type) {
+                case 'url': {
+                    var u = getVal('url-input').trim();
+                    if (!u) return { error: 'Please enter a URL.' };
+                    if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+                    return { data: u };
+                }
+                case 'pdf': {
+                    var u = getVal('pdf-url-input').trim();
+                    if (!u) return { error: 'Please enter a PDF URL.' };
+                    if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+                    return { data: u };
+                }
+                case 'multiurl': {
+                    var urls = getVal('multiurl-input').trim();
+                    if (!urls) return { error: 'Please enter at least one URL.' };
+                    return { data: urls };
+                }
+                case 'contact': {
+                    var name = getVal('contact-name').trim();
+                    if (!name) return { error: 'Name is required.' };
+                    var phone = getVal('contact-phone').trim(), email = getVal('contact-email').trim();
+                    var company = getVal('contact-company').trim(), website = getVal('contact-website').trim();
+                    var address = getVal('contact-address').trim();
+                    var vcard = 'BEGIN:VCARD\nVERSION:3.0\nFN:' + name + '\nN:' + name + ';;;;\n';
+                    if (phone) vcard += 'TEL:' + phone + '\n';
+                    if (email) vcard += 'EMAIL:' + email + '\n';
+                    if (company) vcard += 'ORG:' + company + '\n';
+                    if (website) vcard += 'URL:' + website + '\n';
+                    if (address) vcard += 'ADR:;;' + address + ';;;;\n';
+                    vcard += 'END:VCARD';
+                    return { data: vcard };
+                }
+                case 'text': {
+                    var t = getVal('text-input').trim();
+                    if (!t) return { error: 'Please enter some text.' };
+                    return { data: t };
+                }
+                case 'app': {
+                    var u = getVal('app-url-input').trim();
+                    if (!u) return { error: 'Please enter an app store URL.' };
+                    if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+                    return { data: u };
+                }
+                case 'sms': {
+                    var phone = getVal('sms-phone').trim();
+                    if (!phone) return { error: 'Phone number is required.' };
+                    var msg = getVal('sms-message').trim();
+                    var uri = 'sms:' + phone;
+                    if (msg) uri += '?body=' + encodeURIComponent(msg);
+                    return { data: uri };
+                }
+                case 'email': {
+                    var to = getVal('email-to').trim();
+                    if (!to) return { error: 'Email address is required.' };
+                    var subject = getVal('email-subject').trim(), body = getVal('email-body').trim();
+                    var mailto = 'mailto:' + to;
+                    var params = [];
+                    if (subject) params.push('subject=' + encodeURIComponent(subject));
+                    if (body) params.push('body=' + encodeURIComponent(body));
+                    if (params.length) mailto += '?' + params.join('&');
+                    return { data: mailto };
+                }
+                case 'phone': {
+                    var p = getVal('phone-input').trim();
+                    if (!p) return { error: 'Phone number is required.' };
+                    return { data: 'tel:' + p };
+                }
+                default: return { error: 'Unknown QR type.' };
+            }
+        }
+
+        /* ══ CANVAS COMPOSE ══ */
+        async function buildQRWithIcon(qrDataUrl, type) {
+            var qrImg = await loadImage(qrDataUrl);
+            var size = Math.max(qrImg.naturalWidth || 300, 300);
+            var canvas = document.createElement('canvas');
+            canvas.width = canvas.height = size;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(qrImg, 0, 0, size, size);
+            var cx = size / 2, cy = size / 2, radius = size * 0.13;
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath(); ctx.arc(cx, cy, radius + 6, 0, Math.PI * 2); ctx.fill();
+            var grad = ctx.createLinearGradient(cx - radius, cy - radius, cx + radius, cy + radius);
+            grad.addColorStop(0, '#6366f1'); grad.addColorStop(1, '#8b5cf6');
+            ctx.fillStyle = grad;
+            ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2); ctx.fill();
+            try {
+                var iconImg = await loadImage(getIconDataUrl(type));
+                var iconSize = radius * 1.25;
+                ctx.drawImage(iconImg, cx - iconSize / 2, cy - iconSize / 2, iconSize, iconSize);
+            } catch (e) { }
+            return canvas.toDataURL('image/png');
+        }
+
+        async function buildQRWithLogo(qrDataUrl, logoSrc) {
+            var qrImg = await loadImage(qrDataUrl);
+            var size = Math.max(qrImg.naturalWidth || 300, 300);
+            var canvas = document.createElement('canvas');
+            canvas.width = canvas.height = size;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(qrImg, 0, 0, size, size);
+            var cx = size / 2, cy = size / 2, logoR = size * 0.12, pad = logoR * 0.32, boxR = logoR + pad;
+            ctx.fillStyle = '#ffffff';
+            roundRectPath(ctx, cx - boxR, cy - boxR, boxR * 2, boxR * 2, boxR * 0.28);
+            ctx.fill();
+            var logoImg = await loadImage(logoSrc);
+            var iconSize = logoR * 1.7;
+            ctx.drawImage(logoImg, cx - iconSize / 2, cy - iconSize / 2, iconSize, iconSize);
+            return canvas.toDataURL('image/png');
+        }
+
+        /* ══ GENERATE ══ */
+        async function handleGenerate() {
+            var result = generateQRData(currentType);
+            if (result.error) { showFormError(result.error); return; }
+            clearFormError();
+            setGenerating(true);
+
+            try {
+                if (typeof QRious === 'undefined') throw new Error('QR library not loaded. Please refresh the page.');
+                var qr = new QRious({ value: result.data, size: 300, level: 'H', padding: 16, background: '#ffffff', foreground: '#000000' });
+                var qrDataUrl = qr.toDataURL('image/png');
+                lastQRData = result.data;
+
+                document.getElementById('qr-plain-img').src = qrDataUrl;
+
+                var compositeUrl;
+                if (userLogoDataUrl) compositeUrl = await buildQRWithLogo(qrDataUrl, userLogoDataUrl);
+                else compositeUrl = await buildQRWithIcon(qrDataUrl, currentType);
+                document.getElementById('qr-logo-img').src = compositeUrl;
+
+                document.getElementById('btn-download-plain').onclick = function () { downloadDataUrl(qrDataUrl, 'qrforge-' + currentType + '.png'); };
+                document.getElementById('btn-download-logo').onclick = function () { downloadDataUrl(compositeUrl, 'qrforge-' + currentType + '-icon.png'); };
+
+                var ts = 'Generated at ' + new Date().toLocaleTimeString();
+                document.getElementById('qr-type-badge').textContent = TYPE_LABELS[currentType] || currentType.toUpperCase();
+                document.getElementById('qr-timestamp').textContent = ts;
+                document.getElementById('qr-timestamp-logo').textContent = ts;
+                document.getElementById('preview-subhead').textContent = TYPE_LABELS[currentType] + ' QR — ready to use';
+
+                document.getElementById('preview-empty').classList.add('hidden');
+                document.getElementById('qr-result').classList.remove('hidden');
+                switchQRTab('plain');
+
+            } catch (err) {
+                showFormError('Failed to generate QR code: ' + err.message);
+            } finally {
+                setGenerating(false);
+            }
+        }
+
+        function setGenerating(on) {
+            var btn = document.getElementById('btn-generate');
+            btn.disabled = on;
+            document.getElementById('btn-generate-text').textContent = on ? 'Generating…' : 'Generate QR Code';
+        }
+        function showFormError(msg) {
+            var el = document.getElementById('form-error');
+            el.textContent = '⚠ ' + msg;
+            el.classList.remove('hidden');
+        }
+        function clearFormError() { document.getElementById('form-error').classList.add('hidden'); }
+
+        /* ══ TYPE SWITCHING ══ */
+        function switchType(type) {
+            currentType = type;
+
+            // sidebar items
+            document.querySelectorAll('.type-item').forEach(function (t) {
+                t.classList.toggle('active', t.dataset.type === type);
+            });
+
+            // CHANGE 3: sync the mobile dropdown select value
+            var mobileSelect = document.getElementById('mobile-type-select');
+            if (mobileSelect) mobileSelect.value = type;
+
+            // form sections
+            document.querySelectorAll('.qr-form-section').forEach(function (s) {
+                s.classList.toggle('hidden', s.dataset.type !== type);
+            });
+
+            var meta = TYPE_META[type] || TYPE_META.url;
+            document.getElementById('form-eyebrow').lastChild.textContent = type.toUpperCase();
+            document.getElementById('form-title').textContent = meta.title;
+            document.getElementById('form-subtitle').textContent = meta.subtitle;
+            document.getElementById('card-section-title').textContent = meta.section;
+
+            document.getElementById('qr-result').classList.add('hidden');
+            document.getElementById('preview-empty').classList.remove('hidden');
+            document.getElementById('preview-subhead').textContent = 'Your QR code will appear here';
+            clearFormError();
+        }
+
+        /* ══ QR TAB SWITCHING ══ */
+        function switchQRTab(name) {
+            document.querySelectorAll('.vtab').forEach(function (t) { t.classList.toggle('active', t.dataset.tab === name); });
+            document.getElementById('tab-plain').classList.toggle('hidden', name !== 'plain');
+            document.getElementById('tab-logo').classList.toggle('hidden', name !== 'logo');
+        }
+
+        /* ══ COPY QR DATA ══ */
+        function copyQRData() {
+            if (!lastQRData) return;
+            var toast = document.getElementById('copy-toast');
+            function show(msg) {
+                toast.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(function () { toast.classList.remove('show'); }, 2800);
+            }
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(lastQRData).then(function () { show('✓ QR data copied!'); }).catch(function () { show('✓ QR data copied!'); });
+            } else { show('✓ Copied!'); }
+        }
+
+        /* ══ LOGO UPLOAD ══ */
+        document.getElementById('logo-file-input').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5 MB.'); e.target.value = ''; return; }
+            var reader = new FileReader();
+            reader.onload = function (ev) {
+                userLogoDataUrl = ev.target.result;
+                document.getElementById('logo-preview-img').src = userLogoDataUrl;
+                document.getElementById('logo-preview-name').textContent = file.name;
+                document.getElementById('logo-upload-content').classList.add('hidden');
+                document.getElementById('logo-preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('logo-remove-btn').addEventListener('click', function (e) {
+            e.preventDefault();
+            userLogoDataUrl = null;
+            document.getElementById('logo-file-input').value = '';
+            document.getElementById('logo-upload-content').classList.remove('hidden');
+            document.getElementById('logo-preview').classList.add('hidden');
+        });
+
+        /* ══ NAVIGATION ══ */
+        function showMain() {
+            document.getElementById('view-about').classList.add('hidden');
+            document.getElementById('view-main').style.display = 'flex';
+            document.getElementById('suggest').style.display = 'block';
+            document.querySelector('.site-footer').style.display = 'block';
+            document.title = 'QRForge — Free QR Code Generator';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.querySelectorAll('.t-nav-btn').forEach(function (b) { b.classList.remove('active'); });
+            var firstNavBtn = document.querySelector('.t-nav-btn');
+            if (firstNavBtn) firstNavBtn.classList.add('active');
+        }
+
+        function showAbout() {
+            document.getElementById('view-main').style.display = 'none';
+            document.getElementById('suggest').style.display = 'none';
+            document.querySelector('.site-footer').style.display = 'none';
+            document.getElementById('view-about').classList.remove('hidden');
+            document.title = 'About — QRForge';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.querySelectorAll('.t-nav-btn').forEach(function (b) { b.classList.remove('active'); });
+            var navBtns = document.querySelectorAll('.t-nav-btn');
+            if (navBtns[1]) navBtns[1].classList.add('active');
+        }
+
+        /* ══ HAMBURGER ══ */
+        (function () {
+            var hamburger = document.getElementById('hamburger');
+            var navbar = document.getElementById('navbar');
+            var mobileMenu = document.getElementById('mobileMenu');
+            if (!hamburger) return;
+            hamburger.addEventListener('click', function () {
+                var isOpen = mobileMenu.classList.toggle('is-open');
+                navbar.classList.toggle('is-open', isOpen);
+                hamburger.setAttribute('aria-expanded', isOpen);
+                hamburger.querySelector('.icon-menu').classList.toggle('hidden', isOpen);
+                hamburger.querySelector('.icon-close').classList.toggle('hidden', !isOpen);
+            });
+        })();
+
+        function mobileClose() {
+            var mobileMenu = document.getElementById('mobileMenu');
+            var navbar = document.getElementById('navbar');
+            var hamburger = document.getElementById('hamburger');
+            if (mobileMenu) mobileMenu.classList.remove('is-open');
+            if (navbar) navbar.classList.remove('is-open');
+            if (hamburger) {
+                hamburger.setAttribute('aria-expanded', 'false');
+                var iconMenu = hamburger.querySelector('.icon-menu');
+                var iconClose = hamburger.querySelector('.icon-close');
+                if (iconMenu) iconMenu.classList.remove('hidden');
+                if (iconClose) iconClose.classList.add('hidden');
+            }
+        }
+
+        /* ══ THEME TOGGLE ══ */
+        (function () {
+            var btn = document.getElementById('themeToggle');
+            var iconSun = btn.querySelector('.icon-sun');
+            var iconMoon = btn.querySelector('.icon-moon');
+            var saved = localStorage.getItem('qrforge-theme');
+            function applyTheme(light) {
+                document.body.classList.toggle('light', light);
+                if (iconSun) iconSun.classList.toggle('hidden', light);
+                if (iconMoon) iconMoon.classList.toggle('hidden', !light);
+            }
+            applyTheme(saved === null ? true : saved === 'light');
+            btn.addEventListener('click', function () {
+                var isLight = document.body.classList.toggle('light');
+                localStorage.setItem('qrforge-theme', isLight ? 'light' : 'dark');
+                if (iconSun) iconSun.classList.toggle('hidden', isLight);
+                if (iconMoon) iconMoon.classList.toggle('hidden', !isLight);
+            });
+        })();
+
+        /* ══ SUGGESTION FORM ══ */
+        (function () {
+            var msg = document.getElementById('s-message');
+            var counter = document.getElementById('char-counter');
+            if (msg && counter) {
+                msg.addEventListener('input', function () {
+                    var len = msg.value.length;
+                    counter.textContent = len + ' / 2000';
+                    counter.className = 'char-counter' + (len > 1900 ? ' warn' : '') + (len >= 2000 ? ' over' : '');
+                });
+            }
+            var form = document.getElementById('suggest-form');
+            var successBox = document.getElementById('suggest-success');
+            var errorBox = document.getElementById('suggest-error');
+            var btn = document.getElementById('btn-suggest');
+            if (!form) return;
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var message = document.getElementById('s-message').value.trim();
+                errorBox.classList.add('hidden');
+                if (!message) {
+                    errorBox.textContent = '⚠ Please enter a message.';
+                    errorBox.classList.remove('hidden');
+                    return;
+                }
+                btn.disabled = true;
+                btn.innerHTML = '<span>⏳</span> Saving…';
+                var suggestions = JSON.parse(localStorage.getItem('qrforge-suggestions') || '[]');
+                suggestions.push({ name: document.getElementById('s-name').value.trim(), email: document.getElementById('s-email').value.trim(), message: message, date: new Date().toISOString() });
+                localStorage.setItem('qrforge-suggestions', JSON.stringify(suggestions));
+                setTimeout(function () {
+                    form.style.display = 'none';
+                    successBox.style.display = 'flex';
+                    btn.disabled = false;
+                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Suggestion';
+                }, 600);
+            });
+            document.getElementById('btn-suggest-again').addEventListener('click', function () {
+                if (msg) msg.value = '';
+                if (counter) { counter.textContent = '0 / 2000'; counter.className = 'char-counter'; }
+                document.getElementById('s-name').value = '';
+                document.getElementById('s-email').value = '';
+                form.style.display = 'flex';
+                successBox.style.display = 'none';
+            });
+        })();
+
+        /* fix eyebrow on init */
+        document.getElementById('form-eyebrow').innerHTML = '<span style="content:\'\';display:inline-block;width:16px;height:2px;border-radius:2px;background:var(--accent)"></span> URL';
+    </script>
+</body>
+
+</html>

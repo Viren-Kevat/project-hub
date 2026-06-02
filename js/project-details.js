@@ -94,33 +94,35 @@ function showSlide(idx) {
     lbCounter.textContent = `${idx + 1} / ${allItems.length}`;
 }
 
-document.querySelectorAll('#screenshotGrid .pd-gallery-item').forEach((el, i) => {
-    el.addEventListener('click', () => openLightbox(i));
-});
-
-document.querySelectorAll('#diagramList .pd-diagram-card').forEach((el, i) => {
-    el.addEventListener('click', () => {
-        buildItemList();
-        const screenshotCount = document.querySelectorAll('#screenshotGrid .pd-gallery-item').length;
-        openLightbox(screenshotCount + i);
+if (lightbox && lbClose && lbPrev && lbNext && lbImg) {
+    document.querySelectorAll('#screenshotGrid .pd-gallery-item').forEach((el, i) => {
+        el.addEventListener('click', () => openLightbox(i));
     });
-});
 
-lbClose.addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.querySelectorAll('#diagramList .pd-diagram-card').forEach((el, i) => {
+        el.addEventListener('click', () => {
+            buildItemList();
+            const screenshotCount = document.querySelectorAll('#screenshotGrid .pd-gallery-item').length;
+            openLightbox(screenshotCount + i);
+        });
+    });
 
-lbPrev.addEventListener('click', () => {
-    currentIdx = (currentIdx - 1 + allItems.length) % allItems.length;
-    showSlide(currentIdx);
-});
-lbNext.addEventListener('click', () => {
-    currentIdx = (currentIdx + 1) % allItems.length;
-    showSlide(currentIdx);
-});
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
 
-document.addEventListener('keydown', e => {
-    if (!lightbox.classList.contains('is-active')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') { currentIdx = (currentIdx - 1 + allItems.length) % allItems.length; showSlide(currentIdx); }
-    if (e.key === 'ArrowRight') { currentIdx = (currentIdx + 1) % allItems.length; showSlide(currentIdx); }
-});
+    lbPrev.addEventListener('click', () => {
+        currentIdx = (currentIdx - 1 + allItems.length) % allItems.length;
+        showSlide(currentIdx);
+    });
+    lbNext.addEventListener('click', () => {
+        currentIdx = (currentIdx + 1) % allItems.length;
+        showSlide(currentIdx);
+    });
+
+    document.addEventListener('keydown', e => {
+        if (!lightbox.classList.contains('is-active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') { currentIdx = (currentIdx - 1 + allItems.length) % allItems.length; showSlide(currentIdx); }
+        if (e.key === 'ArrowRight') { currentIdx = (currentIdx + 1) % allItems.length; showSlide(currentIdx); }
+    });
+}

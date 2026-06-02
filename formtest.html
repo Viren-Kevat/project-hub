@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Idea — Light</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Lexend+Deca:wght@100..900&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* ══════════════════════════════════════════════════════════
+       Design Tokens — mirrors ProjectsHub light mode
+    ══════════════════════════════════════════════════════════ */
+        :root {
+            --white: #ffffff;
+            --bg-light: #fafafa;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --blue-300: #93c5fd;
+            --purple: #a855f7;
+            --purple-light: #c084fc;
+            --indigo-300: #a5b4fc;
+
+            /* Light surface tokens */
+            --surface: rgba(255, 255, 255, 0.9);
+            --surface-raised: #ffffff;
+            --border: rgba(0, 0, 0, 0.09);
+            --border-focus: #3b82f6;
+
+            /* Text */
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --text-placeholder: rgba(0, 0, 0, 0.28);
+
+            /* Gradient */
+            --grad: linear-gradient(135deg, var(--blue-500), var(--purple));
+            --grad-text: linear-gradient(135deg, var(--blue-400), var(--purple-light), var(--indigo-300));
+
+            --radius-pill: 9999px;
+            --radius-card: 20px;
+            --ease-expo: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lexend Deca', sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            /* Subtle purple corner glows matching site bg-purple-left */
+            background-image:
+                radial-gradient(ellipse 70% 50% at 95% 5%, rgba(99, 102, 241, 0.07) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 40% at 100% 0%, rgba(139, 92, 246, 0.05) 0%, transparent 45%),
+                radial-gradient(ellipse 70% 50% at 5% 95%, rgba(99, 102, 241, 0.07) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 40% at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 45%);
+        }
+
+        /* ── Trigger ── */
+        .open-modal-btn {
+            font-family: 'Lexend Deca', sans-serif;
+            border: 0;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            padding: 10px 22px;
+            border-radius: var(--radius-pill);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #fff;
+            background: var(--grad);
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.25);
+            transition: transform 200ms, box-shadow 200ms;
+        }
+
+        .open-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+        }
+
+        /* ── Overlay ── */
+        .idea-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            background: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition:
+                opacity 0.4s var(--ease-expo),
+                backdrop-filter 0.4s var(--ease-expo);
+        }
+
+        .idea-modal-overlay.is-open {
+            opacity: 1;
+            pointer-events: auto;
+            background: rgba(15, 23, 42, 0.35);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* ── Modal container ── */
+        .idea-modal {
+            position: relative;
+            z-index: 9999;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow:
+                0 4px 6px -1px rgba(0, 0, 0, 0.07),
+                0 20px 60px rgba(0, 0, 0, 0.12),
+                0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: modalSlideIn 0.4s var(--ease-expo);
+        }
+
+        .idea-modal-overlay.is-closing .idea-modal {
+            animation: modalSlideOut 0.3s var(--ease-expo) forwards;
+        }
+
+        /* Shimmer top strip (matches modal-card__glass) */
+        .idea-modal::before {
+            content: '';
+            position: absolute;
+            inset-x: 0;
+            top: 0;
+            height: 100px;
+            border-radius: var(--radius-card) var(--radius-card) 0 0;
+            pointer-events: none;
+            background: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.85) 0%,
+                    rgba(255, 255, 255, 0.3) 40%,
+                    transparent 100%);
+            z-index: 0;
+        }
+
+        /* Subtle grid texture (matches modal-card__grid-texture) */
+        .idea-modal::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+            background-size: 60px 60px;
+            -webkit-mask-image: linear-gradient(to bottom right, #000, transparent 60%);
+            mask-image: linear-gradient(to bottom right, #000, transparent 60%);
+            z-index: 0;
+            border-radius: var(--radius-card);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes modalSlideOut {
+            from {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: scale(0.92) translateY(24px);
+            }
+        }
+
+        /* ── Header ── */
+        .idea-modal-header {
+            position: relative;
+            z-index: 1;
+            padding: 2rem 2rem 1rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .idea-modal-title {
+            font-family: 'Figtree', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+        }
+
+        .idea-modal-title-accent {
+            background: var(--grad-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .idea-modal-close-btn {
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .idea-modal-close-btn:hover {
+            background: rgba(0, 0, 0, 0.08);
+            color: var(--text-primary);
+            border-color: rgba(0, 0, 0, 0.15);
+            transform: scale(1.1);
+        }
+
+        /* ── Progress bar ── */
+        .idea-progress-bar {
+            position: relative;
+            z-index: 1;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.07);
+            margin: 0 2rem 1.25rem;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .idea-progress-fill {
+            height: 100%;
+            background: var(--grad);
+            border-radius: 3px;
+            transition: width 0.5s var(--ease-expo);
+            width: 0%;
+        }
+
+        /* ── Step counter ── */
+        .idea-step-counter {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* ── Body ── */
+        .idea-modal-body {
+            position: relative;
+            z-index: 1;
+            padding: 0 2rem 2rem;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Steps ── */
+        .idea-step {
+            display: none;
+            flex-direction: column;
+            gap: 1.25rem;
+            animation: stepEnter 0.45s var(--ease-expo);
+        }
+
+        .idea-step.is-active {
+            display: flex;
+        }
+
+        .idea-step.is-exiting {
+            display: flex;
+            animation: stepExit 0.28s var(--ease-expo) forwards;
+        }
+
+        @keyframes stepEnter {
+            from {
+                opacity: 0;
+                transform: translateX(36px) scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes stepExit {
+            from {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(-36px) scale(0.96);
+            }
+        }
+
+        /* ── Step question ── */
+        .idea-step-question {
+            font-family: 'Figtree', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.35;
+        }
+
+        /* ── Inputs ── */
+        .idea-form-input,
+        .idea-form-select,
+        .idea-form-textarea {
+            font-family: 'Lexend Deca', sans-serif;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.9rem 1.1rem;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            transition: all 0.25s ease;
+            width: 100%;
+            outline: none;
+        }
+
+        .idea-form-input::placeholder,
+        .idea-form-textarea::placeholder {
+            color: var(--text-placeholder);
+        }
+
+        .idea-form-input:focus,
+        .idea-form-select:focus,
+        .idea-form-textarea:focus {
+            background: rgba(59, 130, 246, 0.04);
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .idea-form-input.error,
+        .idea-form-select.error,
+        .idea-form-textarea.error {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.04);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-7px);
+            }
+
+            40% {
+                transform: translateX(7px);
+            }
+
+            60% {
+                transform: translateX(-3px);
+            }
+
+            80% {
+                transform: translateX(3px);
+            }
+        }
+
+        /* ── Select ── */
+        .idea-form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .idea-form-select option {
+            color: #0f172a;
+        }
+
+        /* ── Textarea ── */
+        .idea-form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* ── Helper / errors / char count ── */
+        .idea-form-helper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+        }
+
+        .idea-form-error {
+            color: #ef4444;
+            font-size: 0.8rem;
+            display: none;
+        }
+
+        .idea-form-error.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .idea-form-char-count {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .idea-form-char-count.warning {
+            color: #f59e0b;
+        }
+
+        .idea-form-char-count.error {
+            color: #ef4444;
+        }
+
+        /* ── Checkbox ── */
+        .idea-form-checkbox-wrap {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.4rem 0;
+        }
+
+        .idea-form-checkbox {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            margin-top: 0.1rem;
+            cursor: pointer;
+            accent-color: var(--blue-500);
+        }
+
+        .idea-form-checkbox-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        /* ── Nav buttons ── */
+        .idea-step-nav {
+            display: flex;
+            gap: 0.65rem;
+            margin-top: auto;
+            padding-top: 1.5rem;
+        }
+
+        .idea-btn {
+            flex: 1;
+            padding: 0.9rem 1rem;
+            border-radius: var(--radius-pill);
+            font-family: 'Lexend Deca', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s var(--ease-expo);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .idea-btn-secondary {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .idea-btn-secondary:hover {
+            background: rgba(0, 0, 0, 0.08);
+            color: var(--text-primary);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .idea-btn-primary {
+            background: var(--grad);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.28);
+        }
+
+        .idea-btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.42);
+        }
+
+        .idea-btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Spinner */
+        .idea-spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .idea-btn-primary.loading .idea-spinner {
+            display: block;
+        }
+
+        .idea-btn-primary.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Summary card (step 8) ── */
+        .idea-summary {
+            background: rgba(0, 0, 0, 0.025);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.1rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .idea-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .idea-summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .idea-summary-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .idea-summary-value {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+
+        /* ── Success state ── */
+        .idea-modal-success {
+            display: none;
+            text-align: center;
+            padding: 3rem 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .idea-modal-success.show {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 380px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .idea-success-icon {
+            width: 68px;
+            height: 68px;
+            margin-bottom: 1.5rem;
+            background: var(--grad);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+            animation: scaleIn 0.5s var(--ease-expo) 0.15s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .idea-success-title {
+            font-family: 'Figtree', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .idea-success-message {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 560px) {
+            .idea-modal {
+                border-radius: 16px;
+            }
+
+            .idea-modal-header {
+                padding: 1.5rem 1.5rem 0.75rem;
+            }
+
+            .idea-modal-body {
+                padding: 0 1.5rem 1.5rem;
+            }
+
+            .idea-progress-bar {
+                margin: 0 1.5rem 1rem;
+            }
+
+            .idea-modal-title {
+                font-size: 1.35rem;
+            }
+
+            .idea-form-input,
+            .idea-form-select,
+            .idea-form-textarea {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Trigger -->
+    <button class="open-modal-btn" id="openIdeaModal">Share Your Idea</button>
+
+    <!-- Modal -->
+    <div class="idea-modal-overlay" id="ideaModalOverlay" role="presentation">
+        <div class="idea-modal" role="dialog" aria-modal="true" aria-labelledby="ideaModalTitle" id="ideaModal">
+
+            <!-- Header -->
+            <div class="idea-modal-header">
+                <h2 class="idea-modal-title" id="ideaModalTitle">
+                    Share Your <span class="idea-modal-title-accent">Idea</span>
+                </h2>
+                <button class="idea-modal-close-btn" id="ideaModalClose" aria-label="Close modal">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Progress -->
+            <div class="idea-progress-bar">
+                <div class="idea-progress-fill" id="ideaProgressFill"></div>
+            </div>
+            <div class="idea-step-counter" id="ideaStepCounter">Step 1 of 8</div>
+
+            <!-- Body -->
+            <div class="idea-modal-body">
+
+                <!-- Step 1: Name -->
+                <div class="idea-step is-active" data-step="1">
+                    <div class="idea-step-question">What's your full name?</div>
+                    <div class="idea-form-field">
+                        <input type="text" id="ideaName" class="idea-form-input" placeholder="John Doe"
+                            autocomplete="name" />
+                        <span class="idea-form-error" id="ideaNameError">Please enter your name</span>
+                    </div>
+                    <div class="idea-step-nav">
+                        <button class="idea-btn idea-btn-primary" onclick="nextStep()">
+                            <span class="idea-spinner"></span>
+                            <span class="btn-text">Next →</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Email -->
+                <div class="idea-step" data-step="2">
+                    <div class="idea-step-question">What's your email address?</div>
+                    <div class="idea-form-field">
+                        <input type="email" id="ideaEmail" class="idea-form-input" placeholder="you@example.com"
+                            autocomplete="email" />
+                        <span class="idea-form-error" id="ideaEmailError">Please enter a valid email</span>
+                    </div>
+                    <div class="idea-step-nav">
+                        <button class="idea-btn idea-btn-secondary" onclick="prevStep()">← Back</button>
+                        <button class="idea-btn idea-btn-primary" onclick="nextStep()">
+                            <span class="idea-spinner"></span>
+                            <span class="btn-text">Next →</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Phone (Optional) -->
+                <div class="idea-step" data-step="3">
+                    <div class="idea-step-question">
+                        Phone number?
+                        <span style="color:var(--text-muted);font-weight:400;font-size:0.85rem;">(Optional)</span>
+                    </div>
+                    <div class="idea-form-field">
+                        <input type="tel" id="ideaPhone" class="idea-form-input" placeholder="+1 (555) 000-0000"
+                            autocomplete="tel" />
+                        <span class="idea-form-error" id="ideaPhoneError">Invalid phone format</span>
+                    </div>
+                    <div class="idea-step-nav">
+                        <button class="idea-btn idea-btn-secondary" onclick="prevStep()">← Back</button>
+                        <button class="idea-btn idea-btn-primary" onclick="nextStep()">
+                            <span class="idea-spinner"></span>
+                            <span class="btn-text">Next →</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Project Title -->
+                <div class="idea-step" data-step="4">
+                    <div class="idea-step-question">What's your project or idea called?</div>
+                    <div class="idea-form-field">
+                        <input type="text" id="ideaTitle" class="idea-form-input" placeholder="Your project name" />
+                        <span class="idea-form-error" id="ideaTitleError">Please enter a title</span>
+                    </div>
+                    <div class="idea-step-nav">
+                        <button class="idea-btn idea-btn-secondary" onclick="prevStep()">← Back</button>
+                        <button class="idea-btn idea-btn-primary" onclick="nextStep()">
+                            <span class="idea-spinner"></span>
+                            <span class="btn-text">Next →</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Description -->
+                <div class="idea-step" data-step="5">
+                    <div class="idea-step-question">Tell us about your idea</div>
+                    <div class="idea-form-field">
+                        <textarea id="ideaDescription" class="idea-form-textarea"
+                            placeholder="Describe your idea in detail… (50–500 characters)"></textarea>
+                        <div class="idea-form-helper">
+                            <span class="idea-form-error" id="ideaDescriptionError">Description must be 50–500
+                                characters</span>
+                            <span class="idea-form-char-count" id="ideaCharCount">0/500</span>
+                        </div>
+                    </div>
+                    <div class="idea-step-nav">
+                        <button class="idea-btn idea-btn-secondary" onclick="prevStep()">← Back</button>
+                        <button class="idea-btn idea-btn-primary" onclick="nextStep()">
+                            <span class="idea-spinner"></span>
+                            <span class="btn-text">Next →</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 6: Budget -->
+                <div class="idea-step" data-step="6">
+                    <div class="idea-step-question">What's your budget range?</div>
+                    <div class="idea-form-field">
+                        <select id="ideaBudget" class="idea-form-select">
+                            <option value="">Select a range</option>
+                            <option value="under-1k">Under $1K</option>
+                            <option value="1k-5k">$1K – $5K</option>
+                            <option value="5k-10k">$5K – $10K</option>
+                            <option value="10k-plus">$10K+</option>
+                            <option value="not-sure">Not sure yet</option>
+                        </select>
+                        <span class="idea-form-error" id="ideaBudgetError">Please select a budget range</span>
+                    </div>
+                    <div class="idea-step-nav">
+                        <button class="idea-btn idea-btn-secondary" onclick="prevStep()">← Back</button>
+                        <button class="idea-btn idea-btn-primary" onclick="nextStep()">
+                            <span class="idea-spinner"></span>
+                            <span class="btn-text">Next →</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 7: Timeline -->
+                <div class="idea-step" data-step="7">
+                    <div class="idea-step-question">When do you need this done?</div>
+                    <div class="idea-form-field">
+                        <select id="ideaTimeline" class="idea-form-select">
+                            <option value="">Select timeline</option>
+                            <option value="asap">ASAP</option>
+                            <option value="1-2-weeks">1–2 weeks</option>
+                            <option value="1-month">1 month</option>
+                            <option value="2-3-months">2–3 months</option>
+                            <option value="flexible">Flexible</option>
+                        </select>
+                        <span class="idea-form-error" id="ideaTimelineError">Please select a timeline</span>
+                    </div>
+                    <div class="idea-step-nav">
+                        <button class="idea-btn idea-btn-secondary" onclick="prevStep()">← Back</button>
+                        <button class="idea-btn idea-btn-primary" onclick="nextStep()">
+                            <span class="idea-spinner"></span>
+                            <span class="btn-text">Next →</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 8: Summary + Agreement -->
+                <div class="idea-step" data-step="8">
+                    <div class="idea-step-question">Ready to send?</div>
+                    <div class="idea-summary" id="ideaSummary"></div>
+                    <div class="idea-form-field" style="margin-top:0.25rem;">
+                        <div class="idea-form-checkbox-wrap">
+                            <input type="checkbox" id="ideaAgree" class="idea-form-checkbox" />
+                            <label for="ideaAgree" class="idea-form-checkbox-label">
+                                I agree to be contacted about this idea
+                            </label>
+                        </div>
+                        <span class="idea-form-error" id="ideaAgreeError" style="margin-left:2rem;">
+                            You must agree to be contacted
+                        </span>
+                    </div>
+                    <div class="idea-step-nav">
+                        <button class="idea-btn idea-btn-secondary" onclick="prevStep()">← Back</button>
+                        <button class="idea-btn idea-btn-primary" id="ideaFinalSubmit" onclick="submitForm()">
+                            <span class="idea-spinner"></span>
+                            <span class="btn-text">Send My Idea 🚀</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Success -->
+                <div class="idea-modal-success" id="ideaSuccess">
+                    <div class="idea-success-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="idea-success-title">Thanks, <span id="successName">there</span>!</h3>
+                    <p class="idea-success-message">We'll reach out soon to discuss your amazing idea.</p>
+                </div>
+
+            </div><!-- /body -->
+        </div><!-- /modal -->
+    </div><!-- /overlay -->
+
+    <script>
+        /* ═══════════════════════════════════════════════════════
+           Step-by-Step Modal Logic (identical behaviour, light UI)
+        ═══════════════════════════════════════════════════════ */
+
+        let currentStep = 1;
+        const totalSteps = 8;
+        const formData = {};
+
+        const steps = document.querySelectorAll('.idea-step');
+        const progressFill = document.getElementById('ideaProgressFill');
+        const stepCounter = document.getElementById('ideaStepCounter');
+        const overlay = document.getElementById('ideaModalOverlay');
+        const successDiv = document.getElementById('ideaSuccess');
+
+        const fields = {
+            name: document.getElementById('ideaName'),
+            email: document.getElementById('ideaEmail'),
+            phone: document.getElementById('ideaPhone'),
+            title: document.getElementById('ideaTitle'),
+            description: document.getElementById('ideaDescription'),
+            budget: document.getElementById('ideaBudget'),
+            timeline: document.getElementById('ideaTimeline'),
+            agree: document.getElementById('ideaAgree')
+        };
+
+        const errors = {
+            name: document.getElementById('ideaNameError'),
+            email: document.getElementById('ideaEmailError'),
+            phone: document.getElementById('ideaPhoneError'),
+            title: document.getElementById('ideaTitleError'),
+            description: document.getElementById('ideaDescriptionError'),
+            budget: document.getElementById('ideaBudgetError'),
+            timeline: document.getElementById('ideaTimelineError'),
+            agree: document.getElementById('ideaAgreeError')
+        };
+
+        // Open / Close
+        document.getElementById('openIdeaModal').addEventListener('click', openModal);
+        document.getElementById('ideaModalClose').addEventListener('click', closeModal);
+        overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+        });
+
+        function openModal() {
+            overlay.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => fields.name.focus(), 300);
+        }
+
+        function closeModal() {
+            overlay.classList.add('is-closing');
+            setTimeout(() => {
+                overlay.classList.remove('is-open', 'is-closing');
+                document.body.style.overflow = '';
+                resetForm();
+            }, 300);
+        }
+
+        // Char counter
+        fields.description.addEventListener('input', () => {
+            const count = fields.description.value.length;
+            const cc = document.getElementById('ideaCharCount');
+            cc.textContent = count + '/500';
+            cc.classList.remove('warning', 'error');
+            if (count < 50) cc.classList.add('error');
+            else if (count > 450) cc.classList.add('warning');
+            clearError(fields.description);
+        });
+
+        // Clear error on interaction
+        Object.values(fields).forEach(f => {
+            if (!f) return;
+            const ev = f.type === 'checkbox' ? 'change' : 'input';
+            f.addEventListener(ev, () => clearError(f));
+        });
+
+        function clearError(field) {
+            field.classList.remove('error');
+            const key = field.id.replace('idea', '').toLowerCase();
+            if (errors[key]) errors[key].classList.remove('show');
+        }
+
+        function showError(field, key) {
+            field.classList.add('error');
+            if (errors[key]) errors[key].classList.add('show');
+        }
+
+        function updateProgress() {
+            progressFill.style.width = (currentStep / totalSteps * 100) + '%';
+            stepCounter.textContent = `Step ${currentStep} of ${totalSteps}`;
+        }
+
+        function goToStep(step) {
+            if (step < 1 || step > totalSteps) return;
+            const cur = document.querySelector(`.idea-step[data-step="${currentStep}"]`);
+            const next = document.querySelector(`.idea-step[data-step="${step}"]`);
+
+            if (step > currentStep) {
+                cur.classList.add('is-exiting');
+                cur.classList.remove('is-active');
+                setTimeout(() => {
+                    cur.classList.remove('is-exiting');
+                    next.classList.add('is-active');
+                    const inp = next.querySelector('input, textarea, select');
+                    if (inp) setTimeout(() => inp.focus(), 80);
+                }, 240);
+            } else {
+                cur.classList.remove('is-active');
+                next.classList.add('is-active');
+                const inp = next.querySelector('input, textarea, select');
+                if (inp) setTimeout(() => inp.focus(), 80);
+            }
+
+            currentStep = step;
+            updateProgress();
+            if (step === 8) buildSummary();
+        }
+
+        function validateStep(step) {
+            let valid = true;
+            if (step === 1) {
+                if (!fields.name.value.trim()) { showError(fields.name, 'name'); valid = false; }
+            } else if (step === 2) {
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email.value)) { showError(fields.email, 'email'); valid = false; }
+            } else if (step === 3) {
+                if (fields.phone.value.trim() && !/^\+?[\d\s\-()]{10,}$/.test(fields.phone.value)) {
+                    showError(fields.phone, 'phone'); valid = false;
+                }
+            } else if (step === 4) {
+                if (!fields.title.value.trim()) { showError(fields.title, 'title'); valid = false; }
+            } else if (step === 5) {
+                const len = fields.description.value.trim().length;
+                if (len < 50 || len > 500) { showError(fields.description, 'description'); valid = false; }
+            } else if (step === 6) {
+                if (!fields.budget.value) { showError(fields.budget, 'budget'); valid = false; }
+            } else if (step === 7) {
+                if (!fields.timeline.value) { showError(fields.timeline, 'timeline'); valid = false; }
+            } else if (step === 8) {
+                if (!fields.agree.checked) { showError(fields.agree, 'agree'); valid = false; }
+            }
+            return valid;
+        }
+
+        function nextStep() { if (!validateStep(currentStep)) return; saveStepData(currentStep); if (currentStep < totalSteps) goToStep(currentStep + 1); }
+        function prevStep() { if (currentStep > 1) goToStep(currentStep - 1); }
+
+        function saveStepData(step) {
+            if (step === 1) formData.name = fields.name.value.trim();
+            if (step === 2) formData.email = fields.email.value.trim();
+            if (step === 3) formData.phone = fields.phone.value.trim() || 'Not provided';
+            if (step === 4) formData.title = fields.title.value.trim();
+            if (step === 5) formData.description = fields.description.value.trim();
+            if (step === 6) formData.budget = fields.budget.value;
+            if (step === 7) formData.timeline = fields.timeline.value;
+            if (step === 8) formData.agreed = fields.agree.checked;
+        }
+
+        function buildSummary() {
+            const budgetLabels = { 'under-1k': 'Under $1K', '1k-5k': '$1K – $5K', '5k-10k': '$5K – $10K', '10k-plus': '$10K+', 'not-sure': 'Not sure yet' };
+            const timelineLabels = { 'asap': 'ASAP', '1-2-weeks': '1–2 weeks', '1-month': '1 month', '2-3-months': '2–3 months', 'flexible': 'Flexible' };
+            document.getElementById('ideaSummary').innerHTML = `
+        <div class="idea-summary-row"><span class="idea-summary-label">Name</span><span class="idea-summary-value">${formData.name || '-'}</span></div>
+        <div class="idea-summary-row"><span class="idea-summary-label">Email</span><span class="idea-summary-value">${formData.email || '-'}</span></div>
+        <div class="idea-summary-row"><span class="idea-summary-label">Phone</span><span class="idea-summary-value">${formData.phone || '-'}</span></div>
+        <div class="idea-summary-row"><span class="idea-summary-label">Project</span><span class="idea-summary-value">${formData.title || '-'}</span></div>
+        <div class="idea-summary-row"><span class="idea-summary-label">Budget</span><span class="idea-summary-value">${budgetLabels[formData.budget] || '-'}</span></div>
+        <div class="idea-summary-row"><span class="idea-summary-label">Timeline</span><span class="idea-summary-value">${timelineLabels[formData.timeline] || '-'}</span></div>
+      `;
+        }
+
+        function submitForm() {
+            if (!validateStep(8)) return;
+            saveStepData(8);
+
+            const btn = document.getElementById('ideaFinalSubmit');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            const payload = { ...formData, submittedAt: new Date().toISOString() };
+            console.log('📬 Submission:', payload);
+
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                steps.forEach(s => s.classList.remove('is-active'));
+                document.getElementById('ideaStepCounter').style.display = 'none';
+                document.querySelector('.idea-progress-bar').style.display = 'none';
+                successDiv.classList.add('show');
+                document.getElementById('successName').textContent = formData.name || 'there';
+                setTimeout(() => closeModal(), 3500);
+            }, 1500);
+        }
+
+        function resetForm() {
+            currentStep = 1;
+            Object.values(fields).forEach(f => { if (f) { f.value = ''; f.checked = false; f.classList.remove('error'); } });
+            Object.values(errors).forEach(e => { if (e) e.classList.remove('show'); });
+            steps.forEach(s => s.classList.remove('is-active', 'is-exiting'));
+            document.querySelector('.idea-step[data-step="1"]').classList.add('is-active');
+            document.getElementById('ideaCharCount').textContent = '0/500';
+            document.getElementById('ideaStepCounter').style.display = '';
+            document.querySelector('.idea-progress-bar').style.display = '';
+            successDiv.classList.remove('show');
+            updateProgress();
+        }
+
+        // Init
+        updateProgress();
+    </script>
+
+</body>
+
+</html>

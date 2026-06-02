@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="ProjectsHub Admin Dashboard — Manage visitors, payments, registrations and analytics." />
+    <title>Admin Dashboard | ProjectsHub</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Lexend+Deca:wght@100..900&display=swap"
+        rel="stylesheet" />
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+    <!-- Site-wide styles (navbar, aurora bg, theme toggle) -->
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- Admin Dashboard styles -->
+    <link rel="stylesheet" href="css/admin.css" />
+</head>
+
+<body data-quantum-loader class="overflow-x-hidden bg-purple-left light">
+
+    <!-- ── Navbar (same as site) ── -->
+    <header class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="index.html" class="navbar__logo">
+                <img src="image/favicon_io/apple-touch-icon.png" alt="ProjectsHub" class="navbar__logo-img" />
+                <span class="navbar__brand">ProjectsHub</span>
+            </a>
+            <nav class="navbar__links" aria-label="Primary navigation">
+                <div class="pill-slider" id="pillSlider"></div>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="workshop.html" class="nav-link">Workshop</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+            <div class="navbar__actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <svg class="icon-sun hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+                <div class="cta-wrap">
+                    <div class="cta-glow" aria-hidden="true"></div>
+                    <a href="index.html" class="btn-cta">Back to Site</a>
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <svg class="icon-menu" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="icon-close hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
+            <nav class="mobile-links">
+                <a href="projects.html" class="mobile-link">Projects</a>
+                <a href="index.html#about" class="mobile-link">About</a>
+                <a href="workshop.html" class="mobile-link">Workshop</a>
+                <a href="index.html#contact" class="mobile-link">Contact</a>
+            </nav>
+            <a href="index.html" class="btn-cta btn-cta--mobile">Back to Site</a>
+        </div>
+    </header>
+
+    <!-- ── Main Content ── -->
+    <div class="main-body" style="position:relative;z-index:1;">
+        <main class="admin-main admin-main--full container mx-auto">
+
+            <!-- Admin Sub-Header -->
+            <div class="admin-topbar admin-topbar--inline">
+                <div class="topbar-left">
+                    <h1 class="topbar-title">Admin <span>Dashboard</span></h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="topbar-badge">
+                        <span class="topbar-badge__dot"></span>
+                        Live
+                    </div>
+                    <button class="topbar-btn" id="refreshDashboard" title="Refresh data">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10" />
+                            <polyline points="1 20 1 14 7 14" />
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                        </svg>
+                    </button>
+                    <button class="topbar-btn" title="Notifications">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                        </svg>
+                        <span class="topbar-btn__dot"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="admin-content">
+
+                <!-- ── KPI Stat Cards ── -->
+                <div class="stats-grid">
+                    <!-- Total Visitors -->
+                    <div class="stat-card stat-card--blue">
+                        <div class="stat-card__glow"></div>
+                        <div class="stat-card__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </div>
+                        <div class="stat-card__value" id="kpiTotalVisitors">24,586</div>
+                        <div class="stat-card__label">Website Visitors</div>
+                        <div class="stat-card__trend stat-card__trend--up">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                            </svg>
+                            +12.5% this month
+                        </div>
+                    </div>
+
+                    <!-- Tool Visits -->
+                    <div class="stat-card stat-card--purple">
+                        <div class="stat-card__glow"></div>
+                        <div class="stat-card__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                            </svg>
+                        </div>
+                        <div class="stat-card__value" id="kpiToolVisits">8,342</div>
+                        <div class="stat-card__label">Tool Visits</div>
+                        <div class="stat-card__trend stat-card__trend--up">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                            </svg>
+                            +8.3% this month
+                        </div>
+                    </div>
+
+                    <!-- Total Revenue -->
+                    <div class="stat-card stat-card--green">
+                        <div class="stat-card__glow"></div>
+                        <div class="stat-card__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23" />
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            </svg>
+                        </div>
+                        <div class="stat-card__value" id="kpiRevenue">₹1,84,500</div>
+                        <div class="stat-card__label">Total Revenue</div>
+                        <div class="stat-card__trend stat-card__trend--up">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                            </svg>
+                            +23.1% this month
+                        </div>
+                    </div>
+
+                    <!-- Registered Users -->
+                    <div class="stat-card stat-card--yellow">
+                        <div class="stat-card__glow"></div>
+                        <div class="stat-card__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                        <div class="stat-card__value" id="kpiUsers">312</div>
+                        <div class="stat-card__label">Registered Users</div>
+                        <div class="stat-card__trend stat-card__trend--up">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                            </svg>
+                            +15 this week
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Charts Row: Website Visitors + Tools Visitors ── -->
+                <div class="charts-row">
+                    <!-- Website Visitors Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">Website Visitors</div>
+                                <div class="chart-subtitle">Unique visitors over time</div>
+                            </div>
+                            <div class="chart-actions">
+                                <button class="chart-filter-btn" data-range="7d" data-chart="visitors">7D</button>
+                                <button class="chart-filter-btn is-active" data-range="30d"
+                                    data-chart="visitors">30D</button>
+                                <button class="chart-filter-btn" data-range="90d" data-chart="visitors">90D</button>
+                            </div>
+                        </div>
+                        <div class="chart-body" id="chartWebsiteVisitors"></div>
+                    </div>
+
+                    <!-- Tools Visitor Counts Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">Tools Visitor Counts</div>
+                                <div class="chart-subtitle">Visits per tool / page</div>
+                            </div>
+                            <div class="chart-actions">
+                                <button class="chart-filter-btn is-active" data-range="all"
+                                    data-chart="tools">All</button>
+                                <button class="chart-filter-btn" data-range="7d" data-chart="tools">7D</button>
+                                <button class="chart-filter-btn" data-range="30d" data-chart="tools">30D</button>
+                            </div>
+                        </div>
+                        <div class="chart-body" id="chartToolsVisitors"></div>
+                    </div>
+                </div>
+
+                <!-- ── Revenue / Payments Chart (full width) ── -->
+                <div class="charts-row">
+                    <div class="chart-card chart-card--full">
+                        <div class="chart-header">
+                            <div>
+                                <div class="chart-title">Revenue Overview</div>
+                                <div class="chart-subtitle">Daily payments collected</div>
+                            </div>
+                            <div class="chart-actions">
+                                <button class="chart-filter-btn" data-range="7d" data-chart="revenue">7D</button>
+                                <button class="chart-filter-btn is-active" data-range="30d"
+                                    data-chart="revenue">30D</button>
+                                <button class="chart-filter-btn" data-range="90d" data-chart="revenue">90D</button>
+                            </div>
+                        </div>
+                        <div class="chart-body" id="chartRevenue"></div>
+                    </div>
+                </div>
+
+                <!-- ── Payment Info Table ── -->
+                <div class="table-card" id="sectionPayments">
+                    <div class="table-card__header">
+                        <div class="table-card__title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                style="display:inline;vertical-align:middle;margin-right:6px;color:var(--admin-accent)">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                                <line x1="1" y1="10" x2="23" y2="10" />
+                            </svg>
+                            Payment Transactions
+                        </div>
+                        <div class="table-card__actions">
+                            <div class="date-filter">
+                                <span class="date-filter__label">From</span>
+                                <input type="date" class="date-filter__input" id="paymentDateFrom" />
+                                <span class="date-filter__label">To</span>
+                                <input type="date" class="date-filter__input" id="paymentDateTo" />
+                                <button class="date-filter__btn" id="filterPayments">Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="admin-table" id="paymentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>User</th>
+                                    <th>Workshop</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentsTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-footer">
+                        <div class="table-footer__info" id="paymentsInfo">Showing 1–10 of 48 transactions</div>
+                        <div class="table-pagination" id="paymentsPagination">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Registered Users Table ── -->
+                <div class="table-card" id="sectionUsers">
+                    <div class="table-card__header">
+                        <div class="table-card__title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                style="display:inline;vertical-align:middle;margin-right:6px;color:var(--admin-accent)">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                            Registered Users
+                        </div>
+                        <div class="table-card__actions">
+                            <div class="table-search">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg>
+                                <input type="text" class="table-search__input" id="userSearch"
+                                    placeholder="Search users..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="admin-table" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Phone</th>
+                                    <th>Workshop</th>
+                                    <th>Experience</th>
+                                    <th>Registered</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-footer">
+                        <div class="table-footer__info" id="usersInfo">Showing 1–10 of 28 users</div>
+                        <div class="table-pagination" id="usersPagination">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- Site-wide script (navbar, theme toggle, hamburger) -->
+    <script src="js/script.js"></script>
+    <!-- Admin Dashboard JS -->
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

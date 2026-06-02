@@ -59,7 +59,10 @@
         }
 
         // Restore saved preference
-        if (localStorage.getItem('ph-theme') === 'light') applyTheme(true);
+        var savedTheme = localStorage.getItem('ph-theme');
+        if (savedTheme === 'light') applyTheme(true);
+        else if (savedTheme === 'dark') applyTheme(false);
+        else if (document.body.classList.contains('light')) applyTheme(true);
 
         themeToggle.addEventListener('click', function () {
             applyTheme(!document.body.classList.contains('light'));

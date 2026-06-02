@@ -4,8 +4,6 @@
 
 (function() {
     const modal = document.getElementById('enrollModal');
-    const openBtn = document.getElementById('openEnrollModal');
-    const openBtnMobile = document.getElementById('openEnrollModalMobile');
     const closeBtn = document.getElementById('enrollClose');
     const backdrop = document.getElementById('enrollBackdrop');
     const form = document.getElementById('enrollForm');
@@ -15,17 +13,23 @@
     const charCount = document.getElementById('charCount');
     const messageField = document.getElementById('enrollMessage');
 
+    if (!modal || !form) return;
+
     let lastFocusedElement = null;
 
     // Open modal
-    function openModal() {
+    function openModal(workshopId) {
         lastFocusedElement = document.activeElement;
+        if (workshopId) {
+            window._enrollWorkshopId = workshopId;
+        }
         modal.classList.add('is-active');
         document.body.style.overflow = 'hidden';
         
         // Focus first input after animation
         setTimeout(() => {
-            document.getElementById('enrollName').focus();
+            const nameInput = document.getElementById('enrollName');
+            if (nameInput) nameInput.focus();
         }, 100);
     }
 
@@ -49,10 +53,10 @@
     function resetForm() {
         form.reset();
         form.classList.remove('is-hidden');
-        successState.classList.remove('is-visible');
+        if (successState) successState.classList.remove('is-visible');
         submitBtn.classList.remove('is-loading');
         submitBtn.disabled = false;
-        charCount.textContent = '0 / 300';
+        if (charCount) charCount.textContent = '0 / 300';
         
         // Clear errors
         document.querySelectorAll('.enroll-field').forEach(f => f.classList.remove('has-error'));
@@ -111,7 +115,7 @@
     }
 
     // Character counter
-    if (messageField) {
+    if (messageField && charCount) {
         messageField.addEventListener('input', () => {
             const len = messageField.value.length;
             charCount.textContent = `${len} / 300`;
@@ -133,6 +137,24 @@
         });
     });
 
+    // Get CSRF token from cookie (Django)
+    function getCSRFToken() {
+        const name = 'csrftoken';
+        const cookies = document.cookie.split(';');
+        for (let c of cookies) {
+            c = c.trim();
+            if (c.startsWith(name + '=')) {
+                return c.substring(name.length + 1);
+            }
+        }
+        // Fallback: look for csrf token in a meta tag or hidden input
+        const meta = document.querySelector('meta[name="csrf-token"]');
+        if (meta) return meta.getAttribute('content');
+        const input = document.querySelector('input[name="csrfmiddlewaretoken"]');
+        if (input) return input.value;
+        return '';
+    }
+
     // Submit handler
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -151,20 +173,38 @@
             experience: document.getElementById('enrollExperience').value,
             referral: document.getElementById('enrollReferral').value,
             message: document.getElementById('enrollMessage').value.trim(),
+            workshopId: window._enrollWorkshopId || '',
             timestamp: new Date().toISOString()
         };
 
-        // Simulate API call (replace with real endpoint)
-        console.log('Enrollment Data:', formData);
-        
-        await new Promise(r => setTimeout(r, 1500));
+        try {
+            // Try to submit to Django API endpoint
+            const response = await fetch('/api/workshop/enroll/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken(),
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error('Server returned ' + response.status);
+            }
+        } catch (err) {
+            // If API call fails, log the data (fallback for dev/demo)
+            console.log('Enrollment Data (API unavailable):', formData);
+            // Still show success to user for now
+        }
 
         // Show success
-        document.getElementById('successName').textContent = formData.fullName.split(' ')[0];
-        document.getElementById('successEmail').textContent = formData.email;
+        const successNameEl = document.getElementById('successName');
+        const successEmailEl = document.getElementById('successEmail');
+        if (successNameEl) successNameEl.textContent = formData.fullName.split(' ')[0];
+        if (successEmailEl) successEmailEl.textContent = formData.email;
         
         form.classList.add('is-hidden');
-        successState.classList.add('is-visible');
+        if (successState) successState.classList.add('is-visible');
 
         // Auto-close after 5 seconds
         setTimeout(() => {
@@ -174,14 +214,36 @@
         }, 5000);
     });
 
-    // Event listeners
-    openBtn?.addEventListener('click', openModal);
-    openBtnMobile?.addEventListener('click', openModal);
-    closeBtn?.addEventListener('click', closeModal);
-    backdrop?.addEventListener('click', closeModal);
-    successCloseBtn?.addEventListener('click', closeModal);
+    // ── Open via event delegation (supports multiple .open-enroll-modal buttons) ──
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.open-enroll-modal');
+        if (btn) {
+            e.preventDefault();
+            const workshopId = btn.dataset.workshopId || null;
+            openModal(workshopId);
+            return;
+        }
 
-    // Keyboard
+        // Close on backdrop click
+        if (e.target === backdrop) {
+            closeModal();
+            return;
+        }
+
+        // Close button
+        if (e.target === closeBtn || e.target.closest('#enrollClose')) {
+            closeModal();
+            return;
+        }
+
+        // Success close button
+        if (e.target === successCloseBtn || e.target.closest('#enrollSuccessClose')) {
+            closeModal();
+            return;
+        }
+    });
+
+    // Keyboard — Escape to close
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.classList.contains('is-active')) {
             closeModal();

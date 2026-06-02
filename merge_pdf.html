@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block title %}Merge PDF - PDF Hub{% endblock %}
+
+{% block content %}
+<style>
+    /* ── Page-specific styles only (base.html handles background, navbar, glass-card, etc.) ── */
+    .tool-page {
+        position: relative;
+        z-index: 1;
+        padding: 8rem 1.5rem 4rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        color: var(--text-bright);
+        letter-spacing: -0.02em;
+    }
+    .page-title span {
+        background: linear-gradient(135deg, var(--blue-500, #3b82f6), var(--purple, #a855f7), var(--indigo-300, #a5b4fc));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .page-desc {
+        text-align: center;
+        color: var(--text-secondary);
+        margin-bottom: 3rem;
+        font-weight: 300;
+        font-size: 1.05rem;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    .file-list {
+        margin-top: 2rem;
+    }
+
+    .file-item {
+        background: rgba(0, 0, 0, 0.03);
+        border: 1px solid var(--border-glass);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: var(--text-body);
+        transition: background 200ms;
+    }
+    .file-item:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-remove {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-family: inherit;
+        transition: background 200ms;
+    }
+    .btn-remove:hover {
+        background: rgba(239, 68, 68, 0.2);
+    }
+
+    .w-100 { width: 100%; }
+    .mt-4 { margin-top: 1.5rem; }
+</style>
+
+<div class="container tool-page">
+    <h1 class="page-title">Merge <span>PDF Files</span></h1>
+    <p class="page-desc">Combine multiple PDF files into a single document</p>
+
+    <div class="glass-card">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+                <i data-lucide="upload-cloud" width="48" height="48" style="color: #667eea; margin-bottom: 1rem;"></i>
+                <h4>Click to upload or drag & drop</h4>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Upload multiple PDF files</p>
+                <input type="file" id="fileInput" name="pdf_files" accept=".pdf" multiple>
+            </div>
+
+            <div class="file-list" id="fileList"></div>
+
+            <button type="submit" class="btn-gradient w-100 mt-4">
+                <i data-lucide="merge" width="20" height="20" style="margin-right: 0.5rem;"></i>
+                Merge PDFs
+            </button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Merging your PDFs...</p>
+        </div>
+
+        <div id="result"></div>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    let selectedFiles = [];
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const uploadBox = document.querySelector('.upload-box');
+    const form = document.getElementById('uploadForm');
+
+    fileInput.addEventListener('change', handleFileSelect);
+
+    function handleFileSelect(e) {
+        const files = Array.from(e.target.files);
+        selectedFiles = [...selectedFiles, ...files];
+        updateFileList();
+    }
+
+    function updateFileList() {
+        fileList.innerHTML = '';
+        selectedFiles.forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <span><i data-lucide="file" width="20" height="20" style="margin-right: 0.5rem;"></i>${file.name}</span>
+                <button type="button" class="btn-remove" onclick="removeFile(${index})">Remove</button>
+            `;
+            fileList.appendChild(fileItem);
+        });
+        lucide.createIcons();
+    }
+
+    function removeFile(index) {
+        selectedFiles.splice(index, 1);
+        updateFileList();
+    }
+
+    // Drag and drop
+    uploadBox.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadBox.classList.add('dragover');
+    });
+
+    uploadBox.addEventListener('dragleave', () => {
+        uploadBox.classList.remove('dragover');
+    });
+
+    uploadBox.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadBox.classList.remove('dragover');
+        const files = Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.pdf'));
+        selectedFiles = [...selectedFiles, ...files];
+        updateFileList();
+    });
+
+    // Form submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (selectedFiles.length < 2) {
+            showResult('Please select at least 2 PDF files', 'error');
+            return;
+        }
+
+        const formData = new FormData();
+        selectedFiles.forEach(file => {
+            formData.append('pdf_files', file);
+        });
+
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('result').innerHTML = '';
+
+        try {
+            const response = await fetch('{% url "merge_pdf" %}', {
+                method: 'POST',
+                body: formData
+            });
+
+            document.getElementById('loading').style.display = 'none';
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'merged.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+                showResult('PDF files merged successfully!', 'success');
+                selectedFiles = [];
+                updateFileList();
+            } else {
+                const error = await response.json();
+                showResult(error.error || 'An error occurred', 'error');
+            }
+        } catch (error) {
+            document.getElementById('loading').style.display = 'none';
+            showResult('An error occurred: ' + error.message, 'error');
+        }
+    });
+
+    function showResult(message, type) {
+        const result = document.getElementById('result');
+        result.innerHTML = `<div class="alert-custom alert-${type}">${message}</div>`;
+    }
+</script>
+{% endblock %}

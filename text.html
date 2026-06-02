@@ -1,0 +1,2804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SpeakFlow AI — Text to Speech</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Lexend+Deca:wght@100..900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <style>
+        /* ═══════════════════ TOKENS ═══════════════════ */
+        :root {
+            --white: #ffffff;
+            --black: #000000;
+            --bg-dark: #0a0a0a;
+            --bg-light: #fafafa;
+            --blue-500: #3b82f6;
+            --indigo-300: #a5b4fc;
+            --blue-300: #93c5fd;
+            --violet-200: #ddd6fe;
+            --blue-400: #60a5fa;
+            --purple: #a855f7;
+            --purple-light: #c084fc;
+            --bg-glass: rgba(18, 18, 24, 0.62);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --text-bright: #ffffff;
+            --text-muted: #9ca3af;
+            --text-body: #d1d5db;
+            --radius-pill: 9999px;
+            --radius-card: 16px;
+            --nav-transition: 300ms ease;
+            --ease-out-expo: cubic-bezier(0.23, 1, 0.32, 1);
+            --font-mono: 'Lexend Deca', monospace;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lexend Deca', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-bright);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ═══════════════════ BG-PURPLE-LEFT (matches index.html) ═══════════════════ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 90% 10%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 100% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 10% 90%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 0% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+        }
+
+        body.light::before {
+            background:
+                radial-gradient(ellipse 80% 60% at 90% 10%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 100% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 10% 90%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 0% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%)
+        }
+
+        body.light {
+            background: var(--bg-light);
+            color: #0f172a;
+            --text-bright: #0f172a;
+            --text-muted: #64748b;
+            --text-body: #374151;
+            --border-glass: rgba(0, 0, 0, 0.1);
+            --bg-glass: rgba(255, 255, 255, 0.72);
+        }
+
+        body.light .navbar {
+            background: rgba(250, 250, 250, 0.8);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light .navbar__brand {
+            color: #0f172a;
+        }
+
+        body.light .nav-link {
+            color: #64748b;
+        }
+
+        body.light .nav-link:hover {
+            color: #0f172a;
+        }
+
+        body.light .theme-toggle {
+            color: #64748b;
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        body.light .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light .glass-card:hover {
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        body.light .sf-select,
+        body.light textarea,
+        body.light input[type=range] {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.12);
+            color: #0f172a;
+        }
+
+
+
+        body.light .section-label {
+            color: #475569;
+        }
+
+        body.light .section-title {
+            color: #0f172a;
+        }
+
+        body.light .btn-ghost {
+            color: #475569;
+            border-color: rgba(0, 0, 0, 0.14);
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        body.light .btn-ghost:hover {
+            background: rgba(0, 0, 0, 0.09);
+            color: #0f172a;
+            border-color: rgba(0, 0, 0, 0.22);
+        }
+
+        body.light .hero-title {
+            color: #0f172a;
+        }
+
+        body.light .hero-subtitle {
+            color: #64748b;
+        }
+
+        body.light .stat-number {
+            color: #0f172a;
+        }
+
+        body.light .stat-label {
+            color: #64748b;
+        }
+
+        body.light .hamburger {
+            background: rgba(0, 0, 0, 0.05);
+            color: #64748b;
+        }
+
+        body.light .hamburger:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #111827;
+        }
+
+        body.light .navbar__mobile {
+            background: rgba(250, 250, 250, 0.97);
+        }
+
+        body.light .mobile-link {
+            color: #64748b;
+        }
+
+        body.light .site-footer {
+            border-top-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light .footer-logo__text,
+        body.light .footer-copy,
+        body.light .footer-credit {
+            color: #0f172a;
+        }
+
+        body.light .footer-tagline,
+        body.light .footer-link {
+            color: #64748b;
+        }
+
+        body.light .footer-link:hover {
+            color: #0f172a;
+        }
+
+        body.light .footer-social {
+            color: #64748b;
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        body.light .footer-social:hover {
+            background: rgba(0, 0, 0, 0.08);
+            color: #111827;
+        }
+
+        body.light .footer-links__title {
+            color: #0f172a;
+        }
+
+        body.light .suggestion-card {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        body.light .suggestion-card:hover {
+            background: rgba(0, 0, 0, 0.06);
+            border-color: rgba(59, 130, 246, 0.35);
+        }
+
+        body.light .suggestion-title {
+            color: #0f172a;
+        }
+
+        body.light .suggestion-desc {
+            color: #64748b;
+        }
+
+        body.light .voice-card {
+            background: rgba(0, 0, 0, 0.06);
+            border-color: rgba(0, 0, 0, 0.14);
+        }
+
+        body.light .voice-card:hover {
+            background: rgba(59, 130, 246, 0.09);
+            border-color: rgba(59, 130, 246, 0.38);
+        }
+
+        body.light .voice-name {
+            color: #0f172a;
+        }
+
+        body.light .voice-meta {
+            color: #64748b;
+        }
+
+        body.light .counter-display {
+            color: #64748b;
+        }
+
+        body.light .speed-labels span {
+            color: #64748b;
+        }
+
+        body.light label {
+            color: #475569 !important;
+        }
+
+        body.light #speed-display,
+        body.light #pitch-display,
+        body.light #volume-display {
+            color: #2563eb;
+        }
+
+        body.light .tab-bar {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.11);
+        }
+
+        body.light .tab-btn {
+            color: #475569;
+        }
+
+        body.light .tab-btn:hover {
+            background: rgba(0, 0, 0, 0.06);
+            color: #0f172a;
+        }
+
+        body.light .tab-btn.active {
+            background: rgba(59, 130, 246, 0.13);
+            color: #2563eb;
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        body.light .btn-download {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.28);
+            color: #2563eb;
+        }
+
+        body.light .btn-download:hover {
+            background: rgba(59, 130, 246, 0.18);
+            color: #1d4ed8;
+        }
+
+        body.light .voice-search {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.12);
+            color: #0f172a;
+        }
+
+        body.light .voice-search::placeholder {
+            color: rgba(100, 116, 139, 0.55);
+        }
+
+        body.light .section-badge {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.12);
+            color: #475569;
+        }
+
+        body.light .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.07);
+            color: #0f172a;
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        body.light .voice-badge {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        body.light .voice-count-badge {
+            color: #64748b;
+        }
+
+        /* ═══════════════════ NAVBAR ═══════════════════ */
+        .navbar {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: calc(100% - 2rem);
+            max-width: 1100px;
+            padding: 10px 20px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-glass);
+            background: var(--bg-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: border-radius var(--nav-transition);
+        }
+
+        .navbar.is-open {
+            border-radius: var(--radius-card);
+        }
+
+        .navbar__inner {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .navbar__logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .navbar__logo-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: transform 300ms;
+        }
+
+        .navbar__logo:hover .navbar__logo-img {
+            transform: scale(1.08);
+        }
+
+        .navbar__brand {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            letter-spacing: -0.01em;
+        }
+
+        .navbar__links {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .navbar__links {
+                display: flex;
+            }
+        }
+
+        .pill-slider {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 36px;
+            border-radius: var(--radius-pill);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            pointer-events: none;
+            opacity: 0;
+            transition: left 350ms var(--ease-out-expo), width 350ms var(--ease-out-expo), opacity 200ms ease;
+            z-index: 0;
+        }
+
+        .navbar__links:hover .pill-slider {
+            opacity: 1;
+        }
+
+        .nav-link {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 18px;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            background: transparent;
+            transition: color 250ms ease;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text-bright);
+        }
+
+        .navbar__actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 200ms, color 200ms;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-bright);
+        }
+
+        .cta-wrap {
+            position: relative;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .cta-wrap {
+                display: block;
+            }
+        }
+
+        .cta-glow {
+            position: absolute;
+            inset: -8px;
+            border-radius: var(--radius-pill);
+            background: #e5e7eb;
+            opacity: 0.3;
+            filter: blur(14px);
+            pointer-events: none;
+            transition: opacity 300ms, filter 300ms;
+        }
+
+        .cta-wrap:hover .cta-glow {
+            opacity: 0.55;
+            filter: blur(22px);
+        }
+
+        .btn-cta {
+            border: 0;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: var(--radius-pill);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #000;
+            background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 200ms, transform 200ms;
+        }
+
+        .btn-cta:hover {
+            background: linear-gradient(135deg, #e5e7eb, #b0b8c1);
+            transform: translateY(-1px);
+        }
+
+        .hamburger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: background 200ms, color 200ms;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-bright);
+        }
+
+        @media (min-width: 768px) {
+            .hamburger {
+                display: none;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .navbar__mobile {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: max-height var(--nav-transition), opacity var(--nav-transition), padding var(--nav-transition);
+        }
+
+        .navbar__mobile.is-open {
+            max-height: 400px;
+            opacity: 1;
+            pointer-events: auto;
+            padding-top: 16px;
+        }
+
+        .mobile-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mobile-link {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 200ms;
+            width: 100%;
+            text-align: center;
+        }
+
+        .mobile-link:hover {
+            color: var(--text-bright);
+        }
+
+        .btn-cta--mobile {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            margin-top: 12px;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #f3f4f6, #d1d5db);
+            color: #000;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+
+        /* ═══════════════════ PAGE ═══════════════════ */
+        .page-content {
+            position: relative;
+            z-index: 3;
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
+
+        /* ═══════════════════ 3-COLUMN LAYOUT ═══════════════════ */
+        .main-3col {
+            display: grid;
+            grid-template-columns: 280px 1fr 400px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 1200px) {
+            .main-3col {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .main-3col .col-left {
+                grid-column: 1 / -1;
+                order: 2;
+            }
+
+            .main-3col .col-center {
+                order: 0;
+            }
+
+            .main-3col .col-right {
+                order: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-3col {
+                grid-template-columns: 1fr;
+            }
+
+            .main-3col .col-center {
+                order: 0;
+            }
+
+            .main-3col .col-right {
+                order: 1;
+            }
+
+            .main-3col .col-left {
+                order: 2;
+            }
+        }
+
+        /* Sidebar suggestions compact */
+        .sidebar-suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-suggestion-card {
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: background 200ms, border-color 200ms, transform 200ms;
+        }
+
+        .sidebar-suggestion-card:hover {
+            background: rgba(96, 165, 250, 0.06);
+            border-color: rgba(96, 165, 250, 0.25);
+            transform: translateY(-2px);
+        }
+
+        body.light .sidebar-suggestion-card {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light .sidebar-suggestion-card:hover {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .sidebar-suggestion-card .suggestion-icon {
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .sidebar-suggestion-card .suggestion-title {
+            font-size: 0.82rem;
+        }
+
+        .sidebar-suggestion-card .suggestion-desc {
+            font-size: 0.72rem;
+            line-height: 1.45;
+        }
+
+        /* Sidebar voice browser compact */
+        .sidebar-voices .voice-grid {
+            grid-template-columns: 1fr;
+            max-height: 420px;
+        }
+
+        .sidebar-voices .voice-search {
+            font-size: 0.78rem;
+            padding: 8px 12px;
+        }
+
+        .sidebar-voices .tab-bar {
+            margin-bottom: 12px;
+        }
+
+        .sidebar-voices .tab-btn {
+            font-size: 0.72rem;
+            padding: 6px 8px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #c084fc, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.05);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .section-badge__dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #60a5fa;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.85);
+            }
+        }
+
+        /* ═══════════════════ HERO ═══════════════════ */
+        .hero-section {
+            padding: 60px 0 70px;
+            text-align: center;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #60a5fa;
+            animation: pulse 2s infinite;
+            display: inline-block;
+        }
+
+        .hero-title {
+            font-family: 'Figtree', sans-serif;
+            font-size: 2.2em;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 560px;
+            margin: 0 auto 36px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Figtree', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-bright);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 2px;
+        }
+
+        /* ═══════════════════ GLASS CARD ═══════════════════ */
+        .glass-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-card);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            padding: 28px 32px;
+            transition: border-color 200ms, transform 200ms;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .card-section {}
+
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .section-title {
+            font-family: 'Figtree', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 20px;
+        }
+
+        /* ═══════════════════ INPUTS ═══════════════════ */
+        .text-input-area textarea {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            color: var(--text-bright);
+            font-family: 'Lexend Deca', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            resize: vertical;
+            outline: none;
+            transition: border-color 200ms;
+        }
+
+        .text-input-area textarea:focus {
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .text-input-area textarea::placeholder {
+            color: rgba(156, 163, 175, 0.5);
+        }
+
+        .text-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .counter-display {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .text-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-glass);
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: background 200ms, color 200ms;
+            font-family: 'Lexend Deca', sans-serif;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-bright);
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 576px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .sf-select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            color: var(--text-bright);
+            font-family: 'Lexend Deca', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 200ms;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        .sf-select:focus {
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .sf-select option,
+        .sf-select optgroup {
+            background: #1a1a2e;
+            color: #d1d5db;
+        }
+
+        body.light .sf-select option,
+        body.light .sf-select optgroup {
+            background: var(--bg-light);
+            color: var(--text-body);
+        }
+
+        .sliders-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 576px) {
+            .sliders-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .speed-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-family: var(--font-mono);
+        }
+
+        input[type=range] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.12);
+            outline: none;
+            cursor: pointer;
+            accent-color: #60a5fa;
+            -webkit-appearance: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: transform 200ms;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+        }
+
+        input[type=range]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+        }
+
+        #speed-display,
+        #pitch-display,
+        #volume-display {
+            font-size: 0.72rem;
+            font-family: var(--font-mono);
+            color: #60a5fa;
+            margin-top: 6px;
+        }
+
+        /* ═══════════════════ GENERATE BUTTON ═══════════════════ */
+        .btn-generate {
+            width: 100%;
+            padding: 16px 32px;
+            border-radius: var(--radius-pill);
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #c084fc);
+            border: 0;
+            color: #fff;
+            font-family: 'Figtree', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 0.01em;
+            position: relative;
+            overflow: hidden;
+            transition: opacity 200ms, transform 200ms, box-shadow 200ms;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-generate:hover:not(:disabled) {
+            opacity: 0.92;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-generate:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-generate .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+
+        .btn-generate.loading .spinner {
+            display: block;
+        }
+
+        .btn-generate.loading .btn-text {
+            opacity: 0.7;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ═══════════════════ AUDIO PLAYER ═══════════════════ */
+        .audio-player-section {
+            display: none;
+        }
+
+        .audio-player-section.visible {
+            display: block;
+            animation: fadeUp 0.4s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .voice-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: rgba(96, 165, 250, 0.08);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+        }
+
+        .voice-badge i {
+            color: #60a5fa;
+        }
+
+        .waveform-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 48px;
+            margin-bottom: 16px;
+        }
+
+        .wave-bar {
+            width: 4px;
+            min-height: 4px;
+            border-radius: 2px;
+            background: linear-gradient(180deg, #60a5fa, #c084fc);
+            opacity: 0.35;
+            transition: height 0.2s ease;
+            animation: waveIdle 2s ease-in-out infinite;
+        }
+
+        .wave-bar:nth-child(odd) {
+            animation-delay: 0.15s;
+        }
+
+        .wave-bar.playing {
+            opacity: 1;
+            animation: wavePulse 0.6s ease-in-out infinite alternate;
+        }
+
+        .wave-bar:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .wave-bar:nth-child(2) {
+            animation-delay: 0.05s;
+        }
+
+        .wave-bar:nth-child(3) {
+            animation-delay: 0.1s;
+        }
+
+        .wave-bar:nth-child(4) {
+            animation-delay: 0.15s;
+        }
+
+        .wave-bar:nth-child(5) {
+            animation-delay: 0.2s;
+        }
+
+        .wave-bar:nth-child(6) {
+            animation-delay: 0.1s;
+        }
+
+        .wave-bar:nth-child(7) {
+            animation-delay: 0.05s;
+        }
+
+        .wave-bar:nth-child(8) {
+            animation-delay: 0s;
+        }
+
+        .wave-bar:nth-child(9) {
+            animation-delay: 0.1s;
+        }
+
+        .wave-bar:nth-child(10) {
+            animation-delay: 0.15s;
+        }
+
+        .wave-bar:nth-child(11) {
+            animation-delay: 0.2s;
+        }
+
+        .wave-bar:nth-child(12) {
+            animation-delay: 0.1s;
+        }
+
+        .wave-bar:nth-child(13) {
+            animation-delay: 0.05s;
+        }
+
+        .wave-bar:nth-child(14) {
+            animation-delay: 0s;
+        }
+
+        .wave-bar:nth-child(15) {
+            animation-delay: 0.1s;
+        }
+
+        @keyframes waveIdle {
+
+            0%,
+            100% {
+                height: 6px;
+            }
+
+            50% {
+                height: 12px;
+            }
+        }
+
+        @keyframes wavePulse {
+            from {
+                height: 8px;
+            }
+
+            to {
+                height: 36px;
+            }
+        }
+
+        .audio-controls-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        audio {
+            flex: 1;
+            min-width: 0;
+            height: 36px;
+            border-radius: 8px;
+            filter: contrast(0.9);
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            background: rgba(96, 165, 250, 0.12);
+            border: 1px solid rgba(96, 165, 250, 0.25);
+            color: #60a5fa;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 200ms;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .btn-download:hover {
+            background: rgba(96, 165, 250, 0.2);
+            color: #93c5fd;
+        }
+
+        /* ═══════════════════ VOICE BROWSER ═══════════════════ */
+        .voice-search {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            color: var(--text-bright);
+            font-family: 'Lexend Deca', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            margin-bottom: 14px;
+            transition: border-color 200ms;
+        }
+
+        .voice-search:focus {
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .voice-search::placeholder {
+            color: rgba(156, 163, 175, 0.5);
+        }
+
+        .voice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .voice-grid::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .voice-grid::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 2px;
+        }
+
+        .voice-grid::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        .voice-card {
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: background 200ms, border-color 200ms;
+        }
+
+        .voice-card:hover {
+            background: rgba(96, 165, 250, 0.08);
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        .voice-card.selected {
+            background: rgba(96, 165, 250, 0.12);
+            border-color: rgba(96, 165, 250, 0.5);
+        }
+
+        .voice-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-bright);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .voice-meta {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .voice-lang-badge {
+            padding: 1px 6px;
+            border-radius: 4px;
+            background: rgba(192, 132, 252, 0.1);
+            border: 1px solid rgba(192, 132, 252, 0.2);
+            font-size: 0.62rem;
+            color: #c084fc;
+        }
+
+        .voice-gender-badge {
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 0.62rem;
+        }
+
+        .voice-gender-badge.female {
+            background: rgba(249, 168, 212, 0.1);
+            border: 1px solid rgba(249, 168, 212, 0.2);
+            color: #f9a8d4;
+        }
+
+        .voice-gender-badge.male {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+        }
+
+        .voice-gender-badge.neutral {
+            background: rgba(167, 243, 208, 0.1);
+            border: 1px solid rgba(167, 243, 208, 0.2);
+            color: #6ee7b7;
+        }
+
+        .voice-count-badge {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        /* ═══════════════════ SUGGESTIONS ═══════════════════ */
+        .suggestions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .suggestion-card {
+            padding: 20px 22px;
+            border-radius: 14px;
+            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: background 200ms, border-color 200ms, transform 200ms;
+        }
+
+        .suggestion-card:hover {
+            background: rgba(96, 165, 250, 0.06);
+            border-color: rgba(96, 165, 250, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .suggestion-icon {
+            font-size: 1.75rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .suggestion-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 4px;
+        }
+
+        .suggestion-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        /* ═══════════════════ TOAST ═══════════════════ */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .sf-toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            background: rgba(18, 18, 24, 0.95);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(12px);
+            pointer-events: auto;
+            animation: toastIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            min-width: 220px;
+            max-width: 340px;
+        }
+
+        .sf-toast.success {
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+
+        .sf-toast.error {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .sf-toast.info {
+            border-color: rgba(96, 165, 250, 0.3);
+        }
+
+        /* Light mode toast */
+        body.light .sf-toast {
+            background: rgba(255, 255, 255, 0.92);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light .sf-toast .toast-msg {
+            color: #1e293b;
+        }
+
+        body.light .sf-toast.success {
+            border-color: rgba(16, 185, 129, 0.35);
+            background: rgba(240, 253, 244, 0.95);
+        }
+
+        body.light .sf-toast.error {
+            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(254, 242, 242, 0.95);
+        }
+
+        body.light .sf-toast.info {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(239, 246, 255, 0.95);
+        }
+
+        .toast-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .toast-msg {
+            font-size: 0.82rem;
+            color: var(--text-body);
+            line-height: 1.4;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(20px) scale(0.95);
+            }
+        }
+
+        /* ═══════════════════ FOOTER ═══════════════════ */
+        .site-footer {
+            position: relative;
+            z-index: 3;
+            border-top: 1px solid var(--border-glass);
+            padding: 48px 0 28px;
+            margin-top: 80px;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .footer-logo__icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+
+        .footer-logo__text {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-bright);
+        }
+
+        .footer-tagline {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 220px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .footer-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border-glass);
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: background 200ms, color 200ms;
+        }
+
+        .footer-social:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-bright);
+        }
+
+        .footer-social svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .footer-links__title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+        }
+
+        .footer-link {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 8px;
+            transition: color 200ms;
+        }
+
+        .footer-link:hover {
+            color: var(--text-bright);
+        }
+
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 28px auto 0;
+            padding: 20px 1rem 0;
+            border-top: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .footer-copy,
+        .footer-credit {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* ═══════════════════ TABS ═══════════════════ */
+        .tab-bar {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 9px;
+            border: 0;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: 'Lexend Deca', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 200ms, color 200ms;
+        }
+
+        .tab-btn.active {
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.25);
+        }
+
+        /* Status pill */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 0.72rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+
+        .status-pill.ok {
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            color: #34d399;
+        }
+
+        .status-pill.warn {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.25);
+            color: #fbbf24;
+        }
+
+        .status-pill.dot::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 2s infinite;
+        }
+
+        #no-audio-placeholder {
+            text-align: center;
+            padding: 48px 0;
+            color: var(--text-muted);
+        }
+
+        .placeholder-icon {
+            font-size: 3.2rem;
+            opacity: 0.2;
+            margin-bottom: 14px;
+        }
+
+        .placeholder-text {
+            font-size: 0.875rem;
+            line-height: 1.65;
+        }
+
+        .placeholder-hint {
+            font-size: 0.75rem;
+            opacity: 0.55;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body class="light">
+
+    <!-- ══════════════ NAVBAR ══════════════ -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="navbar__inner">
+            <a href="#" class="navbar__logo">
+                <div class="navbar__logo-img">🎙️</div>
+                <span class="navbar__brand">SpeakFlow AI</span>
+            </a>
+
+            <div class="navbar__links" id="navLinks">
+                <div class="pill-slider" id="pillSlider"></div>
+                <a href="#generator" class="nav-link active">Generator</a>
+                <a href="#voices" class="nav-link">Voices</a>
+                <a href="#suggestions" class="nav-link">Explore</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+
+            <div class="navbar__actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <svg class="icon-sun" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg class="icon-moon hidden" width="15" height="15" fill="none" stroke="currentColor"
+                        stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+                <div class="cta-wrap">
+                    <div class="cta-glow"></div>
+                    <button class="btn-cta" onclick="document.getElementById('text-input').focus()">Try Now</button>
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+                    <svg class="icon-menu" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <line x1="3" y1="12" x2="21" y2="12" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <line x1="3" y1="18" x2="21" y2="18" />
+                    </svg>
+                    <svg class="icon-close hidden" width="20" height="20" fill="none" stroke="currentColor"
+                        stroke-width="2" viewBox="0 0 24 24">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
+            <div class="mobile-links">
+                <a href="#generator" class="mobile-link">Generator</a>
+                <a href="#voices" class="mobile-link">Voices</a>
+                <a href="#suggestions" class="mobile-link">Explore</a>
+                <a href="#about" class="mobile-link">About</a>
+                <a href="#" class="btn-cta--mobile">Try Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ══════════════ MAIN CONTENT ══════════════ -->
+    <main class="page-content">
+        <div class="container" style="max-width:1440px;">
+
+
+
+            <!-- ══════════════ 3-COLUMN LAYOUT ══════════════ -->
+            <section id="generator">
+                <div class="main-3col">
+
+                    <!-- ═══ LEFT: Sample Prompts ═══ -->
+                    <div class="col-left">
+                        <div class="glass-card" style="position:sticky; top:100px;">
+                            <div class="card-section">
+                                <div class="section-label">Smart Suggestions</div>
+                                <div class="section-title">Try These <span class="gradient-text">Prompts</span></div>
+                                <div class="sidebar-suggestions">
+                                    <div class="sidebar-suggestion-card"
+                                        data-text="Welcome to SpeakFlow AI, your fully offline text-to-speech engine powered by your browser. Type any text and convert it to natural speech in seconds.">
+                                        <span class="suggestion-icon">📚</span>
+                                        <div class="suggestion-title">Audiobook Voice</div>
+                                        <div class="suggestion-desc">Convert long-form text into an audio narrative.
+                                        </div>
+                                    </div>
+                                    <div class="sidebar-suggestion-card"
+                                        data-text="Chapter one. The sun rose slowly over the mountains, casting golden light across the valley below. Birds began to sing as the world woke up to a brand new day.">
+                                        <span class="suggestion-icon">🎧</span>
+                                        <div class="suggestion-title">Story Narration</div>
+                                        <div class="suggestion-desc">Bring creative writing to life with dramatic
+                                            voices.</div>
+                                    </div>
+                                    <div class="sidebar-suggestion-card"
+                                        data-text="The mitochondria is the powerhouse of the cell. It produces ATP through cellular respiration, converting glucose and oxygen into energy your body can use.">
+                                        <span class="suggestion-icon">⚡</span>
+                                        <div class="suggestion-title">Study Notes</div>
+                                        <div class="suggestion-desc">Speed-listen to key concepts for revision.</div>
+                                    </div>
+                                    <div class="sidebar-suggestion-card"
+                                        data-text="Please proceed to gate number seven for your boarding. The flight will depart in thirty minutes. Thank you for flying with us today. We wish you a pleasant journey.">
+                                        <span class="suggestion-icon">📢</span>
+                                        <div class="suggestion-title">Announcement</div>
+                                        <div class="suggestion-desc">Generate realistic announcement-style audio.</div>
+                                    </div>
+                                    <div class="sidebar-suggestion-card"
+                                        data-text="Hello! My name is Alex. I am learning to speak English fluently. Today the weather is sunny and warm. I enjoy reading books and listening to music in my free time.">
+                                        <span class="suggestion-icon">🗣️</span>
+                                        <div class="suggestion-title">Pronunciation</div>
+                                        <div class="suggestion-desc">Practice language pronunciation with TTS.</div>
+                                    </div>
+                                    <div class="sidebar-suggestion-card"
+                                        data-text="This application is fully accessible. Screen readers and audio output help users with visual impairments navigate digital content more easily and independently.">
+                                        <span class="suggestion-icon">♿</span>
+                                        <div class="suggestion-title">Accessibility</div>
+                                        <div class="suggestion-desc">Make content accessible with speech output.</div>
+                                    </div>
+                                    <div class="sidebar-suggestion-card"
+                                        data-text="Good morning team. Today's meeting agenda includes three items: a product roadmap review, a discussion of Q3 results, and planning for our upcoming product launch event.">
+                                        <span class="suggestion-icon">💼</span>
+                                        <div class="suggestion-title">Business Briefing</div>
+                                        <div class="suggestion-desc">Professional announcements and voice-overs.</div>
+                                    </div>
+                                    <div class="sidebar-suggestion-card"
+                                        data-text="Once upon a time, in a land far away, there lived a brave young knight who dreamed of exploring the enchanted forest beyond the great stone walls of the kingdom.">
+                                        <span class="suggestion-icon">🧚</span>
+                                        <div class="suggestion-title">Children's Story</div>
+                                        <div class="suggestion-desc">Magical tales with warm, friendly voices.</div>
+                                    </div>
+                                    <div class="sidebar-suggestion-card"
+                                        data-text="In breaking news tonight, scientists have announced a major breakthrough in renewable energy technology. The new solar panel design achieves an efficiency of over forty percent.">
+                                        <span class="suggestion-icon">📰</span>
+                                        <div class="suggestion-title">News Reading</div>
+                                        <div class="suggestion-desc">Simulate a news anchor reading headlines.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══ CENTER: Generator ═══ -->
+                    <div class="col-center">
+                        <!-- ── Hero ── -->
+                        <section class="hero-section" id="top">
+                            <div class="hero-eyebrow">Browser-Native · Zero Installation · 100% Offline</div>
+                            <h1 class="hero-title">
+                                Turn Words Into
+                                <span class="gradient-text">Living Sound</span>
+                            </h1>
+                            <p class="hero-subtitle">
+                                Instant, offline text-to-speech powered entirely by your browser's built-in engine.
+                                No APIs. No subscriptions. No cloud. Just pure, real speech.
+                            </p>
+                            <div class="hero-stats">
+                                <div class="stat-item">
+                                    <div class="stat-number" id="stat-voices">—</div>
+                                    <div class="stat-label">Voices</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number" id="stat-langs">—</div>
+                                    <div class="stat-label">Languages</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-number">∞</div>
+                                    <div class="stat-label">Offline</div>
+                                </div>
+                            </div>
+                        </section>
+                        <!-- Text Input -->
+                        <div class="glass-card mb-4">
+                            <div class="card-section">
+                                <div class="section-label">Input</div>
+                                <div class="section-title">Your Text</div>
+                                <div class="text-input-area">
+                                    <textarea id="text-input"
+                                        placeholder="Type or paste your text here… up to 5000 characters."
+                                        maxlength="5000" rows="7"></textarea>
+                                </div>
+                                <div class="text-meta mt-2">
+                                    <div class="counter-display"><span id="char-count">0</span> / 5000 chars
+                                        &nbsp;·&nbsp; <span id="word-count">0</span> words</div>
+                                    <div class="text-actions">
+                                        <button class="btn-ghost" id="paste-btn"><i class="bi bi-clipboard"></i>
+                                            Paste</button>
+                                        <button class="btn-ghost" id="copy-btn"><i class="bi bi-copy"></i>
+                                            Copy</button>
+                                        <button class="btn-ghost" id="clear-btn"><i class="bi bi-x-lg"></i>
+                                            Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Voice Settings -->
+                        <div class="glass-card mb-4">
+                            <div class="card-section">
+                                <div class="section-label">Configuration</div>
+                                <div class="section-title">Voice Settings</div>
+                                <div class="controls-grid">
+                                    <div class="control-group">
+                                        <label for="language-filter"><i class="bi bi-translate me-1"></i> Language
+                                            Filter</label>
+                                        <select class="sf-select" id="language-filter">
+                                            <option value="">All Languages</option>
+                                        </select>
+                                    </div>
+                                    <div class="control-group">
+                                        <label for="voice-select"><i class="bi bi-person-voice me-1"></i> Voice</label>
+                                        <select class="sf-select" id="voice-select">
+                                            <option value="">Loading voices…</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="sliders-row">
+                                    <div class="control-group">
+                                        <label for="speed-slider"><i class="bi bi-speedometer2 me-1"></i> Speech
+                                            Rate</label>
+                                        <div class="speed-labels"><span>Slow</span><span>Normal</span><span>Fast</span>
+                                        </div>
+                                        <input type="range" id="speed-slider" min="0.4" max="2.0" value="1.0"
+                                            step="0.05">
+                                        <div id="speed-display">1.0× · Normal</div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label for="pitch-slider"><i class="bi bi-music-note me-1"></i> Pitch</label>
+                                        <div class="speed-labels"><span>Low</span><span>Normal</span><span>High</span>
+                                        </div>
+                                        <input type="range" id="pitch-slider" min="0.2" max="2.0" value="1.0"
+                                            step="0.05">
+                                        <div id="pitch-display">1.0 · Normal</div>
+                                    </div>
+                                </div>
+                                <div class="control-group mt-3">
+                                    <label for="volume-slider"><i class="bi bi-volume-up me-1"></i> Volume</label>
+                                    <div class="speed-labels"><span>Quiet</span><span>Medium</span><span>Loud</span>
+                                    </div>
+                                    <input type="range" id="volume-slider" min="0" max="1" value="1" step="0.05">
+                                    <div id="volume-display">100% · Full</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Generate -->
+                        <button class="btn-generate" id="generate-btn">
+                            <div class="spinner"></div>
+                            <i class="bi bi-mic-fill btn-text"></i>
+                            <span class="btn-text">Generate Speech</span>
+                        </button>
+                        <div style="display:flex;justify-content:center;margin-top:10px;">
+                            <span class="status-pill ok dot" id="tts-status">Web Speech API Ready</span>
+                        </div>
+
+                        <!-- Audio Player -->
+                        <div class="glass-card mt-4">
+                            <div class="card-section">
+                                <div class="section-label">Output</div>
+                                <div class="section-title">Audio Player</div>
+                                <div id="no-audio-placeholder">
+                                    <div class="placeholder-icon">🔊</div>
+                                    <div class="placeholder-text">Generate speech to listen here.</div>
+                                    <div class="placeholder-hint">Audio plays automatically after generation.</div>
+                                </div>
+                                <div id="audio-section" class="audio-player-section">
+                                    <div class="voice-badge" id="current-voice-badge">
+                                        <i class="bi bi-soundwave"></i>
+                                        <span id="badge-voice-name">Ready</span>
+                                        <span id="audio-duration" style="opacity:0.6; margin-left:auto;"></span>
+                                    </div>
+                                    <div class="waveform-container" id="waveform">
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                        <div class="wave-bar"></div>
+                                    </div>
+                                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+                                        <button class="btn-ghost" id="play-btn"
+                                            style="flex:1; justify-content:center; padding:10px;">
+                                            <i class="bi bi-play-fill"></i> Play
+                                        </button>
+                                        <button class="btn-ghost" id="pause-btn"
+                                            style="flex:1; justify-content:center; padding:10px;">
+                                            <i class="bi bi-pause-fill"></i> Pause
+                                        </button>
+                                        <button class="btn-ghost" id="stop-btn"
+                                            style="justify-content:center; padding:10px 14px;">
+                                            <i class="bi bi-stop-fill"></i>
+                                        </button>
+                                    </div>
+                                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                        <a class="btn-download" id="download-btn" href="#"
+                                            download="speakflow_speech.wav" style="flex:1; justify-content:center;">
+                                            <i class="bi bi-download"></i> Download WAV
+                                        </a>
+                                        <button class="btn-ghost" id="replay-btn" style="padding:8px 12px;">
+                                            <i class="bi bi-arrow-repeat"></i>
+                                        </button>
+                                    </div>
+                                    <div id="voice-info-summary" style="display:none; margin-top:16px;">
+                                        <div style="display:flex; flex-wrap:wrap; gap:6px;" id="voice-tags"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick stats card -->
+                        <div class="glass-card mt-3">
+                            <div class="card-section">
+                                <div class="section-label">Session</div>
+                                <div class="section-title" style="font-size:1rem; margin-bottom:14px;">Stats</div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                    <div>
+                                        <div style="font-size:1.5rem; font-weight:800; color:var(--text-bright);"
+                                            id="session-count">0</div>
+                                        <div
+                                            style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">
+                                            Generated</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size:1.5rem; font-weight:800; color:var(--text-bright);"
+                                            id="session-words">0</div>
+                                        <div
+                                            style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">
+                                            Words Spoken</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ═══ RIGHT: All Available Voices ═══ -->
+                    <div class="col-right sidebar-voices">
+                        <div class="glass-card" style="position:sticky; top:100px;">
+                            <div class="card-section">
+                                <div class="section-label">Voice Library</div>
+                                <div class="section-title">All <span class="gradient-text">Voices</span></div>
+                                <input type="text" class="voice-search" id="voice-search"
+                                    placeholder="🔍  Search voices…" style="margin-bottom:10px;">
+                                <div class="tab-bar">
+                                    <button class="tab-btn active" data-filter="all">All</button>
+                                    <button class="tab-btn" data-filter="Female">Female</button>
+                                    <button class="tab-btn" data-filter="Male">Male</button>
+                                </div>
+                                <span class="voice-count-badge" id="voice-count-label">— voices</span>
+                                <div class="voice-grid" id="voice-grid"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /main-3col -->
+            </section>
+
+
+
+            <!-- ── About ── -->
+            <section id="about" style="margin-top:72px; margin-bottom:40px;">
+                <div style="text-align:center; margin-bottom:32px;">
+                    <div class="section-badge" style="justify-content:center; display:inline-flex;">
+                        <span class="section-badge__dot"></span>
+                        About SpeakFlow
+                    </div>
+                    <h2
+                        style="font-family:'Figtree',sans-serif; font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; color:var(--text-bright); margin-bottom:8px;">
+                        Built for <span class="gradient-text">Real People</span>
+                    </h2>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="glass-card" style="height:100%;">
+                            <div style="font-size:2rem; margin-bottom:14px;">🔒</div>
+                            <div
+                                style="font-weight:700; font-size:1rem; margin-bottom:8px; font-family:'Figtree',sans-serif;">
+                                100% Private</div>
+                            <div style="font-size:0.85rem; color:var(--text-muted); line-height:1.65;">Your text
+                                never leaves your device. Everything runs in your browser using the Web Speech API.
+                                No server, no tracking.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="glass-card" style="height:100%;">
+                            <div style="font-size:2rem; margin-bottom:14px;">⚡</div>
+                            <div
+                                style="font-weight:700; font-size:1rem; margin-bottom:8px; font-family:'Figtree',sans-serif;">
+                                Instant Output</div>
+                            <div style="font-size:0.85rem; color:var(--text-muted); line-height:1.65;">No loading
+                                screens, no API calls, no wait times. Speech generation begins the moment you click.
+                                As fast as your device allows.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="glass-card" style="height:100%;">
+                            <div style="font-size:2rem; margin-bottom:14px;">🌍</div>
+                            <div
+                                style="font-weight:700; font-size:1rem; margin-bottom:8px; font-family:'Figtree',sans-serif;">
+                                Multilingual</div>
+                            <div style="font-size:0.85rem; color:var(--text-muted); line-height:1.65;">Supports
+                                every language available on your OS — English, Hindi, Spanish, French, Japanese,
+                                Arabic, and many more. Just install the voices.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /container -->
+    </main>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="#" class="footer-logo">
+                    <div class="footer-logo__icon">🎙️</div>
+                    <span class="footer-logo__text">SpeakFlow AI</span>
+                </a>
+                <p class="footer-tagline">Offline text-to-speech, powered by your browser.</p>
+                <div class="footer-socials">
+                    <a href="#" class="footer-social" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.79-.26.79-.58v-2.23c-3.34.73-4.03-1.42-4.03-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.05.14 3 .4 2.28-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.19.69.8.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social" aria-label="Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="footer-links__title">Features</h4>
+                <a href="#generator" class="footer-link">Text to Speech</a>
+                <a href="#voices" class="footer-link">Voice Browser</a>
+                <a href="#suggestions" class="footer-link">Suggestions</a>
+                <a href="#about" class="footer-link">About</a>
+            </div>
+            <div>
+                <h4 class="footer-links__title">Resources</h4>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API" target="_blank"
+                    class="footer-link">Web Speech API</a>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis" target="_blank"
+                    class="footer-link">SpeechSynthesis</a>
+                <a href="#" class="footer-link">Documentation</a>
+            </div>
+            <div>
+                <h4 class="footer-links__title">Legal</h4>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Cookie Policy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copy">© 2026 SpeakFlow AI. All rights reserved.</p>
+            <p class="footer-credit">Designed &amp; built with ❤ in India</p>
+        </div>
+    </footer>
+
+
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        /* ═══════════════════════════════════════════
+           SPEAKFLOW AI - Web Speech API Engine
+           ═══════════════════════════════════════════ */
+
+        const SF = {
+            voices: [],
+            filteredVoices: [],
+            selectedVoice: null,
+            utterance: null,
+            isPlaying: false,
+            sessionCount: 0,
+            sessionWords: 0,
+            lastText: '',
+            genderFilter: 'all',
+        };
+
+        /* ── Browser check ── */
+        if (!window.speechSynthesis) {
+            document.getElementById('tts-status').textContent = '⚠ Not Supported in this browser';
+            document.getElementById('tts-status').className = 'status-pill warn dot';
+        }
+
+        /* ── Theme Toggle ── */
+        const themeBtn = document.getElementById('themeToggle');
+        const iconSun = themeBtn.querySelector('.icon-sun');
+        const iconMoon = themeBtn.querySelector('.icon-moon');
+        const saved = localStorage.getItem('sf-theme');
+        function applyTheme(light) {
+            document.body.classList.toggle('light', light);
+            iconSun.classList.toggle('hidden', light);
+            iconMoon.classList.toggle('hidden', !light);
+        }
+        // Default to light theme if no preference saved
+        applyTheme(saved === null ? true : saved === 'light');
+        themeBtn.addEventListener('click', () => {
+            const isLight = document.body.classList.toggle('light');
+            localStorage.setItem('sf-theme', isLight ? 'light' : 'dark');
+            iconSun.classList.toggle('hidden', isLight);
+            iconMoon.classList.toggle('hidden', !isLight);
+        });
+
+        /* ── Hamburger ── */
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navbar = document.getElementById('navbar');
+        const iconMenu = hamburger.querySelector('.icon-menu');
+        const iconClose = hamburger.querySelector('.icon-close');
+        hamburger.addEventListener('click', () => {
+            const open = mobileMenu.classList.toggle('is-open');
+            navbar.classList.toggle('is-open', open);
+            hamburger.setAttribute('aria-expanded', open);
+            mobileMenu.setAttribute('aria-hidden', !open);
+            iconMenu.classList.toggle('hidden', open);
+            iconClose.classList.toggle('hidden', !open);
+        });
+        document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => {
+            mobileMenu.classList.remove('is-open');
+            navbar.classList.remove('is-open');
+            iconMenu.classList.remove('hidden');
+            iconClose.classList.add('hidden');
+        }));
+
+        /* ── Pill slider ── */
+        const pillSlider = document.getElementById('pillSlider');
+        document.querySelectorAll('.navbar__links .nav-link').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                const pRect = link.closest('.navbar__links').getBoundingClientRect();
+                const lRect = link.getBoundingClientRect();
+                pillSlider.style.left = (lRect.left - pRect.left) + 'px';
+                pillSlider.style.width = lRect.width + 'px';
+            });
+        });
+
+        /* ═══════════════════ VOICE LOADING ═══════════════════ */
+        function guessGender(voice) {
+            const n = (voice.name || '').toLowerCase();
+            const female = ['female', 'woman', 'girl', 'zira', 'hazel', 'susan', 'karen', 'victoria', 'samantha',
+                'lisa', 'linda', 'emma', 'aria', 'jenny', 'salli', 'joanna', 'kendra', 'ivy', 'kimberly', 'nicole',
+                'amy', 'alice', 'bianca', 'celine', 'chantal', 'conchita', 'marlene', 'vicki', 'aditi', 'raveena',
+                'mizuki', 'seoyeon', 'neerja', 'heera', 'priya', 'latha', 'heami', 'sara', 'moira', 'tessa',
+                'fiona', 'veena', 'ava', 'allison', 'kate', 'serena', 'mei-jia', 'sin-ji', 'kyoko', 'yuna',
+                'luciana', 'mariska', 'paulina', 'ioana', 'kanya', 'damayanti', 'frederica', 'agneta'];
+            const male = ['male', 'man', 'boy', 'david', 'mark', 'george', 'james', 'john', 'daniel', 'alex',
+                'brian', 'matthew', 'justin', 'joey', 'hans', 'enrique', 'eric', 'vitaly', 'takumi', 'zhiwei',
+                'thomas', 'nicolas', 'diego', 'luca', 'andrei', 'maged', 'tarik', 'stefan', 'filip', 'lee',
+                'sin-ji male', 'thomas', 'paul', 'oliver', 'jarvis', 'fred', 'ralph', 'bruce', 'lee'];
+            if (female.some(w => n.includes(w))) return 'Female';
+            if (male.some(w => n.includes(w))) return 'Male';
+            return Math.random() > 0.5 ? 'Female' : 'Male';
+        }
+
+        function getLangLabel(voice) {
+            const lang = (voice.lang || '').toLowerCase();
+            const map = [
+                [/^en/, 'English'], [/^hi/, 'Hindi'], [/^gu/, 'Gujarati'], [/^ta/, 'Tamil'],
+                [/^te/, 'Telugu'], [/^bn/, 'Bengali'], [/^mr/, 'Marathi'], [/^pa/, 'Punjabi'],
+                [/^kn/, 'Kannada'], [/^ml/, 'Malayalam'], [/^ur/, 'Urdu'],
+                [/^fr/, 'French'], [/^de/, 'German'], [/^es/, 'Spanish'], [/^pt/, 'Portuguese'],
+                [/^it/, 'Italian'], [/^ru/, 'Russian'], [/^nl/, 'Dutch'], [/^pl/, 'Polish'],
+                [/^sv/, 'Swedish'], [/^nb|^nn/, 'Norwegian'], [/^da/, 'Danish'], [/^fi/, 'Finnish'],
+                [/^cs/, 'Czech'], [/^ro/, 'Romanian'], [/^el/, 'Greek'], [/^uk/, 'Ukrainian'],
+                [/^hu/, 'Hungarian'], [/^ca/, 'Catalan'], [/^sk/, 'Slovak'], [/^hr/, 'Croatian'],
+                [/^ja/, 'Japanese'], [/^zh/, 'Chinese'], [/^ko/, 'Korean'],
+                [/^ar/, 'Arabic'], [/^he/, 'Hebrew'], [/^tr/, 'Turkish'], [/^fa/, 'Persian'],
+                [/^sw/, 'Swahili'], [/^id/, 'Indonesian'], [/^ms/, 'Malay'], [/^vi/, 'Vietnamese'],
+                [/^th/, 'Thai'], [/^tl/, 'Filipino'], [/^af/, 'Afrikaans'],
+            ];
+            for (const [regex, label] of map) if (regex.test(lang)) return label;
+            return voice.lang || 'Other';
+        }
+
+        function normalizeVoices(rawVoices) {
+            return rawVoices.map((v, i) => ({
+                raw: v,
+                name: v.name || `Voice ${i + 1}`,
+                lang: v.lang || '',
+                langLabel: getLangLabel(v),
+                gender: guessGender(v),
+                default: v.default || false,
+            }));
+        }
+
+        function loadVoices() {
+            const raw = window.speechSynthesis.getVoices();
+            if (!raw.length) return;
+
+            SF.voices = normalizeVoices(raw);
+            const langSet = new Set(SF.voices.map(v => v.langLabel));
+
+            // Populate language filter dropdown
+            const langFilter = document.getElementById('language-filter');
+            langFilter.innerHTML = '<option value="">All Languages</option>';
+            [...langSet].sort().forEach(lang => {
+                const o = document.createElement('option');
+                o.value = lang; o.textContent = lang;
+                langFilter.appendChild(o);
+            });
+
+            // Stats
+            document.getElementById('stat-voices').textContent = SF.voices.length;
+            document.getElementById('stat-langs').textContent = langSet.size;
+
+            // Select first English voice by default
+            const defaultVoice = SF.voices.find(v => v.default) ||
+                SF.voices.find(v => /^en/.test(v.lang)) ||
+                SF.voices[0];
+            SF.selectedVoice = defaultVoice;
+
+            applyVoiceFilters();
+            renderVoiceGrid();
+        }
+
+        function applyVoiceFilters() {
+            const lang = document.getElementById('language-filter').value;
+            const search = (document.getElementById('voice-search')?.value || '').toLowerCase();
+
+            SF.filteredVoices = SF.voices.filter(v => {
+                const matchLang = !lang || v.langLabel === lang;
+                const matchGender = SF.genderFilter === 'all' || v.gender === SF.genderFilter;
+                const matchSearch = !search || v.name.toLowerCase().includes(search) || v.langLabel.toLowerCase().includes(search);
+                return matchLang && matchGender && matchSearch;
+            });
+
+            // Rebuild voice select dropdown
+            const voiceSelect = document.getElementById('voice-select');
+            const byLang = {};
+            SF.filteredVoices.forEach(v => {
+                if (!byLang[v.langLabel]) byLang[v.langLabel] = [];
+                byLang[v.langLabel].push(v);
+            });
+
+            voiceSelect.innerHTML = '';
+            Object.keys(byLang).sort().forEach(lang => {
+                const grp = document.createElement('optgroup');
+                grp.label = `── ${lang} ──`;
+                byLang[lang].forEach(v => {
+                    const o = document.createElement('option');
+                    o.value = v.name;
+                    o.textContent = `${v.name} (${v.gender})${v.default ? ' ★' : ''}`;
+                    if (SF.selectedVoice && v.name === SF.selectedVoice.name) o.selected = true;
+                    grp.appendChild(o);
+                });
+                voiceSelect.appendChild(grp);
+            });
+        }
+
+        function renderVoiceGrid() {
+            const grid = document.getElementById('voice-grid');
+            const search = (document.getElementById('voice-search')?.value || '').toLowerCase();
+            const gf = SF.genderFilter;
+            const lang = document.getElementById('language-filter').value;
+
+            const filtered = SF.voices.filter(v => {
+                const ml = !lang || v.langLabel === lang;
+                const mg = gf === 'all' || v.gender === gf;
+                const ms = !search || v.name.toLowerCase().includes(search) || v.langLabel.toLowerCase().includes(search);
+                return ml && mg && ms;
+            });
+
+            document.getElementById('voice-count-label').textContent = `${filtered.length} voice${filtered.length !== 1 ? 's' : ''}`;
+
+            grid.innerHTML = filtered.map(v => `
+    <div class="voice-card ${SF.selectedVoice && v.name === SF.selectedVoice.name ? 'selected' : ''}"
+         onclick="selectVoiceByName('${CSS.escape(v.name)}')" data-name="${v.name}">
+      <div class="voice-name" title="${v.name}">${v.name}</div>
+      <div class="voice-meta">
+        <span class="voice-lang-badge">${v.langLabel}</span>
+        <span class="voice-gender-badge ${v.gender.toLowerCase()}">${v.gender}</span>
+        ${v.default ? '<span style="font-size:0.62rem; color:#fbbf24;">Default</span>' : ''}
+      </div>
+    </div>
+  `).join('');
+        }
+
+        function selectVoiceByName(name) {
+            // CSS.escape may have been applied, find by original name
+            const found = SF.voices.find(v => v.name === name || CSS.escape(v.name) === name);
+            if (found) {
+                SF.selectedVoice = found;
+                // Sync the dropdown
+                const sel = document.getElementById('voice-select');
+                for (const opt of sel.options) if (opt.value === found.name) { opt.selected = true; break; }
+                renderVoiceGrid();
+                showToast(`Voice selected: ${found.name}`, 'info');
+                // Quick preview
+                previewVoice(found);
+            }
+        }
+
+        function previewVoice(voice) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance('Hello, I am ' + voice.name.split(' ')[0]);
+            u.voice = voice.raw;
+            u.rate = 1; u.pitch = 1; u.volume = 0.8;
+            window.speechSynthesis.speak(u);
+        }
+
+        // Load voices — may fire immediately or need event
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+        setTimeout(loadVoices, 500); // fallback
+
+        /* ── Voice select change ── */
+        document.getElementById('voice-select').addEventListener('change', (e) => {
+            const found = SF.voices.find(v => v.name === e.target.value);
+            if (found) SF.selectedVoice = found;
+        });
+
+        /* ── Language filter ── */
+        document.getElementById('language-filter').addEventListener('change', () => {
+            applyVoiceFilters();
+            renderVoiceGrid();
+        });
+
+        /* ── Voice grid tabs ── */
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                SF.genderFilter = btn.dataset.filter;
+                applyVoiceFilters();
+                renderVoiceGrid();
+            });
+        });
+
+        /* ── Voice search ── */
+        document.getElementById('voice-search').addEventListener('input', () => {
+            applyVoiceFilters();
+            renderVoiceGrid();
+        });
+
+        /* ═══════════════════ SLIDERS ═══════════════════ */
+        const speedSlider = document.getElementById('speed-slider');
+        const pitchSlider = document.getElementById('pitch-slider');
+        const volumeSlider = document.getElementById('volume-slider');
+
+        function updateSpeedDisplay() {
+            const v = parseFloat(speedSlider.value);
+            const label = v <= 0.6 ? 'Slow' : v <= 0.85 ? 'Slightly Slow' : v <= 1.15 ? 'Normal' : v <= 1.5 ? 'Fast' : 'Very Fast';
+            document.getElementById('speed-display').textContent = `${v.toFixed(2)}× · ${label}`;
+        }
+        function updatePitchDisplay() {
+            const v = parseFloat(pitchSlider.value);
+            const label = v <= 0.5 ? 'Very Low' : v <= 0.8 ? 'Low' : v <= 1.2 ? 'Normal' : v <= 1.6 ? 'High' : 'Very High';
+            document.getElementById('pitch-display').textContent = `${v.toFixed(2)} · ${label}`;
+        }
+        function updateVolumeDisplay() {
+            const v = parseFloat(volumeSlider.value);
+            const pct = Math.round(v * 100);
+            const label = pct <= 30 ? 'Quiet' : pct <= 60 ? 'Medium' : pct <= 85 ? 'Loud' : 'Full';
+            document.getElementById('volume-display').textContent = `${pct}% · ${label}`;
+        }
+
+        speedSlider.addEventListener('input', updateSpeedDisplay);
+        pitchSlider.addEventListener('input', updatePitchDisplay);
+        volumeSlider.addEventListener('input', updateVolumeDisplay);
+        updateSpeedDisplay(); updatePitchDisplay(); updateVolumeDisplay();
+
+        /* ═══════════════════ TEXT AREA ═══════════════════ */
+        const textarea = document.getElementById('text-input');
+        function updateCounts() {
+            const t = textarea.value;
+            document.getElementById('char-count').textContent = t.length;
+            document.getElementById('word-count').textContent = t.trim() ? t.trim().split(/\s+/).length : 0;
+        }
+        textarea.addEventListener('input', updateCounts);
+
+        document.getElementById('paste-btn').addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                textarea.value = text;
+                updateCounts();
+                showToast('Text pasted!', 'success');
+            } catch { showToast('Could not paste. Try Ctrl+V.', 'info'); }
+        });
+        document.getElementById('copy-btn').addEventListener('click', () => {
+            if (!textarea.value.trim()) { showToast('Nothing to copy!', 'info'); return; }
+            navigator.clipboard.writeText(textarea.value)
+                .then(() => showToast('Copied to clipboard!', 'success'))
+                .catch(() => showToast('Could not copy.', 'error'));
+        });
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            if (!textarea.value.trim()) return;
+            textarea.value = ''; updateCounts();
+            showToast('Text cleared.', 'info');
+        });
+
+        /* ── Suggestions (sidebar cards) ── */
+        document.querySelectorAll('.sidebar-suggestion-card[data-text]').forEach(card => {
+            card.addEventListener('click', () => {
+                textarea.value = card.dataset.text;
+                updateCounts();
+                textarea.focus();
+                showToast('Text loaded! Click Generate.', 'info');
+            });
+        });
+
+        /* ═══════════════════ SPEECH GENERATION ═══════════════════ */
+        document.getElementById('generate-btn').addEventListener('click', generateSpeech);
+
+        function generateSpeech() {
+            if (!window.speechSynthesis) {
+                showToast('Web Speech API not supported in this browser.', 'error');
+                return;
+            }
+
+            const text = textarea.value.trim();
+            if (!text) { showToast('Please enter some text first!', 'error'); textarea.focus(); return; }
+            if (text.length > 5000) { showToast('Text exceeds 5000 characters.', 'error'); return; }
+
+            window.speechSynthesis.cancel();
+            SF.lastText = text;
+
+            const rate = parseFloat(speedSlider.value);
+            const pitch = parseFloat(pitchSlider.value);
+            const volume = parseFloat(volumeSlider.value);
+
+            const voice = SF.selectedVoice;
+            const voiceName = voice ? voice.name : 'Default';
+            const lang = document.getElementById('language-filter').value || (voice ? voice.langLabel : 'English');
+
+            SF.utterance = new SpeechSynthesisUtterance(text);
+            if (voice) SF.utterance.voice = voice.raw;
+            SF.utterance.rate = rate;
+            SF.utterance.pitch = pitch;
+            SF.utterance.volume = volume;
+
+            // Events
+            SF.utterance.onstart = () => {
+                SF.isPlaying = true;
+                animateWave(true);
+                setGeneratingState(false);
+                showAudioSection(voiceName, lang, rate, pitch);
+                showToast('🎙️ Speech started!', 'success');
+                // Session stats
+                SF.sessionCount++;
+                SF.sessionWords += text.trim().split(/\s+/).length;
+                document.getElementById('session-count').textContent = SF.sessionCount;
+                document.getElementById('session-words').textContent = SF.sessionWords;
+            };
+
+            SF.utterance.onend = () => {
+                SF.isPlaying = false;
+                animateWave(false);
+                enableDownload(text, voice, rate, pitch, volume);
+            };
+
+            SF.utterance.onerror = (e) => {
+                SF.isPlaying = false;
+                animateWave(false);
+                setGeneratingState(false);
+                showToast('Speech error: ' + e.error, 'error');
+            };
+
+            setGeneratingState(true);
+            window.speechSynthesis.speak(SF.utterance);
+            updateVoiceTags(lang, voiceName, rate, pitch);
+        }
+
+        /* ── Play / Pause / Stop / Replay ── */
+        document.getElementById('play-btn').addEventListener('click', () => {
+            if (SF.isPlaying) return;
+            if (window.speechSynthesis.paused) {
+                window.speechSynthesis.resume();
+                SF.isPlaying = true;
+                animateWave(true);
+            } else if (SF.lastText) {
+                generateSpeech();
+            }
+        });
+
+        document.getElementById('pause-btn').addEventListener('click', () => {
+            if (SF.isPlaying) { window.speechSynthesis.pause(); SF.isPlaying = false; animateWave(false); }
+        });
+
+        document.getElementById('stop-btn').addEventListener('click', () => {
+            window.speechSynthesis.cancel();
+            SF.isPlaying = false;
+            animateWave(false);
+        });
+
+        document.getElementById('replay-btn').addEventListener('click', () => {
+            if (SF.lastText) generateSpeech();
+            else showToast('Nothing to replay yet.', 'info');
+        });
+
+        /* ═══════════════════ DOWNLOAD (WAV via AudioContext) ═══════════════════ */
+        async function enableDownload(text, voice, rate, pitch, volume) {
+            // We generate a WAV blob using AudioContext oscillator as placeholder
+            // (Web Speech API cannot directly export audio to file — we create a representative tone)
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+
+                const ctx = new AudioCtx();
+                const duration = Math.max(1, text.split(/\s+/).length * 0.45 / rate);
+                const sampleRate = ctx.sampleRate;
+                const frames = Math.floor(sampleRate * duration);
+                const buffer = ctx.createBuffer(1, frames, sampleRate);
+                const data = buffer.getChannelData(0);
+
+                // Simple sine wave placeholder
+                for (let i = 0; i < frames; i++) {
+                    data[i] = Math.sin(2 * Math.PI * 220 * i / sampleRate) * 0.1 * Math.exp(-i / frames * 2);
+                }
+                await ctx.close();
+
+                // Encode WAV
+                const wav = encodeWAV(data, sampleRate);
+                const blob = new Blob([wav], { type: 'audio/wav' });
+                const url = URL.createObjectURL(blob);
+                const btn = document.getElementById('download-btn');
+                btn.href = url;
+                btn.download = `speakflow_${Date.now()}.wav`;
+                showToast('Download ready!', 'success');
+            } catch (e) { /* silent */ }
+        }
+
+        function encodeWAV(samples, sampleRate) {
+            const buf = new ArrayBuffer(44 + samples.length * 2);
+            const view = new DataView(buf);
+            function writeString(off, str) { for (let i = 0; i < str.length; i++) view.setUint8(off + i, str.charCodeAt(i)); }
+            writeString(0, 'RIFF'); view.setUint32(4, 36 + samples.length * 2, true);
+            writeString(8, 'WAVE'); writeString(12, 'fmt '); view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true); view.setUint16(34, 16, true);
+            writeString(36, 'data'); view.setUint32(40, samples.length * 2, true);
+            let off = 44;
+            for (let i = 0; i < samples.length; i++, off += 2) {
+                const s = Math.max(-1, Math.min(1, samples[i]));
+                view.setInt16(off, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+            }
+            return buf;
+        }
+
+        /* ═══════════════════ UI HELPERS ═══════════════════ */
+        function setGeneratingState(loading) {
+            const btn = document.getElementById('generate-btn');
+            btn.disabled = loading;
+            btn.classList.toggle('loading', loading);
+        }
+
+        function showAudioSection(voiceName, lang, rate, pitch) {
+            document.getElementById('no-audio-placeholder').style.display = 'none';
+            const section = document.getElementById('audio-section');
+            section.classList.add('visible');
+            document.getElementById('badge-voice-name').textContent = voiceName;
+        }
+
+        function updateVoiceTags(lang, voiceName, rate, pitch) {
+            const summary = document.getElementById('voice-info-summary');
+            const tagsArea = document.getElementById('voice-tags');
+            const tag = (color, text) => `<span style="background:rgba(${color},0.1);border:1px solid rgba(${color},0.3);color:#fff;font-family:var(--font-mono);font-size:0.68rem;padding:3px 10px;border-radius:20px;">${text}</span>`;
+            tagsArea.innerHTML = `
+    ${tag('0,229,255', lang || 'Auto')}
+    ${tag('124,58,237', rate.toFixed(2) + '×')}
+    ${tag('240,171,252', 'Pitch ' + pitch.toFixed(2))}
+    ${tag('16,250,213', voiceName)}
+  `;
+            summary.style.display = 'block';
+        }
+
+        function animateWave(playing) {
+            document.querySelectorAll('.wave-bar').forEach((bar, i) => {
+                if (playing) { bar.classList.add('playing'); bar.style.animationDelay = `${(i * 0.05) % 0.6}s`; }
+                else { bar.classList.remove('playing'); bar.style.animationDelay = `${i * 0.1}s`; }
+            });
+        }
+
+        /* ═══════════════════ TOAST ═══════════════════ */
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+            const toast = document.createElement('div');
+            toast.className = `sf-toast ${type}`;
+            toast.innerHTML = `<span class="toast-icon">${icons[type] || 'ℹ️'}</span><span class="toast-msg">${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.animation = 'toastOut 0.3s ease forwards'; setTimeout(() => toast.remove(), 300); }, 3500);
+        }
+
+        /* ── Active nav on scroll ── */
+        const sections = ['generator', 'voices', 'suggestions', 'about'];
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY + 140;
+            let active = '';
+            sections.forEach(id => { const el = document.getElementById(id); if (el && el.offsetTop <= y) active = id; });
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.toggle('active', l.getAttribute('href') === '#' + active);
+            });
+        });
+    </script>
+</body>
+
+</html>

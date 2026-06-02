@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PDF Hub - Pro PDF Tools{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts (matching index.html) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Lexend+Deca:wght@100..900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ═══════════════════════════════════════════
+           PDF Hub — base.html
+           Matching index.html design system
+           ═══════════════════════════════════════════ */
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            /* Palette (from index.html main.css) */
+            --white: #ffffff;
+            --bg-dark: #0a0a0a;
+            --bg-light: #fafafa;
+            --blue-500: #3b82f6;
+            --blue-400: #60a5fa;
+            --blue-300: #93c5fd;
+            --indigo-300: #a5b4fc;
+            --violet-200: #ddd6fe;
+            --purple: #a855f7;
+            --purple-light: #c084fc;
+
+            /* Glass / surface */
+            --bg-glass: rgba(255, 255, 255, 0.72);
+            --border-glass: rgba(0, 0, 0, 0.08);
+
+            /* Text */
+            --text-bright: #0f172a;
+            --text-muted: #64748b;
+            --text-body: #374151;
+            --text-secondary: #64748b;
+
+            /* Gradients */
+            --primary-gradient: linear-gradient(135deg, #3b82f6, #a855f7);
+
+            /* Radii */
+            --radius-pill: 9999px;
+            --radius-card: 16px;
+
+            /* Motion */
+            --nav-transition: 300ms ease;
+        }
+
+        body {
+            font-family: 'Lexend Deca', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-bright);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ── bg-purple-left background (exact from main.css light mode) ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 90% 10%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 100% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 10% 90%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 0% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+        }
+
+        /* ═══════════════════════════════════════════
+           FLOATING PILL NAVBAR (matching index.html)
+           ═══════════════════════════════════════════ */
+        .glass-nav {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: calc(100% - 2rem);
+            max-width: 1100px;
+            padding: 10px 20px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .logo {
+            font-family: 'Lexend Deca', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .glass-nav .nav-link-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 18px;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            background: transparent;
+            transition: color 250ms ease, background 250ms ease;
+            font-weight: 500;
+        }
+
+        .glass-nav .nav-link-item:hover {
+            color: var(--text-bright);
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* ═══════════════════════════════════════════
+           GLASS CARDS
+           ═══════════════════════════════════════════ */
+        .glass-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-card);
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.15);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.08);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* ═══════════════════════════════════════════
+           GRADIENT BUTTONS
+           ═══════════════════════════════════════════ */
+        .btn-gradient {
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform 200ms, box-shadow 200ms;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(99, 102, 241, 0.25);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+            color: white;
+        }
+
+        /* ═══════════════════════════════════════════
+           UPLOAD BOX
+           ═══════════════════════════════════════════ */
+        .upload-box {
+            border: 2px dashed rgba(0, 0, 0, 0.12);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .upload-box:hover {
+            border-color: var(--blue-500);
+            background: rgba(59, 130, 246, 0.04);
+        }
+
+        .upload-box.dragover {
+            border-color: var(--blue-500);
+            background: rgba(59, 130, 246, 0.06);
+            transform: scale(1.02);
+        }
+
+        .upload-box.has-file {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.04);
+        }
+
+        .upload-box .file-name-display {
+            margin: 0.6rem 0 0;
+            font-size: 0.85rem;
+            color: #16a34a;
+            word-break: break-all;
+            display: none;
+        }
+
+        /* ═══════════════════════════════════════════
+           TOOL ICONS
+           ═══════════════════════════════════════════ */
+        .tool-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .glass-card:hover .tool-icon {
+            transform: rotate(6deg) scale(1.08);
+        }
+
+        /* ═══════════════════════════════════════════
+           TYPOGRAPHY
+           ═══════════════════════════════════════════ */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Lexend Deca', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-bright);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--text-bright) 0%, var(--blue-500) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        /* ═══════════════════════════════════════════
+           LOADING SPINNER
+           ═══════════════════════════════════════════ */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 0, 0, 0.08);
+            border-top-color: var(--blue-500);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           ALERTS
+           ═══════════════════════════════════════════ */
+        .alert-custom {
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.08);
+            border-left: 4px solid #22c55e;
+            color: #16a34a;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 4px solid #ef4444;
+            color: #dc2626;
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .glass-card {
+                padding: 1.5rem;
+            }
+
+            .glass-nav {
+                top: 12px;
+                padding: 8px 16px;
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           THEME TOGGLE BUTTON
+           ═══════════════════════════════════════════ */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 24px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s ease;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+        }
+
+        /* ═══════════════════════════════════════════
+           DARK MODE
+           ═══════════════════════════════════════════ */
+        body.dark-mode {
+            background: var(--bg-dark);
+            color: #ffffff;
+            --text-bright: #ffffff;
+            --text-muted: #9ca3af;
+            --text-body: #d1d5db;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --bg-glass: rgba(18, 18, 24, 0.62);
+            --border-glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode::before {
+            background:
+                radial-gradient(ellipse 80% 60% at 90% 10%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 100% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 10% 90%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 0% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+        }
+
+        body.dark-mode .glass-nav {
+            background: rgba(18, 18, 24, 0.62);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .glass-nav .nav-link-item {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .glass-nav .nav-link-item:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        body.dark-mode .upload-box {
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        body.dark-mode .upload-box:hover {
+            border-color: var(--blue-400);
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        body.dark-mode .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15);
+        }
+
+        body.dark-mode .alert-success {
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ade80;
+        }
+
+        body.dark-mode .alert-error {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+
+        body.dark-mode .hero-title {
+            background: linear-gradient(135deg, #ffffff 0%, var(--blue-400) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Navigation (floating pill navbar matching index.html) -->
+    <nav class="glass-nav">
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <a href="{% url 'home' %}" class="logo text-decoration-none">PDF Hub</a>
+            <div class="d-flex gap-1 align-items-center">
+                <a href="{% url 'home' %}" class="nav-link-item">Home</a>
+                <a href="{% url 'home' %}#tools" class="nav-link-item">Tools</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="padding-top: 100px; position: relative; z-index: 1;">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+        <i data-lucide="sun" width="24" height="24"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Theme Toggle (light = default, dark-mode = toggle class)
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        // Load saved theme (light is default)
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Auto file-name feedback for every upload box
+        document.querySelectorAll('.upload-box').forEach(function (box) {
+            var input = box.querySelector('input[type="file"]');
+            if (!input) return;
+            var display = document.createElement('p');
+            display.className = 'file-name-display';
+            box.appendChild(display);
+            input.addEventListener('change', function () {
+                if (!this.files || this.files.length === 0) return;
+                display.textContent = this.files.length === 1
+                    ? this.files[0].name
+                    : this.files.length + ' files selected';
+                display.style.display = 'block';
+                box.classList.add('has-file');
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

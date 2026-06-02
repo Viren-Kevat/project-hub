@@ -1024,7 +1024,7 @@ body.light .enroll-modal__backdrop {
 .enroll-modal__content {
     position: relative;
     width: 100%;
-    max-width: 480px;
+    max-width: 850px;
     max-height: 90vh;
     overflow-y: auto;
     background: var(--bg-glass, rgba(13, 17, 32, 0.85));
@@ -1161,11 +1161,25 @@ body.light .enroll-modal__subtitle {
 }
 
 /* Form Fields */
+/* Form Layout */
+.enroll-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.25rem;
+}
+
 .enroll-field {
     margin-bottom: 1.25rem;
+    flex: 1 1 calc(50% - 0.625rem);
+    min-width: 0;
+}
+@media (max-width:575px) {
+    .enroll-field{
+    flex: 1 1 100%;}
 }
 
 .enroll-field--checkbox {
+    flex: 1 1 100%;
     margin-bottom: 1.5rem;
 }
 

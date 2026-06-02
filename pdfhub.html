@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="PDF Hub — Professional PDF tools online. Merge, split, compress, convert, and edit PDFs with ease." />
+    <title>PDF Hub — Professional PDF Tools Online</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:wght@300..900&family=Lexend+Deca:wght@100..900&display=swap"
+        rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════
+           PDF HUB — Page-specific styles
+           ═══════════════════════════════════════════ */
+
+        /* ── Hero Section ── */
+        .pdfhub-hero {
+            padding: 180px 0 60px;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        @media (max-width: 768px) {
+            .pdfhub-hero {
+                padding: 140px 0 40px;
+                padding-inline: 20px;
+            }
+        }
+
+        .pdfhub-hero__badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.04);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(6px);
+            animation: fadeUp 0.6s ease 0.1s both;
+        }
+
+        .pdfhub-hero__badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #f43f5e;
+            box-shadow: 0 0 8px rgba(244, 63, 94, 0.5);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        body.light .pdfhub-hero__badge {
+            border-color: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.03);
+            color: #374151;
+        }
+
+        .pdfhub-hero__title {
+            font-size: clamp(2.2rem, 5vw, 3.75rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.25rem;
+            color: var(--text-bright);
+            animation: fadeUp 0.7s ease 0.2s both;
+        }
+
+        .pdfhub-hero__title-gradient {
+            background: linear-gradient(135deg, #f43f5e, #a855f7, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        body.light .pdfhub-hero__title {
+            color: #0f172a;
+        }
+
+        .pdfhub-hero__desc {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--text-body);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            animation: fadeUp 0.8s ease 0.3s both;
+        }
+
+        body.light .pdfhub-hero__desc {
+            color: #4b5563;
+        }
+
+        /* ── Tools Grid ── */
+        .tools-section {
+            position: relative;
+            z-index: 3;
+            padding-bottom: 80px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        @media (max-width: 575px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+                padding: 0 16px;
+            }
+        }
+
+        /* ── Tool Card ── */
+        .tool-card {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .tool-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tool-card__inner {
+            position: relative;
+            padding: 1.75rem;
+            border-radius: var(--radius-card);
+            border: 1px solid var(--border-glass);
+            background: var(--bg-glass);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            transition: transform 0.3s var(--ease-out-expo),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .tool-card__inner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tool-card:hover .tool-card__inner {
+            transform: translateY(-4px);
+            border-color: rgba(168, 85, 247, 0.25);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15),
+                0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .tool-card:hover .tool-card__inner::before {
+            opacity: 1;
+        }
+
+        body.light .tool-card__inner {
+            background: rgba(255, 255, 255, 0.72);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light .tool-card:hover .tool-card__inner {
+            border-color: rgba(99, 102, 241, 0.2);
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.08),
+                0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        /* ── Tool Icon ── */
+        .tool-card__icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(96, 165, 250, 0.2));
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .tool-card__icon svg,
+        .tool-card__icon i {
+            color: var(--purple-light);
+            width: 24px;
+            height: 24px;
+        }
+
+        .tool-card:hover .tool-card__icon {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(96, 165, 250, 0.35));
+            transform: scale(1.08);
+        }
+
+        body.light .tool-card__icon {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border-color: rgba(99, 102, 241, 0.12);
+        }
+
+        body.light .tool-card__icon svg,
+        body.light .tool-card__icon i {
+            color: #7c3aed;
+        }
+
+        /* ── Tool Text ── */
+        .tool-card__title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--text-bright);
+            transition: color 0.2s ease;
+        }
+
+        body.light .tool-card__title {
+            color: #0f172a;
+        }
+
+        .tool-card__desc {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        body.light .tool-card__desc {
+            color: #64748b;
+        }
+
+        /* ── Badge ── */
+        .tool-card__badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, var(--blue-500), var(--purple));
+            color: white;
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        /* ── Section Divider ── */
+        .tools-section-title {
+            max-width: 1100px;
+            margin: 0 auto 2rem;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .tools-section-title__text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .tools-section-title__line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-glass);
+        }
+
+        body.light .tools-section-title__line {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        /* ── Stats Row ── */
+        .pdfhub-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            padding: 0 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 3;
+            animation: fadeUp 0.9s ease 0.4s both;
+        }
+
+        @media (max-width: 575px) {
+            .pdfhub-stats {
+                gap: 1.5rem;
+            }
+        }
+
+        .pdfhub-stat {
+            text-align: center;
+        }
+
+        .pdfhub-stat__value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--blue-400), var(--purple-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .pdfhub-stat__label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden bg-purple-left">
+
+    <!-- ── Navbar ── -->
+    <header class="navbar" id="navbar">
+        <div class="navbar__inner">
+            <a href="index.html" class="navbar__logo">
+                <img src="image/favicon_io/apple-touch-icon.png" alt="ProjectsHub" class="navbar__logo-img" />
+                <span class="navbar__brand">ProjectsHub</span>
+            </a>
+            <nav class="navbar__links" aria-label="Primary navigation">
+                <div class="pill-slider" id="pillSlider"></div>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="workshop.html" class="nav-link">Workshop</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+            <div class="navbar__actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg class="icon-moon hidden" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+                <div class="cta-wrap">
+                    <div class="cta-glow" aria-hidden="true"></div>
+                    <a href="index.html" class="btn-cta">Back to Home</a>
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <svg class="icon-menu" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="icon-close hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="navbar__mobile" id="mobileMenu" aria-hidden="true">
+            <nav class="mobile-links">
+                <a href="projects.html" class="mobile-link">Projects</a>
+                <a href="index.html#about" class="mobile-link">About</a>
+                <a href="workshop.html" class="mobile-link">Workshop</a>
+                <a href="index.html#contact" class="mobile-link">Contact</a>
+            </nav>
+            <a href="index.html" class="btn-cta btn-cta--mobile">Back to Home</a>
+        </div>
+    </header>
+
+    <div class="main-body">
+
+        <!-- ── Hero Section ── -->
+        <section class="pdfhub-hero">
+            <div class="pdfhub-hero__badge">
+                <span class="pdfhub-hero__badge-dot"></span>
+                PDF Tools Suite
+            </div>
+            <h1 class="pdfhub-hero__title">
+                Professional <span class="pdfhub-hero__title-gradient">PDF Tools</span>
+            </h1>
+            <p class="pdfhub-hero__desc">
+                Transform, edit, and optimize your PDFs with our powerful suite of tools.
+                Fast, secure, and completely free.
+            </p>
+
+            <!-- Stats Row -->
+            <div class="pdfhub-stats">
+                <div class="pdfhub-stat">
+                    <p class="pdfhub-stat__value">19+</p>
+                    <p class="pdfhub-stat__label">Tools</p>
+                </div>
+                <div class="pdfhub-stat">
+                    <p class="pdfhub-stat__value">100%</p>
+                    <p class="pdfhub-stat__label">Free</p>
+                </div>
+                <div class="pdfhub-stat">
+                    <p class="pdfhub-stat__value">Secure</p>
+                    <p class="pdfhub-stat__label">Processing</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Conversion Tools ── -->
+        <section class="tools-section">
+            <div class="tools-section-title">
+                <span class="tools-section-title__text">All Tools</span>
+                <div class="tools-section-title__line"></div>
+            </div>
+
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Tool 1: Merge PDF -->
+                <a href="{% url 'merge_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="merge"></i>
+                        </div>
+                        <h3 class="tool-card__title">Merge PDF</h3>
+                        <p class="tool-card__desc">Combine multiple PDF files into one document</p>
+                    </div>
+                </a>
+
+                <!-- Tool 2: Split PDF -->
+                <a href="{% url 'split_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="scissors"></i>
+                        </div>
+                        <h3 class="tool-card__title">Split PDF</h3>
+                        <p class="tool-card__desc">Extract individual pages from your PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 3: Compress PDF -->
+                <a href="{% url 'compress_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="minimize-2"></i>
+                        </div>
+                        <h3 class="tool-card__title">Compress PDF</h3>
+                        <p class="tool-card__desc">Reduce file size while maintaining quality</p>
+                    </div>
+                </a>
+
+                <!-- Tool 4: PDF to JPG -->
+                <a href="{% url 'pdf_to_jpg' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="image"></i>
+                        </div>
+                        <h3 class="tool-card__title">PDF to JPG</h3>
+                        <p class="tool-card__desc">Convert PDF pages to JPG images</p>
+                    </div>
+                </a>
+
+                <!-- Tool 5: JPG to PDF -->
+                <a href="{% url 'jpg_to_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="file-image"></i>
+                        </div>
+                        <h3 class="tool-card__title">JPG to PDF</h3>
+                        <p class="tool-card__desc">Convert images to PDF documents</p>
+                    </div>
+                </a>
+
+                <!-- Tool 6: Word to PDF -->
+                <a href="{% url 'word_to_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="file-text"></i>
+                        </div>
+                        <h3 class="tool-card__title">Word to PDF</h3>
+                        <p class="tool-card__desc">Convert Word documents to PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 7: PDF to Word -->
+                <a href="{% url 'pdf_to_word' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="file-type"></i>
+                        </div>
+                        <h3 class="tool-card__title">PDF to Word</h3>
+                        <p class="tool-card__desc">Convert PDF to editable Word format</p>
+                    </div>
+                </a>
+
+                <!-- Tool 8: Rotate PDF -->
+                <a href="{% url 'rotate_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="rotate-cw"></i>
+                        </div>
+                        <h3 class="tool-card__title">Rotate PDF</h3>
+                        <p class="tool-card__desc">Rotate pages to the correct orientation</p>
+                    </div>
+                </a>
+
+                <!-- Tool 9: Delete Pages -->
+                <a href="{% url 'delete_pages' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="trash-2"></i>
+                        </div>
+                        <h3 class="tool-card__title">Delete Pages</h3>
+                        <p class="tool-card__desc">Remove unwanted pages from PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 10: Rearrange Pages -->
+                <a href="{% url 'rearrange_pages' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="shuffle"></i>
+                        </div>
+                        <h3 class="tool-card__title">Rearrange Pages</h3>
+                        <p class="tool-card__desc">Change the order of PDF pages</p>
+                    </div>
+                </a>
+
+                <!-- Tool 11: Add Watermark -->
+                <a href="{% url 'add_watermark' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="droplet"></i>
+                        </div>
+                        <h3 class="tool-card__title">Add Watermark</h3>
+                        <p class="tool-card__desc">Add text watermark to your PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 12: Add Page Numbers -->
+                <a href="{% url 'add_page_numbers' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="hash"></i>
+                        </div>
+                        <h3 class="tool-card__title">Add Page Numbers</h3>
+                        <p class="tool-card__desc">Number your PDF pages automatically</p>
+                    </div>
+                </a>
+
+                <!-- Tool 13: Extract Text -->
+                <a href="{% url 'extract_text' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="type"></i>
+                        </div>
+                        <h3 class="tool-card__title">Extract Text</h3>
+                        <p class="tool-card__desc">Extract all text content from PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 14: Extract Images -->
+                <a href="{% url 'extract_images' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="images"></i>
+                        </div>
+                        <h3 class="tool-card__title">Extract Images</h3>
+                        <p class="tool-card__desc">Extract all images from your PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 15: Protect PDF -->
+                <a href="{% url 'protect_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="lock"></i>
+                        </div>
+                        <h3 class="tool-card__title">Protect PDF</h3>
+                        <p class="tool-card__desc">Add password protection to PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 16: Unlock PDF -->
+                <a href="{% url 'unlock_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="unlock"></i>
+                        </div>
+                        <h3 class="tool-card__title">Unlock PDF</h3>
+                        <p class="tool-card__desc">Remove password protection from PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 17: HTML to PDF -->
+                <a href="{% url 'html_to_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="code"></i>
+                        </div>
+                        <h3 class="tool-card__title">HTML to PDF</h3>
+                        <p class="tool-card__desc">Convert HTML content to PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 18: Sign PDF -->
+                <a href="{% url 'sign_pdf' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="pen-tool"></i>
+                        </div>
+                        <h3 class="tool-card__title">Sign PDF</h3>
+                        <p class="tool-card__desc">Add signature image to your PDF</p>
+                    </div>
+                </a>
+
+                <!-- Tool 19: PDF Reader -->
+                <a href="{% url 'pdf_reader' %}" class="tool-card">
+                    <div class="tool-card__inner">
+                        <div class="tool-card__icon">
+                            <i data-lucide="book-open"></i>
+                        </div>
+                        <h3 class="tool-card__title">PDF Reader</h3>
+                        <p class="tool-card__desc">View and read PDF files online</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ── Footer ── -->
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <a href="index.html" class="footer-logo"><img src="image/favicon_io/apple-touch-icon.png"
+                            alt="ProjectsHub" class="navbar__logo-img" /><span
+                            class="footer-logo__text">ProjectsHub</span></a>
+                    <p class="footer-tagline">From Ideas to AI-Powered Products</p>
+                    <div class="footer-socials">
+                        <a href="#" class="footer-social" aria-label="GitHub"><svg viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg></a>
+                        <a href="#" class="footer-social" aria-label="LinkedIn"><svg viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg></a>
+                        <a href="https://wa.me/919033893037" target="_blank" rel="noopener noreferrer"
+                            class="footer-social" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M20.52 3.48A11.82 11.82 0 0 0 12.07 0C5.5 0 .15 5.35.15 11.92c0 2.1.55 4.15 1.6 5.97L0 24l6.29-1.65a11.9 11.9 0 0 0 5.78 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.48-8.42zM12.08 21.8a9.9 9.9 0 0 1-5.05-1.38l-.36-.21-3.73.98 1-3.63-.24-.37a9.88 9.88 0 0 1-1.52-5.28c0-5.46 4.44-9.9 9.9-9.9a9.83 9.83 0 0 1 7.01 2.9 9.83 9.83 0 0 1 2.89 7c0 5.46-4.44 9.9-9.9 9.9zm5.43-7.43c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.46-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.08-.8.37-.27.3-1.05 1.02-1.05 2.5s1.08 2.9 1.23 3.1c.15.2 2.13 3.26 5.17 4.57.72.31 1.28.5 1.72.64.72.23 1.37.2 1.88.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" />
+                            </svg></a>
+                        <a href="#" class="footer-social" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                            </svg></a>
+                    </div>
+                </div>
+                <div class="footer-links-col">
+                    <h4 class="footer-links__title">Quick Links</h4>
+                    <a href="index.html" class="footer-link">Home</a>
+                    <a href="projects.html" class="footer-link">Projects</a>
+                    <a href="index.html#about" class="footer-link">About</a>
+                    <a href="index.html#contact" class="footer-link">Contact</a>
+                </div>
+                <div class="footer-links-col">
+                    <h4 class="footer-links__title">Resources</h4>
+                    <a href="workshop.html" class="footer-link">AI Workshop</a>
+                    <a href="#" class="footer-link">Blog</a>
+                    <a href="#" class="footer-link">Documentation</a>
+                    <a href="#" class="footer-link">FAQs</a>
+                </div>
+                <div class="footer-links-col">
+                    <h4 class="footer-links__title">Legal</h4>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Cookie Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copy">© 2026 ProjectsHub. All rights reserved.</p>
+                <p class="footer-credit">Designed & built with ❤ in India</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        /* ════════════════════════════════════════
+           1. LUCIDE ICONS
+           ════════════════════════════════════════ */
+        lucide.createIcons();
+
+        /* ════════════════════════════════════════
+           2. NAVBAR — Hamburger Toggle
+           ════════════════════════════════════════ */
+        var navbar = document.getElementById('navbar');
+        var hamburger = document.getElementById('hamburger');
+        var mobileMenu = document.getElementById('mobileMenu');
+        var themeToggle = document.getElementById('themeToggle');
+
+        if (hamburger && navbar && mobileMenu) {
+            var iconMenu = hamburger.querySelector('.icon-menu');
+            var iconClose = hamburger.querySelector('.icon-close');
+
+            hamburger.addEventListener('click', function () {
+                var isOpen = mobileMenu.classList.toggle('is-open');
+                navbar.classList.toggle('is-open', isOpen);
+                iconMenu.classList.toggle('hidden', isOpen);
+                iconClose.classList.toggle('hidden', !isOpen);
+                hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+            });
+
+            // Close on mobile link tap
+            document.querySelectorAll('.mobile-link, .btn-cta--mobile').forEach(function (link) {
+                link.addEventListener('click', function () {
+                    mobileMenu.classList.remove('is-open');
+                    navbar.classList.remove('is-open');
+                    iconMenu.classList.remove('hidden');
+                    iconClose.classList.add('hidden');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    mobileMenu.setAttribute('aria-hidden', 'true');
+                });
+            });
+        }
+
+        /* ════════════════════════════════════════
+           3. THEME TOGGLE — Dark / Light
+           ════════════════════════════════════════ */
+        if (themeToggle) {
+            var iconSun = themeToggle.querySelector('.icon-sun');
+            var iconMoon = themeToggle.querySelector('.icon-moon');
+
+            function applyTheme(isLight) {
+                document.body.classList.toggle('light', isLight);
+                if (iconSun && iconMoon) {
+                    iconSun.classList.toggle('hidden', isLight);
+                    iconMoon.classList.toggle('hidden', !isLight);
+                }
+                localStorage.setItem('ph-theme', isLight ? 'light' : 'dark');
+            }
+
+            // Restore saved preference
+            var savedTheme = localStorage.getItem('ph-theme');
+            if (savedTheme === 'light') applyTheme(true);
+            else if (savedTheme === 'dark') applyTheme(false);
+            else if (document.body.classList.contains('light')) applyTheme(true);
+
+            themeToggle.addEventListener('click', function () {
+                applyTheme(!document.body.classList.contains('light'));
+            });
+        }
+
+        /* ════════════════════════════════════════
+           4. NAVBAR — Border on Scroll
+           ════════════════════════════════════════ */
+        if (navbar) {
+            window.addEventListener('scroll', function () {
+                navbar.style.borderColor = (window.scrollY || window.pageYOffset) > 60
+                    ? 'rgba(255,255,255,0.15)'
+                    : '';
+            }, { passive: true });
+        }
+
+        /* ════════════════════════════════════════
+           5. SLIDING PILL — Desktop Nav
+           ════════════════════════════════════════ */
+        (function initPillSlider() {
+            var nav = document.querySelector('.navbar__links');
+            var pill = document.getElementById('pillSlider');
+            var links = document.querySelectorAll('.nav-link');
+            if (!nav || !pill || !links.length) return;
+
+            var lastHoveredLink = links[0];
+            var isInsideNav = false;
+
+            function movePillTo(link) {
+                var rect = link.getBoundingClientRect();
+                var navRect = nav.getBoundingClientRect();
+                pill.style.left = (rect.left - navRect.left) + 'px';
+                pill.style.width = rect.width + 'px';
+            }
+
+            movePillTo(links[0]);
+
+            links.forEach(function (link) {
+                link.addEventListener('mouseenter', function () {
+                    lastHoveredLink = link;
+                    movePillTo(link);
+                });
+            });
+
+            nav.addEventListener('mouseenter', function () {
+                isInsideNav = true;
+                if (lastHoveredLink) {
+                    movePillTo(lastHoveredLink);
+                    pill.style.opacity = '1';
+                }
+            });
+
+            nav.addEventListener('mouseleave', function () {
+                isInsideNav = false;
+                pill.style.opacity = '0';
+            });
+
+            window.addEventListener('resize', function () {
+                if (lastHoveredLink && isInsideNav) movePillTo(lastHoveredLink);
+            });
+        })();
+
+        /* ════════════════════════════════════════
+           6. TOOL CARDS — Staggered Reveal
+           ════════════════════════════════════════ */
+        (function initToolCards() {
+            var cards = document.querySelectorAll('.tool-card');
+            if (!cards.length) return;
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    var index = Array.from(cards).indexOf(entry.target);
+                    setTimeout(function () {
+                        entry.target.classList.add('visible');
+                    }, index * 60);
+                    observer.unobserve(entry.target);
+                });
+            }, { threshold: 0.05 });
+
+            cards.forEach(function (card) { observer.observe(card); });
+        })();
+
+    })();
+    </script>
+</body>
+
+</html>

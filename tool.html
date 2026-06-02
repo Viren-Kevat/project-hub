@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects Hub - Premium Tools Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #fafafa;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --gradient-1: #667eea;
+            --gradient-2: #764ba2;
+            --gradient-3: #f093fb;
+            --gradient-4: #4facfe;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* ═══════════════════ BG-PURPLE (matches qr.html) ═══════════════════ */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 90% 10%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 100% 0%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 80% 60% at 10% 90%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 0% 100%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1400px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        /* Header */
+        /* .header {
+            text-align: center;
+            animation: fadeInDown 1s ease-out;
+        } */
+
+        /* .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-3), var(--gradient-4));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .tagline {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        } */
+        /* Import a rounded, thick font from Google Fonts */
+        .header {
+            text-align: center;
+            /* Added 15px side padding so content never touches the screen edges on mobile */
+            /* padding: 20px 15px; */
+        }
+
+        .logo {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Vertically aligns the images if one is taller than the other */
+            gap: 15px;
+            /* Adds clean spacing between the two images */
+            flex-wrap: wrap;
+            /* Allows the images to stack gracefully on extremely small screens */
+        }
+
+        .logo-image {
+            /* Fluid Sizing: 
+       - Minimum width: 150px (for mobile)
+       - Preferred width: 30vw (scales dynamically with the screen)
+       - Maximum width: 300px (stops growing on desktop)
+       Adjust these three numbers to your liking! */
+            width: clamp(150px, 10vw, 300px);
+            height: auto;
+            /* Keeps proportions correct */
+            object-fit: contain;
+            /* Ensures the image doesn't warp */
+        }
+
+        .tagline {
+            font-family: sans-serif;
+            color: #555;
+            margin-top: 10px;
+            /* Fluid font-size: shrinks slightly on mobile, caps at 1.1rem on desktop */
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1100px;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        /* Glass Card */
+        .tool-card {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 50%);
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .tool-card:hover::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow:
+                0 20px 60px -15px rgba(102, 126, 234, 0.4),
+                0 0 40px rgba(102, 126, 234, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .tool-card:active {
+            transform: translateY(-4px);
+        }
+
+        /* Icon Container */
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .tool-card:hover .icon-container {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .qr-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .tts-icon {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            box-shadow: 0 10px 40px rgba(240, 147, 251, 0.4);
+        }
+
+        .pdf-icon {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            box-shadow: 0 10px 40px rgba(79, 172, 254, 0.4);
+        }
+
+        .icon-svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .tool-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tool-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-badge {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gradient-2);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover .tool-badge {
+            background: rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-out 0.6s backwards;
+        }
+
+        .footer a {
+            color: var(--gradient-1);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: var(--gradient-3);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo-image {
+                width: clamp(108px, 10vw, 300px);
+            }
+
+            .tagline {
+                font-size: 1rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .tool-card {
+                padding: 2.5rem 2rem;
+            }
+
+            .icon-container {
+                width: 70px;
+                height: 70px;
+            }
+
+            .icon-svg {
+                width: 35px;
+                height: 35px;
+            }
+
+            .tool-title {
+                font-size: 1.5rem;
+            }
+
+            .orb {
+                filter: blur(60px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .logo {
+                font-size: 1.875rem;
+            }
+
+            .tool-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo">
+                <img src="./Image/fulllogo.png" alt="" class="logo-image">
+                <!-- <img src="./Image/logo.png" alt="" class="logo-image">
+                <img src="./Image/ProjectName.png" alt="Projects Hub" class="logo-image"> -->
+            </h1>
+            <p class="tagline">Premium Tools Suite for Professionals</p>
+        </header>
+        <!-- Tools Cards Grid -->
+        <div class="cards-grid">
+            <!-- QR Generator Card -->
+            <a href="/qr/" class="tool-card">
+                <div class="icon-container qr-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M3 11h8V3H3v8zm2-6h4v4H5V5zM3 21h8v-8H3v8zm2-6h4v4H5v-4zM13 3v8h8V3h-8zm6 6h-4V5h4v4zM13 13h2v2h-2zM15 15h2v2h-2zM13 17h2v2h-2zM15 19h2v2h-2zM17 13h2v2h-2zM19 15h2v2h-2zM17 17h2v2h-2zM19 19h2v2h-2z" />
+                    </svg>
+                </div>
+                <h2 class="tool-title">QR Generator</h2>
+                <p class="tool-description">Create custom QR codes instantly with advanced customization options</p>
+                <span class="tool-badge">Launch Tool →</span>
+            </a>
+
+            <!-- Text To Speech Card -->
+            <a href="/text to speech/" class="tool-card">
+                <div class="icon-container tts-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                    </svg>
+                </div>
+                <h2 class="tool-title">Text To Speech</h2>
+                <p class="tool-description">Convert text to natural-sounding speech with multiple voices</p>
+                <span class="tool-badge">Launch Tool →</span>
+            </a>
+
+            <!-- PDF Hub Card -->
+            <a href="/pdf/" class="tool-card">
+                <div class="icon-container pdf-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                    </svg>
+                </div>
+                <h2 class="tool-title">PDF Hub</h2>
+                <p class="tool-description">Complete PDF toolkit with 20+ powerful tools for all your needs</p>
+                <span class="tool-badge">Launch Tool →</span>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2026 Projects Hub. All rights reserved. | <a href="#">Privacy Policy</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add ripple effect on card click
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', function (e) {
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                ripple.style.pointerEvents = 'none';
+
+                const rect = card.getBoundingClientRect();
+                ripple.style.left = (e.clientX - rect.left) + 'px';
+                ripple.style.top = (e.clientY - rect.top) + 'px';
+
+                card.appendChild(ripple);
+
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(20);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Parallax effect for orbs on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.orb');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+
+            orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 20;
+                const xMove = (x - 0.5) * speed;
+                const yMove = (y - 0.5) * speed;
+                orb.style.transform = `translate(${xMove}px, ${yMove}px)`;
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.tool-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+
+</html>
